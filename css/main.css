@@ -106,6 +106,17 @@ html, body {
     background: #000;
 }
 
+/* Scene wrapper for zooming entire scene */
+.edu-scene-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    will-change: transform;
+}
+
 /* Layer 1: Background (Z-Index: 1) - Overscan for parallax */
 .edu-bg-layer {
     position: absolute;
@@ -149,11 +160,28 @@ html, body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 140%;
-    height: 140%;
-    background: radial-gradient(ellipse at center, rgba(100, 200, 255, 0.6) 0%, rgba(80, 180, 255, 0.4) 20%, rgba(60, 160, 255, 0.2) 40%, transparent 70%);
-    filter: blur(40px);
+    width: 160%;
+    height: 160%;
+    background: radial-gradient(ellipse at center, rgba(100, 180, 220, 0.4) 0%, rgba(80, 160, 200, 0.25) 25%, rgba(60, 140, 180, 0.1) 50%, transparent 70%);
+    filter: blur(60px);
     z-index: 1;
+    animation: glowFlicker 8s infinite;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+}
+
+/* Extra ambient glow for wall integration */
+.edu-screen-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180%;
+    height: 140%;
+    background: radial-gradient(ellipse at center, rgba(120, 140, 150, 0.2) 0%, rgba(100, 120, 130, 0.1) 40%, transparent 65%);
+    filter: blur(80px);
+    z-index: 0;
     animation: glowFlicker 8s infinite;
     pointer-events: none;
 }
@@ -169,24 +197,19 @@ html, body {
 /* Glow Flicker Animation - synced with screen but slightly different */
 @keyframes glowFlicker {
     0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 0.8;
-        filter: blur(30px) brightness(1);
+        opacity: 0.7;
     }
     20%, 24%, 55% {
-        opacity: 0.5;
-        filter: blur(25px) brightness(0.7);
+        opacity: 0.4;
     }
     22% {
-        opacity: 0.3;
-        filter: blur(20px) brightness(0.5);
+        opacity: 0.25;
     }
     52%, 58%, 96% {
-        opacity: 0.7;
-        filter: blur(28px) brightness(0.9);
+        opacity: 0.6;
     }
     94% {
-        opacity: 0.65;
-        filter: blur(26px) brightness(0.85);
+        opacity: 0.55;
     }
 }
 
@@ -241,10 +264,94 @@ html, body {
     background: rgba(100, 150, 255, 0.1);
     border: 1px solid rgba(100, 150, 255, 0.2);
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .grid-item:hover {
-    background: rgba(100, 150, 255, 0.25);
-    border-color: rgba(100, 150, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.8)) brightness(1.3);
+}
+
+/* Detail View Styles */
+#edu-detail-view {
+    position: absolute;
+    top: 28%;
+    left: 8%;
+    width: 84%;
+    height: 55%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10% 5% 5% 5%;
+    z-index: 4;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#edu-detail-view > * {
+    pointer-events: auto;
+}
+
+.detail-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(100, 200, 255, 0.2);
+    border: 2px solid rgba(100, 200, 255, 0.6);
+    margin-bottom: 15px;
+}
+
+.detail-title {
+    color: rgba(200, 230, 255, 0.95);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 20px 0;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+}
+
+#typewriter-text {
+    color: rgba(180, 220, 255, 0.9);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: left;
+    width: 100%;
+    min-height: 100px;
+    margin: 0 0 20px 0;
+}
+
+#typewriter-text::after {
+    content: '_';
+    animation: blink 0.8s infinite;
+    color: rgba(100, 200, 255, 1);
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+#btn-return {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+#btn-return:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(100, 200, 255, 1);
+    color: rgba(100, 200, 255, 1);
+    text-shadow: 0 0 10px rgba(100, 200, 255, 0.8);
 }

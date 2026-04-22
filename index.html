@@ -33,10 +33,11 @@
         </section>
         
         <section id="view-education" class="view">
-            <div class="edu-bg-layer">
-                <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
-            </div>
-            <div class="edu-screen-wrapper">
+            <div class="edu-scene-wrapper">
+                <div class="edu-bg-layer">
+                    <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
+                </div>
+                <div class="edu-screen-wrapper">
                 <div class="edu-screen-glow"></div>
                 <div class="edu-screen-layer">
                     <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
@@ -48,7 +49,14 @@
                         <div class="grid-item" data-index="4"></div>
                         <div class="grid-item" data-index="5"></div>
                     </div>
+                    <div id="edu-detail-view" style="display: none;">
+                        <div class="detail-icon"></div>
+                        <h2 class="detail-title">TITLE_PLACEHOLDER</h2>
+                        <p id="typewriter-text"></p>
+                        <button id="btn-return">COFNIJ -></button>
+                    </div>
                 </div>
+            </div>
             </div>
         </section>
         <section id="view-projects" class="view"></section>
@@ -170,21 +178,18 @@
             
             init() {
                 window.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-                
-                this.screenLayer.addEventListener('mouseenter', () => this.freeze());
-                this.screenLayer.addEventListener('mouseleave', () => this.unfreeze());
             }
             
             handleMouseMove(e) {
+                if (this.isFrozen) return;
+                
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
                 
                 this.mouseX = (e.clientX - centerX) / centerX;
                 this.mouseY = (e.clientY - centerY) / centerY;
                 
-                if (!this.isFrozen) {
-                    this.animate();
-                }
+                this.animate();
             }
             
             animate() {
@@ -214,27 +219,190 @@
             }
             
             freeze() {
+                console.log('FREEZE called, isFrozen was:', this.isFrozen);
                 this.isFrozen = true;
-                
                 gsap.killTweensOf([this.bgLayer, this.screenLayer]);
-                
-                gsap.to(this.bgLayer, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
-                
-                gsap.to(this.screenLayer, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
+                gsap.set([this.bgLayer, this.screenLayer], { x: 0, y: 0 });
+                console.log('FREEZE done, isFrozen now:', this.isFrozen);
+            }
+            
+            isFrozenState() {
+                return this.isFrozen;
             }
             
             unfreeze() {
                 this.isFrozen = false;
+            }
+        }
+
+        class EducationFocusManager {
+            constructor() {
+                this.grid = document.querySelector('.edu-grid');
+                this.detailView = document.getElementById('edu-detail-view');
+                this.sceneWrapper = document.querySelector('.edu-scene-wrapper');
+                this.typewriterText = document.getElementById('typewriter-text');
+                this.detailTitle = document.querySelector('.detail-title');
+                this.returnBtn = document.getElementById('btn-return');
+                this.parallaxManager = null;
+                this.typewriterInterval = null;
+                this.isFocused = false;
+                
+                this.educationData = {
+                    0: {
+                        title: "Fizyka Kwantowa",
+                        text: "Badania nad zachowaniem cząstek elementarnych w skali subatomowej. Implementacja symulacji mechaniki kwantowej przy użyciu Python i Qiskit."
+                    },
+                    1: {
+                        title: "Algorytmy AI",
+                        text: "Projektowanie sieci neuronowych i modeli uczenia maszynowego. Specjalizacja w deep learning i computer vision."
+                    },
+                    2: {
+                        title: "Cyberbezpieczeństwo",
+                        text: "Analiza podatności systemów informatycznych. Ethical hacking i penetration testing w środowiskach korporacyjnych."
+                    },
+                    3: {
+                        title: "Grafika 3D",
+                        text: "Modelowanie i renderowanie scen trójwymiarowych. Doświadczenie w Blenderze, Three.js i shaderach GLSL."
+                    },
+                    4: {
+                        title: "Systemy Rozproszone",
+                        text: "Architektura mikrousług i cloud computing. Kubernetes, Docker, AWS i GCP w praktyce produkcyjnej."
+                    },
+                    5: {
+                        title: "UI/UX Design",
+                        text: "Projektowanie interfejsów użytkownika z naciskiem na dostępność i doświadczenie użytkownika. Figma, Adobe XD."
+                    }
+                };
+                
+                if (this.grid && this.detailView) {
+                    this.init();
+                }
+            }
+            
+            init() {
+                this.gridItems = this.grid.querySelectorAll('.grid-item');
+                this.gridItems.forEach(item => {
+                    item.addEventListener('click', (e) => this.enterFocus(e.target));
+                });
+                
+                this.returnBtn.addEventListener('click', () => this.exitFocus());
+            }
+            
+            setParallaxManager(manager) {
+                this.parallaxManager = manager;
+            }
+            
+            enterFocus(item) {
+                if (this.isFocused) return;
+                this.isFocused = true;
+                
+                const index = item.dataset.index;
+                const data = this.educationData[index];
+                if (!data) return;
+                
+                if (this.parallaxManager) {
+                    this.parallaxManager.freeze();
+                }
+                
+                this.detailTitle.textContent = data.title;
+                this.typewriterText.textContent = '';
+                
+                const screenWrapper = document.querySelector('.edu-screen-wrapper');
+                const screenRect = screenWrapper.getBoundingClientRect();
+                const viewportCenterX = window.innerWidth / 2;
+                const viewportCenterY = window.innerHeight / 2;
+                const screenCenterX = screenRect.left + screenRect.width / 2;
+                const screenCenterY = screenRect.top + screenRect.height / 2;
+                
+                const offsetX = (viewportCenterX - screenCenterX) * 1.5;
+                const offsetY = (viewportCenterY - screenCenterY) * 1.5;
+                
+                const tl = gsap.timeline();
+                
+                tl.to(this.sceneWrapper, {
+                    scale: 1.5,
+                    x: offsetX,
+                    y: offsetY,
+                    duration: 1.0,
+                    ease: "power2.inOut"
+                })
+                .to(this.grid, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        this.grid.style.display = 'none';
+                        this.detailView.style.display = 'flex';
+                    }
+                }, "-=0.2")
+                .to(this.detailView, {
+                    opacity: 1,
+                    duration: 0.4,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        this.startTypewriter(data.text);
+                    }
+                });
+            }
+            
+            startTypewriter(text) {
+                if (this.typewriterInterval) {
+                    clearInterval(this.typewriterInterval);
+                }
+                
+                let index = 0;
+                this.typewriterText.textContent = '';
+                
+                this.typewriterInterval = setInterval(() => {
+                    if (index < text.length) {
+                        this.typewriterText.textContent += text[index];
+                        index++;
+                    } else {
+                        clearInterval(this.typewriterInterval);
+                        this.typewriterInterval = null;
+                    }
+                }, 15);
+            }
+            
+            exitFocus() {
+                if (!this.isFocused) return;
+                
+                if (this.typewriterInterval) {
+                    clearInterval(this.typewriterInterval);
+                    this.typewriterInterval = null;
+                }
+                
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        this.isFocused = false;
+                        console.log('EXIT FOCUS - calling unfreeze');
+                        if (this.parallaxManager) {
+                            this.parallaxManager.unfreeze();
+                        }
+                    }
+                });
+                
+                tl.to(this.detailView, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        this.detailView.style.display = 'none';
+                        this.grid.style.display = 'grid';
+                    }
+                })
+                .to(this.grid, {
+                    opacity: 1,
+                    duration: 0.4,
+                    ease: "power2.out"
+                }, "+=0.1")
+                .to(this.sceneWrapper, {
+                    scale: 1,
+                    x: 0,
+                    y: 0,
+                    duration: 1.0,
+                    ease: "power2.inOut"
+                }, "-=0.4");
             }
         }
 
@@ -252,7 +420,9 @@
             
             initMenu();
             
-            new ParallaxManager();
+            const parallaxManager = new ParallaxManager();
+            const focusManager = new EducationFocusManager();
+            focusManager.setParallaxManager(parallaxManager);
             
             const video = document.getElementById('bg-video');
             if (video) {
