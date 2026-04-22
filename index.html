@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aperture Science Interactive Portfolio</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="app">
+        <section id="view-menu" class="view active" style="opacity: 1;">
+            <div id="debug-info" style="position: fixed; top: 10px; left: 10px; color: lime; font-family: monospace; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px;">Loading...</div>
+            <video autoplay loop muted playsinline class="bg-video" poster="assets/education_background.png" id="bg-video">
+                <source src="assets/video/menu_background.mp4" type="video/mp4">
+            </video>
+            
+            <nav class="main-menu">
+                <ul class="menu-list">
+                    <li class="menu-item" data-view="education">
+                        <span class="menu-indicator"></span>
+                        <span class="menu-label">Wykształcenie</span>
+                    </li>
+                    <li class="menu-item" data-view="projects">
+                        <span class="menu-indicator"></span>
+                        <span class="menu-label">Projekty</span>
+                    </li>
+                    <li class="menu-item" data-view="social">
+                        <span class="menu-indicator"></span>
+                        <span class="menu-label">Social Media</span>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+        
+        <section id="view-education" class="view">
+            <div class="edu-bg-layer">
+                <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
+            </div>
+            <div class="edu-screen-layer">
+                <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
+                <div class="edu-grid">
+                    <div class="grid-item" data-index="0"></div>
+                    <div class="grid-item" data-index="1"></div>
+                    <div class="grid-item" data-index="2"></div>
+                    <div class="grid-item" data-index="3"></div>
+                    <div class="grid-item" data-index="4"></div>
+                    <div class="grid-item" data-index="5"></div>
+                </div>
+            </div>
+        </section>
+        <section id="view-projects" class="view"></section>
+        <section id="view-social" class="view"></section>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // ViewsManager Class
+        class ViewsManager {
+            constructor() {
+                this.currentView = 'menu';
+                this.views = {
+                    menu: document.getElementById('view-menu'),
+                    education: document.getElementById('view-education'),
+                    projects: document.getElementById('view-projects'),
+                    social: document.getElementById('view-social')
+                };
+                this.isTransitioning = false;
+            }
+
+            transitionTo(viewName) {
+                if (this.isTransitioning || viewName === this.currentView) return;
+                
+                this.isTransitioning = true;
+                const currentViewEl = this.views[this.currentView];
+                const targetViewEl = this.views[viewName];
+                
+                if (!targetViewEl) {
+                    console.warn(`View "${viewName}" not found`);
+                    this.isTransitioning = false;
+                    return;
+                }
+
+                gsap.to(currentViewEl, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        currentViewEl.classList.remove('active');
+                        currentViewEl.style.display = 'none';
+                        
+                        targetViewEl.style.display = 'block';
+                        targetViewEl.classList.add('active');
+                        
+                        gsap.fromTo(targetViewEl, 
+                            { opacity: 0 },
+                            { opacity: 1, duration: 0.5, ease: "power2.out", onComplete: () => {
+                                this.currentView = viewName;
+                                this.isTransitioning = false;
+                            }}
+                        );
+                    }
+                });
+            }
+        }
+
+        // Main App
+        const viewsManager = new ViewsManager();
+
+        function initMenu() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                const indicator = item.querySelector('.menu-indicator');
+                const label = item.querySelector('.menu-label');
+                const targetView = item.dataset.view;
+                
+                item.addEventListener('mouseenter', () => {
+                    gsap.to(indicator, {
+                        opacity: 1,
+                        x: 0,
+                        duration: 0.15,
+                        ease: "power2.out"
+                    });
+                    
+                    gsap.to(label, {
+                        color: '#ffffff',
+                        duration: 0.15,
+                        ease: "power2.out"
+                    });
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    gsap.to(indicator, {
+                        opacity: 0,
+                        x: -10,
+                        duration: 0.15,
+                        ease: "power2.in"
+                    });
+                    
+                    gsap.to(label, {
+                        color: '#a0a0a0',
+                        duration: 0.15,
+                        ease: "power2.in"
+                    });
+                });
+                
+                item.addEventListener('click', () => {
+                    viewsManager.transitionTo(targetView);
+                });
+            });
+        }
+
+        class ParallaxManager {
+            constructor() {
+                this.bgLayer = document.querySelector('.edu-bg-layer');
+                this.screenLayer = document.querySelector('.edu-screen-layer');
+                this.isFrozen = false;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.targetX = 0;
+                this.targetY = 0;
+                this.currentBgX = 0;
+                this.currentBgY = 0;
+                this.currentScreenX = 0;
+                this.currentScreenY = 0;
+                
+                if (this.bgLayer && this.screenLayer) {
+                    this.init();
+                }
+            }
+            
+            init() {
+                window.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                
+                this.screenLayer.addEventListener('mouseenter', () => this.freeze());
+                this.screenLayer.addEventListener('mouseleave', () => this.unfreeze());
+                
+                this.animate();
+            }
+            
+            handleMouseMove(e) {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                this.mouseX = (e.clientX - centerX) / centerX;
+                this.mouseY = (e.clientY - centerY) / centerY;
+            }
+            
+            freeze() {
+                this.isFrozen = true;
+                gsap.to(this, {
+                    targetX: 0,
+                    targetY: 0,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
+            
+            unfreeze() {
+                this.isFrozen = false;
+            }
+            
+            animate() {
+                if (!this.isFrozen) {
+                    this.targetX = this.mouseX;
+                    this.targetY = this.mouseY;
+                }
+                
+                const bgMultiplier = 40;
+                const screenMultiplier = 15;
+                
+                const targetBgX = -this.targetX * bgMultiplier;
+                const targetBgY = -this.targetY * bgMultiplier;
+                const targetScreenX = this.targetX * screenMultiplier;
+                const targetScreenY = this.targetY * screenMultiplier;
+                
+                this.currentBgX += (targetBgX - this.currentBgX) * 0.08;
+                this.currentBgY += (targetBgY - this.currentBgY) * 0.08;
+                this.currentScreenX += (targetScreenX - this.currentScreenX) * 0.08;
+                this.currentScreenY += (targetScreenY - this.currentScreenY) * 0.08;
+                
+                this.bgLayer.style.transform = `translate3d(${this.currentBgX}px, ${this.currentBgY}px, 0)`;
+                
+                const screenBaseTransform = 'translate(-50%, -50%)';
+                this.screenLayer.style.transform = `${screenBaseTransform} translate3d(${this.currentScreenX}px, ${this.currentScreenY}px, 0)`;
+                
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const debug = document.getElementById('debug-info');
+            
+            const gsapLoaded = typeof gsap !== 'undefined';
+            if (debug) debug.innerHTML = `GSAP: ${gsapLoaded ? 'OK' : 'FAIL'}<br>`;
+            
+            if (!gsapLoaded) {
+                console.error('GSAP not loaded - check internet connection');
+                if (debug) debug.innerHTML += 'ERROR: No internet for GSAP CDN';
+                return;
+            }
+            
+            initMenu();
+            
+            new ParallaxManager();
+            
+            const video = document.getElementById('bg-video');
+            if (video) {
+                video.addEventListener('loadeddata', () => {
+                    console.log('Video loaded');
+                    if (debug) debug.innerHTML += 'Video: loaded<br>';
+                });
+                video.addEventListener('error', (e) => {
+                    console.error('Video error:', e);
+                    if (debug) debug.innerHTML += 'Video: ERROR (use server)<br>';
+                });
+                video.addEventListener('playing', () => {
+                    console.log('Video playing');
+                    if (debug) debug.innerHTML += 'Video: playing<br>';
+                });
+                if (debug) debug.innerHTML += `Video ready<br>`;
+            }
+        });
+    </script>
+</body>
+</html>
