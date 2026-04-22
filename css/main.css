@@ -109,10 +109,10 @@ html, body {
 /* Layer 1: Background (Z-Index: 1) - Overscan for parallax */
 .edu-bg-layer {
     position: absolute;
-    top: -5vh;
-    left: -5vw;
-    width: 110vw;
-    height: 110vh;
+    top: -15vh;
+    left: -15vw;
+    width: 130vw;
+    height: 130vh;
     z-index: 1;
     will-change: transform;
 }
@@ -124,24 +124,70 @@ html, body {
 }
 
 /* Layer 2: UI Screen (Z-Index: 2) - Fitted to wall niche under Aperture logo */
-.edu-screen-layer {
+.edu-screen-wrapper {
     position: absolute;
     z-index: 2;
-    top: 68%;
+    top: 58%;
     left: 51%;
     transform: translate(-50%, -50%);
-    will-change: transform;
-    width: 40vmin;
-    max-width: 500px;
-    height: auto;
+    width: 52vmin;
+    max-width: 520px;
     aspect-ratio: 3/4;
+}
+
+.edu-screen-layer {
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    position: relative;
+    z-index: 2;
+}
+
+/* Glow behind screen - flickers with screen */
+.edu-screen-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(ellipse at center, rgba(100, 200, 255, 0.6) 0%, rgba(80, 180, 255, 0.4) 20%, rgba(60, 160, 255, 0.2) 40%, transparent 70%);
+    filter: blur(40px);
+    z-index: 1;
+    animation: glowFlicker 8s infinite;
+    pointer-events: none;
 }
 
 .edu-screen-img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     display: block;
     animation: flicker 8s infinite;
+}
+
+/* Glow Flicker Animation - synced with screen but slightly different */
+@keyframes glowFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 0.8;
+        filter: blur(30px) brightness(1);
+    }
+    20%, 24%, 55% {
+        opacity: 0.5;
+        filter: blur(25px) brightness(0.7);
+    }
+    22% {
+        opacity: 0.3;
+        filter: blur(20px) brightness(0.5);
+    }
+    52%, 58%, 96% {
+        opacity: 0.7;
+        filter: blur(28px) brightness(0.9);
+    }
+    94% {
+        opacity: 0.65;
+        filter: blur(26px) brightness(0.85);
+    }
 }
 
 /* Flicker Animation for damaged lab effect */
@@ -172,19 +218,26 @@ html, body {
 .edu-grid {
     position: absolute;
     z-index: 3;
-    top: 26%;
-    left: 12%;
-    width: 76%;
-    height: 26%;
+    top: 45%;
+    left: 5%;
+    width: 90%;
+    height: 30%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 5%;
+    column-gap: 2%;
+    row-gap: 4%;
+    align-items: end;
+    pointer-events: none;
+}
+
+.edu-grid .grid-item {
+    pointer-events: auto;
+    height: 100%;
 }
 
 .grid-item {
     width: 100%;
-    height: 100%;
     background: rgba(100, 150, 255, 0.1);
     border: 1px solid rgba(100, 150, 255, 0.2);
     cursor: pointer;

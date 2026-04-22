@@ -36,15 +36,18 @@
             <div class="edu-bg-layer">
                 <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
             </div>
-            <div class="edu-screen-layer">
-                <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
-                <div class="edu-grid">
-                    <div class="grid-item" data-index="0"></div>
-                    <div class="grid-item" data-index="1"></div>
-                    <div class="grid-item" data-index="2"></div>
-                    <div class="grid-item" data-index="3"></div>
-                    <div class="grid-item" data-index="4"></div>
-                    <div class="grid-item" data-index="5"></div>
+            <div class="edu-screen-wrapper">
+                <div class="edu-screen-glow"></div>
+                <div class="edu-screen-layer">
+                    <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
+                    <div class="edu-grid">
+                        <div class="grid-item" data-index="0"></div>
+                        <div class="grid-item" data-index="1"></div>
+                        <div class="grid-item" data-index="2"></div>
+                        <div class="grid-item" data-index="3"></div>
+                        <div class="grid-item" data-index="4"></div>
+                        <div class="grid-item" data-index="5"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -159,10 +162,6 @@
                 this.mouseY = 0;
                 this.targetX = 0;
                 this.targetY = 0;
-                this.currentBgX = 0;
-                this.currentBgY = 0;
-                this.currentScreenX = 0;
-                this.currentScreenY = 0;
                 
                 if (this.bgLayer && this.screenLayer) {
                     this.init();
@@ -174,8 +173,6 @@
                 
                 this.screenLayer.addEventListener('mouseenter', () => this.freeze());
                 this.screenLayer.addEventListener('mouseleave', () => this.unfreeze());
-                
-                this.animate();
             }
             
             handleMouseMove(e) {
@@ -184,13 +181,53 @@
                 
                 this.mouseX = (e.clientX - centerX) / centerX;
                 this.mouseY = (e.clientY - centerY) / centerY;
+                
+                if (!this.isFrozen) {
+                    this.animate();
+                }
+            }
+            
+            animate() {
+                const bgMultiplier = 100;
+                const screenMultiplier = 100;
+                
+                const targetBgX = -this.mouseX * bgMultiplier;
+                const targetBgY = -this.mouseY * bgMultiplier;
+                const targetScreenX = -this.mouseX * screenMultiplier;
+                const targetScreenY = -this.mouseY * screenMultiplier;
+                
+                gsap.to(this.bgLayer, {
+                    x: targetBgX,
+                    y: targetBgY,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    overwrite: true
+                });
+                
+                gsap.to(this.screenLayer, {
+                    x: targetScreenX,
+                    y: targetScreenY,
+                    duration: 0.6,
+                    ease: "power2.out",
+                    overwrite: true
+                });
             }
             
             freeze() {
                 this.isFrozen = true;
-                gsap.to(this, {
-                    targetX: 0,
-                    targetY: 0,
+                
+                gsap.killTweensOf([this.bgLayer, this.screenLayer]);
+                
+                gsap.to(this.bgLayer, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+                
+                gsap.to(this.screenLayer, {
+                    x: 0,
+                    y: 0,
                     duration: 0.5,
                     ease: "power2.out"
                 });
@@ -198,33 +235,6 @@
             
             unfreeze() {
                 this.isFrozen = false;
-            }
-            
-            animate() {
-                if (!this.isFrozen) {
-                    this.targetX = this.mouseX;
-                    this.targetY = this.mouseY;
-                }
-                
-                const bgMultiplier = 40;
-                const screenMultiplier = 15;
-                
-                const targetBgX = -this.targetX * bgMultiplier;
-                const targetBgY = -this.targetY * bgMultiplier;
-                const targetScreenX = this.targetX * screenMultiplier;
-                const targetScreenY = this.targetY * screenMultiplier;
-                
-                this.currentBgX += (targetBgX - this.currentBgX) * 0.08;
-                this.currentBgY += (targetBgY - this.currentBgY) * 0.08;
-                this.currentScreenX += (targetScreenX - this.currentScreenX) * 0.08;
-                this.currentScreenY += (targetScreenY - this.currentScreenY) * 0.08;
-                
-                this.bgLayer.style.transform = `translate3d(${this.currentBgX}px, ${this.currentBgY}px, 0)`;
-                
-                const screenBaseTransform = 'translate(-50%, -50%)';
-                this.screenLayer.style.transform = `${screenBaseTransform} translate3d(${this.currentScreenX}px, ${this.currentScreenY}px, 0)`;
-                
-                requestAnimationFrame(() => this.animate());
             }
         }
 
