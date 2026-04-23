@@ -41,16 +41,35 @@
                 <div class="edu-screen-glow"></div>
                 <div class="edu-screen-layer">
                     <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
+                    <div id="flying-icon-container" style="position: absolute; z-index: 100; pointer-events: none; display: none;"></div>
                     <div class="edu-grid">
-                        <div class="grid-item" data-index="0"></div>
-                        <div class="grid-item" data-index="1"></div>
-                        <div class="grid-item" data-index="2"></div>
-                        <div class="grid-item" data-index="3"></div>
-                        <div class="grid-item" data-index="4"></div>
-                        <div class="grid-item" data-index="5"></div>
+                        <div class="grid-item" data-index="0">
+                            <i data-lucide="atom" class="grid-icon"></i>
+                            <span class="grid-label">FIZYKA KW.</span>
+                        </div>
+                        <div class="grid-item" data-index="1">
+                            <i data-lucide="brain" class="grid-icon"></i>
+                            <span class="grid-label">AI / ML</span>
+                        </div>
+                        <div class="grid-item" data-index="2">
+                            <i data-lucide="shield" class="grid-icon"></i>
+                            <span class="grid-label">CYBERSEC</span>
+                        </div>
+                        <div class="grid-item" data-index="3">
+                            <i data-lucide="box" class="grid-icon"></i>
+                            <span class="grid-label">3D / GFX</span>
+                        </div>
+                        <div class="grid-item" data-index="4">
+                            <i data-lucide="server" class="grid-icon"></i>
+                            <span class="grid-label">CLOUD</span>
+                        </div>
+                        <div class="grid-item" data-index="5">
+                            <i data-lucide="layout" class="grid-icon"></i>
+                            <span class="grid-label">UI / UX</span>
+                        </div>
                     </div>
                     <div id="edu-detail-view" style="display: none;">
-                        <div class="detail-icon"></div>
+                        <i data-lucide="circle" class="detail-icon" id="detail-icon-el"></i>
                         <h2 class="detail-title">TITLE_PLACEHOLDER</h2>
                         <p id="typewriter-text"></p>
                         <button id="btn-return">COFNIJ -></button>
@@ -63,6 +82,7 @@
         <section id="view-social" class="view"></section>
     </div>
     
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
         // ViewsManager Class
@@ -235,6 +255,118 @@
             }
         }
 
+        class FlyingIconEffect {
+            constructor() {
+                this.container = document.getElementById('flying-icon-container');
+                this.startX = 0;
+                this.startY = 0;
+                this.endX = 0;
+                this.endY = 0;
+            }
+            
+            flyToCenter(element, onComplete) {
+                const iconEl = element.querySelector('.grid-icon');
+                if (!iconEl || !this.container) {
+                    onComplete();
+                    return;
+                }
+                
+                const screenLayer = document.querySelector('.edu-screen-layer');
+                const screenRect = screenLayer.getBoundingClientRect();
+                const iconRect = iconEl.getBoundingClientRect();
+                
+                this.startX = iconRect.left - screenRect.left;
+                this.startY = iconRect.top - screenRect.top;
+                
+                const svgClone = iconEl.cloneNode(true);
+                svgClone.classList.remove('grid-icon');
+                svgClone.style.width = '32px';
+                svgClone.style.height = '32px';
+                svgClone.style.color = 'rgba(200, 240, 255, 1)';
+                svgClone.style.filter = 'drop-shadow(0 0 20px rgba(100, 200, 255, 0.9))';
+                
+                this.container.innerHTML = '';
+                this.container.appendChild(svgClone);
+                
+                const centerX = screenRect.width / 2 - 50;
+                const centerY = screenRect.height / 2 - 50;
+                
+                this.container.style.display = 'block';
+                this.container.style.left = this.startX + 'px';
+                this.container.style.top = this.startY + 'px';
+                
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        this.endX = centerX;
+                        this.endY = centerY;
+                        this.container.style.display = 'none';
+                        onComplete();
+                    }
+                });
+                
+                tl.to(this.container, {
+                    left: centerX,
+                    top: centerY,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                }, 0)
+                .to(svgClone, {
+                    width: 100,
+                    height: 100,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                }, 0);
+            }
+            
+            returnToGrid(element, onComplete) {
+                const iconEl = element.querySelector('.grid-icon');
+                if (!iconEl || !this.container) {
+                    onComplete();
+                    return;
+                }
+                
+                const screenLayer = document.querySelector('.edu-screen-layer');
+                const screenRect = screenLayer.getBoundingClientRect();
+                
+                const svgClone = iconEl.cloneNode(true);
+                svgClone.classList.remove('grid-icon');
+                svgClone.style.width = '100px';
+                svgClone.style.height = '100px';
+                svgClone.style.color = 'rgba(200, 240, 255, 1)';
+                svgClone.style.filter = 'drop-shadow(0 0 20px rgba(100, 200, 255, 0.9))';
+                
+                this.container.innerHTML = '';
+                this.container.appendChild(svgClone);
+                
+                const startX = this.endX || (screenRect.width / 2 - 50);
+                const startY = this.endY || (screenRect.height / 2 - 50);
+                
+                this.container.style.display = 'block';
+                this.container.style.left = startX + 'px';
+                this.container.style.top = startY + 'px';
+                
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        this.container.style.display = 'none';
+                        setTimeout(onComplete, 150);
+                    }
+                });
+                
+                tl.to(this.container, {
+                    left: this.startX,
+                    top: this.startY,
+                    duration: 0.7,
+                    ease: "power2.inOut"
+                })
+                .to(svgClone, {
+                    width: 32,
+                    height: 32,
+                    duration: 0.7,
+                    ease: "power2.inOut"
+                }, "<");
+            }
+        }
+
         class EducationFocusManager {
             constructor() {
                 this.grid = document.querySelector('.edu-grid');
@@ -246,6 +378,8 @@
                 this.parallaxManager = null;
                 this.typewriterInterval = null;
                 this.isFocused = false;
+                this.flyingIconEffect = new FlyingIconEffect();
+                this.lastClickedItem = null;
                 
                 this.educationData = {
                     0: {
@@ -295,6 +429,7 @@
             enterFocus(item) {
                 if (this.isFocused) return;
                 this.isFocused = true;
+                this.lastClickedItem = item;
                 
                 const index = item.dataset.index;
                 const data = this.educationData[index];
@@ -307,6 +442,32 @@
                 this.detailTitle.textContent = data.title;
                 this.typewriterText.textContent = '';
                 
+                // Update detail view icon to match clicked item
+                const iconEl = item.querySelector('.grid-icon');
+                const detailIcon = document.getElementById('detail-icon-el');
+                if (iconEl && detailIcon) {
+                    const iconName = iconEl.getAttribute('data-lucide');
+                    detailIcon.setAttribute('data-lucide', iconName);
+                    lucide.createIcons();
+                }
+                
+                // Dim other grid items
+                gsap.to(this.grid.querySelectorAll('.grid-item'), {
+                    opacity: 0.15,
+                    filter: 'brightness(0.3)',
+                    duration: 0.3,
+                    stagger: 0.02
+                });
+                
+                gsap.to(item, { opacity: 1, duration: 0.1 });
+                
+                // Fly icon to center, then zoom
+                this.flyingIconEffect.flyToCenter(item, () => {
+                    this.startZoomAndShowDetail(data);
+                });
+            }
+            
+            startZoomAndShowDetail(data) {
                 const screenWrapper = document.querySelector('.edu-screen-wrapper');
                 const screenRect = screenWrapper.getBoundingClientRect();
                 const viewportCenterX = window.innerWidth / 2;
@@ -317,6 +478,9 @@
                 const offsetX = (viewportCenterX - screenCenterX) * 1.5;
                 const offsetY = (viewportCenterY - screenCenterY) * 1.5;
                 
+                this.grid.style.display = 'none';
+                this.detailView.style.display = 'flex';
+                
                 const tl = gsap.timeline();
                 
                 tl.to(this.sceneWrapper, {
@@ -326,23 +490,14 @@
                     duration: 1.0,
                     ease: "power2.inOut"
                 })
-                .to(this.grid, {
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: "power2.out",
-                    onComplete: () => {
-                        this.grid.style.display = 'none';
-                        this.detailView.style.display = 'flex';
-                    }
-                }, "-=0.2")
                 .to(this.detailView, {
                     opacity: 1,
-                    duration: 0.4,
+                    duration: 0.5,
                     ease: "power2.out",
                     onComplete: () => {
                         this.startTypewriter(data.text);
                     }
-                });
+                }, "-=0.3");
             }
             
             startTypewriter(text) {
@@ -372,37 +527,64 @@
                     this.typewriterInterval = null;
                 }
                 
-                const tl = gsap.timeline({
-                    onComplete: () => {
-                        this.isFocused = false;
-                        console.log('EXIT FOCUS - calling unfreeze');
-                        if (this.parallaxManager) {
-                            this.parallaxManager.unfreeze();
-                        }
-                    }
-                });
-                
-                tl.to(this.detailView, {
+                // Step 1: Fade out detail view
+                gsap.to(this.detailView, {
                     opacity: 0,
-                    duration: 0.3,
+                    duration: 0.2,
                     ease: "power2.in",
                     onComplete: () => {
                         this.detailView.style.display = 'none';
-                        this.grid.style.display = 'grid';
                     }
-                })
-                .to(this.grid, {
-                    opacity: 1,
-                    duration: 0.4,
-                    ease: "power2.out"
-                }, "+=0.1")
-                .to(this.sceneWrapper, {
-                    scale: 1,
-                    x: 0,
-                    y: 0,
-                    duration: 1.0,
-                    ease: "power2.inOut"
-                }, "-=0.4");
+                });
+                
+                this.grid.style.display = 'grid';
+                
+                // Step 2: Return icon to grid position first
+                if (this.lastClickedItem) {
+                    this.flyingIconEffect.returnToGrid(this.lastClickedItem, () => {
+                        // Step 3: After icon returns, zoom out
+                        gsap.to(this.sceneWrapper, {
+                            scale: 1,
+                            x: 0,
+                            y: 0,
+                            duration: 0.6,
+                            ease: "power2.inOut",
+                            onComplete: () => {
+                                // Step 4: Brighten all grid items
+                                gsap.to(this.grid.querySelectorAll('.grid-item'), {
+                                    opacity: 1,
+                                    filter: 'brightness(1)',
+                                    duration: 0.3,
+                                    onComplete: () => {
+                                        this.isFocused = false;
+                                        if (this.parallaxManager) {
+                                            this.parallaxManager.unfreeze();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    gsap.to(this.sceneWrapper, {
+                        scale: 1,
+                        x: 0,
+                        y: 0,
+                        duration: 0.6,
+                        ease: "power2.inOut"
+                    });
+                    gsap.to(this.grid.querySelectorAll('.grid-item'), {
+                        opacity: 1,
+                        filter: 'brightness(1)',
+                        duration: 0.3,
+                        onComplete: () => {
+                            this.isFocused = false;
+                            if (this.parallaxManager) {
+                                this.parallaxManager.unfreeze();
+                            }
+                        }
+                    });
+                }
             }
         }
 
@@ -419,6 +601,8 @@
             }
             
             initMenu();
+            
+            lucide.createIcons();
             
             const parallaxManager = new ParallaxManager();
             const focusManager = new EducationFocusManager();
