@@ -489,14 +489,16 @@ html, body {
     50% { transform: translateX(-50%) rotate(calc(var(--neck-rotate, 0deg) + 1.5deg)); }
 }
 
-/* Head - joint połączony ze szyją (joint w 43% wysokości szyi) */
+/* Head - obrót wokół środka + przesunięcie żeby oko patrzyło (V2) */
 .glados-neck > .glados-head {
     position: absolute;
     z-index: 4;
     top: 43%;
-    left: 2%;
-    transform: translateX(-50%) rotate(var(--head-rotate, 0deg));
-    transform-origin: center 10%;
+    left: -2%;
+    transform: translateX(-50%) 
+               translate(var(--head-translate-x, 0px), var(--head-translate-y, 0px)) 
+               rotate(var(--head-rotate, 0deg));
+    transform-origin: 100% 30%; /* punkt obrotu - prawy górny róg obrazka */
     animation: glados-head-idle 3s ease-in-out infinite;
     filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
 }
@@ -506,10 +508,19 @@ html, body {
     filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.4));
 }
 
-/* Głowa skanuje góra/dół - naturalny ruch 2D */
+/* Głowa - mikroskopijny ruch idle (prawie niewidoczny) */
+/* UWAGA: keyframes nadpisują transform! Muszą zawierać wszystkie wartości */
 @keyframes glados-head-idle {
-    0%, 100% { transform: translateX(-50%) rotate(calc(var(--head-rotate, 0deg) - 8deg)); }
-    50% { transform: translateX(-50%) rotate(calc(var(--head-rotate, 0deg) + 8deg)); }
+    0%, 100% { 
+        transform: translateX(-50%) 
+                   translate(var(--head-translate-x, 0px), var(--head-translate-y, 0px)) 
+                   rotate(calc(var(--head-rotate, 0deg) - 1.5deg)); 
+    }
+    50% { 
+        transform: translateX(-50%) 
+                   translate(var(--head-translate-x, 0px), var(--head-translate-y, 0px)) 
+                   rotate(calc(var(--head-rotate, 0deg) + 1.5deg)); 
+    }
 }
 
 /* Responsive */

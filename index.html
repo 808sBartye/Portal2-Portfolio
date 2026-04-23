@@ -46,6 +46,8 @@
                                     <img src="assets/glados/glados-neck.png" alt="GLaDOS Neck">
                                     <div class="glados-head">
                                         <img src="assets/glados/glados-head.png" alt="GLaDOS Head">
+                                        <!-- Marker punktu obrotu - pomaga w debugowaniu -->
+                                        <div class="glados-pivot-marker"></div>
                                     </div>
                                 </div>
                             </div>
@@ -647,11 +649,24 @@
             const gladosNeck = educationView?.querySelector('.glados-neck');
             const gladosArm = educationView?.querySelector('.glados-arm');
             
+            // DEBUG: Dodaj overlay z informacjami
+            const debugOverlay = document.createElement('div');
+            debugOverlay.id = 'glados-debug';
+            debugOverlay.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.8);color:#0f0;font-family:monospace;font-size:12px;padding:10px;z-index:9999;pointer-events:none;';
+            document.body.appendChild(debugOverlay);
+            
             if (gladosHead) {
                 let mouseX = 0;
                 let mouseY = 0;
                 let windowWidth = window.innerWidth;
                 let windowHeight = window.innerHeight;
+                
+                // AUTO-CONFIGURE: Znajdź pozycję oka w obrazku głowy
+                // Oko GLaDOS jest w około 20% od lewej, 50% od góry obrazka
+                const eyeOffsetX = 20; // % od lewej
+                const eyeOffsetY = 50;  // % od góry
+                gladosHead.style.setProperty('--eye-x', `${eyeOffsetX}%`);
+                gladosHead.style.setProperty('--eye-y', `${eyeOffsetY}%`);
                 
                 // Update window dimensions on resize
                 window.addEventListener('resize', () => {
@@ -672,30 +687,43 @@
                     const deltaX = mouseX - headCenterX;
                     const deltaY = mouseY - headCenterY;
                     
-                    // Normalize to -1 to 1 range
+                    // ========== GLaDOS TRACKING ==========
+                    // normalizeX = odległość pozioma (-1 = lewo, 1 = prawo)
+                    // normalizeY = wysokość (-1 = góra ekranu, 1 = dół ekranu)
                     const normalizeX = Math.max(-1, Math.min(1, deltaX / (windowWidth / 2)));
                     const normalizeY = Math.max(-1, Math.min(1, deltaY / (windowHeight / 2)));
                     
-                    // Głowa - najszybszy ruch, skanowanie lewo/prawo (2D rotate)
-                    const headMaxAngle = 25;
-                    const headRotate = normalizeX * headMaxAngle;
+                    // --- GŁOWA --- patrzy GÓRA-DÓŁ (na podstawie Y myszki)
+                    // Im wyżej myszka, tym głowa bardziej w górę patrzy
+                    const headMaxAngle = 25; // max obrót w pionie
+                    const headRotate = -normalizeY * headMaxAngle; // Y steruje głową!
                     gladosHead.style.setProperty('--head-rotate', `${headRotate}deg`);
                     
-                    // Neck - średni ruch, reaguje przy większych odchyleniach
-                    const neckThreshold = 0.25;
-                    let neckRotate = 0;
-                    if (Math.abs(normalizeX) > neckThreshold) {
-                        neckRotate = (normalizeX > 0 ? 1 : -1) * (Math.abs(normalizeX) - neckThreshold) * 12 / (1 - neckThreshold);
-                    }
+                    // Głowa lekko przesuwa się za myszką (dla efektu)
+                    const headTranslateX = -normalizeX * 10;
+                    const headTranslateY = -normalizeY * 20;
+                    gladosHead.style.setProperty('--head-translate-x', `${headTranslateX}px`);
+                    gladosHead.style.setProperty('--head-translate-y', `${headTranslateY}px`);
+                    
+                    // --- SZYJA --- lekki obrót na podstawie X (poziom)
+                    const neckRotate = -normalizeX * 10;
                     gladosNeck.style.setProperty('--neck-rotate', `${neckRotate}deg`);
                     
-                    // Arm - najmniejszy ruch (bliżej bazy), reaguje przy dużych odchyleniach
-                    const armThreshold = 0.4;
-                    let armRotate = 0;
-                    if (Math.abs(normalizeX) > armThreshold) {
-                        armRotate = (normalizeX > 0 ? 1 : -1) * (Math.abs(normalizeX) - armThreshold) * 8 / (1 - armThreshold);
-                    }
+                    // --- RAMIĘ --- obraca się w poziomie na podstawie odległości X
+                    // Im dalej myszka w bok, tym bardziej ramię się obraca
+                    const armMaxAngle = 20;
+                    const armRotate = -normalizeX * armMaxAngle;
                     gladosArm.style.setProperty('--parallax-rotate', `${armRotate}deg`);
+                    
+                    // DEBUG
+                    if (debugOverlay) {
+                        debugOverlay.innerHTML = `
+Głowa: ${headRotate.toFixed(0)}° (Y: ${(normalizeY*100).toFixed(0)}%)<br>
+Ramię: ${armRotate.toFixed(0)}° (X: ${(normalizeX*100).toFixed(0)}%)<br>
+<em>Głowa patrzy góra-dół, ramię na boki</em>
+                        `;
+                    }
+                    // ==========================================
                 });
             }
         });
