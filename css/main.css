@@ -410,3 +410,132 @@ html, body {
     color: rgba(100, 200, 255, 1);
     text-shadow: 0 0 10px rgba(100, 200, 255, 0.8);
 }
+
+/* GLaDOS 2.5D Component - locked to education background, hanging from ceiling */
+#glados-container {
+    position: absolute;
+    top: -100px;
+    right: 25%;
+    z-index: 5;
+    pointer-events: none;
+    /* Skaluj wszystko razem */
+    --glados-scale: 0.85;
+    transform: scale(var(--glados-scale));
+    transform-origin: top center;
+    animation: glados-sway 6s ease-in-out infinite;
+}
+
+/* Cała GLaDOS lekko się kołysze */
+@keyframes glados-sway {
+    0%, 100% { transform: scale(var(--glados-scale)) rotate(-1deg); }
+    50% { transform: scale(var(--glados-scale)) rotate(1deg); }
+}
+
+#glados-container > div {
+    position: absolute;
+    width: auto;
+    height: auto;
+    transition: transform 0.1s ease-out;
+}
+
+#glados-container > div img {
+    width: auto;
+    height: auto;
+    max-width: none;
+    display: block;
+}
+
+/* Base - przytwierdzona do sufitu (góra) */
+.glados-base {
+    z-index: 1;
+    top: 0;
+    left: 50px;
+    transform-origin: center top;
+    /* Efekt głębi */
+    filter: drop-shadow(-10px 10px 25px rgba(0, 0, 0, 0.4));
+}
+
+/* Arm - joint połączony z bazą (joint w 75% wysokości bazy) */
+.glados-base > .glados-arm {
+    position: absolute;
+    z-index: 2;
+    top: 75%;
+    left: 7%;
+    transform: translateX(-50%) rotate(var(--parallax-rotate, 0deg));
+    transform-origin: center top;
+    animation: glados-arm-idle 4s ease-in-out infinite;
+    filter: drop-shadow(-8px 8px 20px rgba(0, 0, 0, 0.35));
+}
+
+@keyframes glados-arm-idle {
+    0%, 100% { transform: translateX(-50%) rotate(calc(var(--parallax-rotate, 0deg) + 0deg)); }
+    50% { transform: translateX(-50%) rotate(calc(var(--parallax-rotate, 0deg) + 2deg)); }
+}
+
+/* Neck - joint połączony z ramieniem (joint w 78% wysokości ramienia) */
+.glados-arm > .glados-neck {
+    position: absolute;
+    z-index: 3;
+    top: 78%;
+    left: 50%;
+    transform: translateX(-50%) rotate(var(--neck-rotate, 0deg));
+    transform-origin: center top;
+    animation: glados-neck-idle 5s ease-in-out infinite;
+    filter: drop-shadow(-5px 5px 15px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes glados-neck-idle {
+    0%, 100% { transform: translateX(-50%) rotate(calc(var(--neck-rotate, 0deg) - 1deg)); }
+    50% { transform: translateX(-50%) rotate(calc(var(--neck-rotate, 0deg) + 1.5deg)); }
+}
+
+/* Head - joint połączony ze szyją (joint w 43% wysokości szyi) */
+.glados-neck > .glados-head {
+    position: absolute;
+    z-index: 4;
+    top: 43%;
+    left: 2%;
+    transform: translateX(-50%) rotate(var(--head-rotate, 0deg));
+    transform-origin: center 10%;
+    animation: glados-head-idle 3s ease-in-out infinite;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
+}
+
+.glados-head img {
+    /* Lekkie rozmycie dla głębi */
+    filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* Głowa skanuje góra/dół - naturalny ruch 2D */
+@keyframes glados-head-idle {
+    0%, 100% { transform: translateX(-50%) rotate(calc(var(--head-rotate, 0deg) - 8deg)); }
+    50% { transform: translateX(-50%) rotate(calc(var(--head-rotate, 0deg) + 8deg)); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #glados-container {
+        width: 250px;
+        height: 300px;
+        right: 2%;
+    }
+    
+    .glados-base {
+        width: 120px;
+        top: 170px;
+    }
+    
+    .glados-neck {
+        width: 70px;
+        top: 90px;
+    }
+    
+    .glados-arm {
+        width: 110px;
+        top: 70px;
+    }
+    
+    .glados-head {
+        width: 85px;
+    }
+}

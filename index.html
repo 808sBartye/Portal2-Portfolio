@@ -36,6 +36,21 @@
             <div class="edu-scene-wrapper">
                 <div class="edu-bg-layer">
                     <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
+                    <!-- GLaDOS 2.5D Component - locked to background -->
+                    <div id="glados-container">
+                        <div class="glados-base">
+                            <img src="assets/glados/glados-base.png" alt="GLaDOS Base">
+                            <div class="glados-arm">
+                                <img src="assets/glados/glados-arm.png" alt="GLaDOS Arm">
+                                <div class="glados-neck">
+                                    <img src="assets/glados/glados-neck.png" alt="GLaDOS Neck">
+                                    <div class="glados-head">
+                                        <img src="assets/glados/glados-head.png" alt="GLaDOS Head">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="edu-screen-wrapper">
                 <div class="edu-screen-glow"></div>
@@ -623,6 +638,65 @@
                     if (debug) debug.innerHTML += 'Video: playing<br>';
                 });
                 if (debug) debug.innerHTML += `Video ready<br>`;
+            }
+            
+            // GLaDOS 2.5D Interactive Component - only in education view
+            const educationView = document.getElementById('view-education');
+            const gladosContainer = educationView?.querySelector('#glados-container');
+            const gladosHead = educationView?.querySelector('.glados-head');
+            const gladosNeck = educationView?.querySelector('.glados-neck');
+            const gladosArm = educationView?.querySelector('.glados-arm');
+            
+            if (gladosHead) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let windowWidth = window.innerWidth;
+                let windowHeight = window.innerHeight;
+                
+                // Update window dimensions on resize
+                window.addEventListener('resize', () => {
+                    windowWidth = window.innerWidth;
+                    windowHeight = window.innerHeight;
+                });
+                
+                // Mouse move handler
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    const rect = gladosHead.getBoundingClientRect();
+                    const headCenterX = rect.left + rect.width / 2;
+                    const headCenterY = rect.top + rect.height / 2;
+                    
+                    // Calculate angle and distance from head center
+                    const deltaX = mouseX - headCenterX;
+                    const deltaY = mouseY - headCenterY;
+                    
+                    // Normalize to -1 to 1 range
+                    const normalizeX = Math.max(-1, Math.min(1, deltaX / (windowWidth / 2)));
+                    const normalizeY = Math.max(-1, Math.min(1, deltaY / (windowHeight / 2)));
+                    
+                    // Głowa - najszybszy ruch, skanowanie lewo/prawo (2D rotate)
+                    const headMaxAngle = 25;
+                    const headRotate = normalizeX * headMaxAngle;
+                    gladosHead.style.setProperty('--head-rotate', `${headRotate}deg`);
+                    
+                    // Neck - średni ruch, reaguje przy większych odchyleniach
+                    const neckThreshold = 0.25;
+                    let neckRotate = 0;
+                    if (Math.abs(normalizeX) > neckThreshold) {
+                        neckRotate = (normalizeX > 0 ? 1 : -1) * (Math.abs(normalizeX) - neckThreshold) * 12 / (1 - neckThreshold);
+                    }
+                    gladosNeck.style.setProperty('--neck-rotate', `${neckRotate}deg`);
+                    
+                    // Arm - najmniejszy ruch (bliżej bazy), reaguje przy dużych odchyleniach
+                    const armThreshold = 0.4;
+                    let armRotate = 0;
+                    if (Math.abs(normalizeX) > armThreshold) {
+                        armRotate = (normalizeX > 0 ? 1 : -1) * (Math.abs(normalizeX) - armThreshold) * 8 / (1 - armThreshold);
+                    }
+                    gladosArm.style.setProperty('--parallax-rotate', `${armRotate}deg`);
+                });
             }
         });
     </script>
