@@ -71,8 +71,15 @@ html, body {
     position: relative;
     display: flex;
     align-items: center;
-    cursor: pointer;
     padding-left: 2rem;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 .menu-indicator {
@@ -451,8 +458,6 @@ html, body {
     top: 0;
     left: 50px;
     transform-origin: center top;
-    /* Efekt głębi */
-    filter: drop-shadow(-10px 10px 25px rgba(0, 0, 0, 0.4));
 }
 
 /* Arm - joint połączony z bazą (joint w 75% wysokości bazy) */
@@ -462,9 +467,8 @@ html, body {
     top: 75%;
     left: 7%;
     transform: translateX(-50%) rotate(var(--parallax-rotate, 0deg));
-    transform-origin: center top;
+    transform-origin: right top;
     animation: glados-arm-idle 4s ease-in-out infinite;
-    filter: drop-shadow(-8px 8px 20px rgba(0, 0, 0, 0.35));
 }
 
 @keyframes glados-arm-idle {
@@ -472,21 +476,31 @@ html, body {
     50% { transform: translateX(-50%) rotate(calc(var(--parallax-rotate, 0deg) + 2deg)); }
 }
 
-/* Neck - joint połączony z ramieniem (joint w 78% wysokości ramienia) */
+/* Neck - joint połączony z ramieniem (podąża za głową z opóźnieniem) */
 .glados-arm > .glados-neck {
     position: absolute;
     z-index: 3;
     top: 78%;
     left: 50%;
-    transform: translateX(-50%) rotate(var(--neck-rotate, 0deg));
-    transform-origin: center top;
+    transform: translateX(-50%) 
+               translate(var(--neck-translate-x, 0px), var(--neck-translate-y, 0px))
+               rotate(var(--neck-rotate, 0deg));
+    transform-origin: right top;
     animation: glados-neck-idle 5s ease-in-out infinite;
-    filter: drop-shadow(-5px 5px 15px rgba(0, 0, 0, 0.3));
 }
 
+/* Neck idle z translate */
 @keyframes glados-neck-idle {
-    0%, 100% { transform: translateX(-50%) rotate(calc(var(--neck-rotate, 0deg) - 1deg)); }
-    50% { transform: translateX(-50%) rotate(calc(var(--neck-rotate, 0deg) + 1.5deg)); }
+    0%, 100% { 
+        transform: translateX(-50%) 
+                   translate(var(--neck-translate-x, 0px), var(--neck-translate-y, 0px))
+                   rotate(calc(var(--neck-rotate, 0deg) - 1deg)); 
+    }
+    50% { 
+        transform: translateX(-50%) 
+                   translate(var(--neck-translate-x, 0px), var(--neck-translate-y, 0px))
+                   rotate(calc(var(--neck-rotate, 0deg) + 1.5deg)); 
+    }
 }
 
 /* Head - obrót wokół środka + przesunięcie żeby oko patrzyło (V2) */
@@ -500,12 +514,7 @@ html, body {
                rotate(var(--head-rotate, 0deg));
     transform-origin: 100% 30%; /* punkt obrotu - prawy górny róg obrazka */
     animation: glados-head-idle 3s ease-in-out infinite;
-    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
-}
-
-.glados-head img {
-    /* Lekkie rozmycie dla głębi */
-    filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.4));
+    /* Bez cienia - usuwa się z szyi */
 }
 
 /* Głowa - mikroskopijny ruch idle (prawie niewidoczny) */
@@ -549,4 +558,97 @@ html, body {
     .glados-head {
         width: 85px;
     }
+    
+    .edu-side-nav {
+        left: 2%;
+        top: 25%;
+    }
+    
+    .nav-btn {
+        padding: 8px 12px;
+    }
+    
+    .nav-label {
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+    
+    .nav-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ============================================
+   PORTAL 2 STYLE MENU - Locked to background
+   ============================================ */
+
+/* Kontener - PIKSELE od środka bg-layer */
+.menu-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* TU USTAW OFFSET W PIKSELACH OD ŚRODKA: */
+    transform: translate(calc(-50% + -700px), calc(-50%));
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Menu */
+.portal-menu {
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Portal 2 style nav item - WIĘKSZE NAPISY */
+.portal-nav-item {
+    position: relative;
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;  /* <-- POWIĘKSZONE */
+    font-weight: 400;
+    letter-spacing: 4px;  /* <-- ZWIĘKSZONE */
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+/* White text */
+.portal-text {
+    display: inline-block;
+    text-shadow: 0 0 0 transparent;
+    transition: all 0.3s ease;
+}
+
+/* Underline for active */
+.portal-underline {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Hover effect - brighten */
+.portal-nav-item:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.portal-nav-item:hover .portal-text {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+/* Active state - full white with glow */
+.portal-nav-item.active {
+    color: rgba(255, 255, 255, 1);
+}
+
+.portal-nav-item.active .portal-text {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
 }

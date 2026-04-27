@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wykształcenie - Aperture Science</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="education-page">
+        <div class="edu-scene-wrapper">
+            <div class="edu-bg-layer">
+                <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
+                <!-- GLaDOS 2.5D Component - locked to background -->
+                <div id="glados-container">
+                    <div class="glados-base">
+                        <img src="assets/glados/glados-base.png" alt="GLaDOS Base">
+                        <div class="glados-arm">
+                            <img src="assets/glados/glados-arm.png" alt="GLaDOS Arm">
+                            <div class="glados-neck">
+                                <img src="assets/glados/glados-neck.png" alt="GLaDOS Neck">
+                                <div class="glados-head">
+                                    <img src="assets/glados/glados-head.png" alt="GLaDOS Head">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Side Navigation - Portal 2 Style -->
+                <div class="menu-container">
+                    <nav class="portal-menu">
+                        <a href="index.html" class="portal-nav-item">
+                            <span class="portal-text">MENU</span>
+                        </a>
+                        <a href="education.html" class="portal-nav-item active">
+                            <span class="portal-text">EDUKACJA</span>
+                            <span class="portal-underline"></span>
+                        </a>
+                        <a href="projects.html" class="portal-nav-item">
+                            <span class="portal-text">PROJEKTY</span>
+                        </a>
+                        <a href="social.html" class="portal-nav-item">
+                            <span class="portal-text">SOCIAL MEDIA</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            <div class="edu-screen-wrapper">
+                <div class="edu-screen-glow"></div>
+                <div class="edu-screen-layer">
+                    <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
+                    <div id="flying-icon-container" style="position: absolute; z-index: 100; pointer-events: none; display: none;"></div>
+                    <div class="edu-grid">
+                        <div class="grid-item" data-index="0">
+                            <i data-lucide="atom" class="grid-icon"></i>
+                            <span class="grid-label">FIZYKA KW.</span>
+                        </div>
+                        <div class="grid-item" data-index="1">
+                            <i data-lucide="brain" class="grid-icon"></i>
+                            <span class="grid-label">AI / ML</span>
+                        </div>
+                        <div class="grid-item" data-index="2">
+                            <i data-lucide="shield" class="grid-icon"></i>
+                            <span class="grid-label">CYBERSEC</span>
+                        </div>
+                        <div class="grid-item" data-index="3">
+                            <i data-lucide="box" class="grid-icon"></i>
+                            <span class="grid-label">3D / GFX</span>
+                        </div>
+                        <div class="grid-item" data-index="4">
+                            <i data-lucide="server" class="grid-icon"></i>
+                            <span class="grid-label">CLOUD</span>
+                        </div>
+                        <div class="grid-item" data-index="5">
+                            <i data-lucide="layout" class="grid-icon"></i>
+                            <span class="grid-label">UI / UX</span>
+                        </div>
+                    </div>
+                    <div id="edu-detail-view" style="display: none;">
+                        <i data-lucide="circle" class="detail-icon" id="detail-icon-el"></i>
+                        <h2 class="detail-title">TITLE_PLACEHOLDER</h2>
+                        <p id="typewriter-text"></p>
+                        <button id="btn-return">COFNIJ -></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        class ParallaxManager {
+            constructor() {
+                this.bgLayer = document.querySelector('.edu-bg-layer');
+                this.screenLayer = document.querySelector('.edu-screen-layer');
+                this.isFrozen = false;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.targetX = 0;
+                this.targetY = 0;
+                
+                if (this.bgLayer && this.screenLayer) {
+                    this.init();
+                }
+            }
+            
+            init() {
+                window.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+            }
+            
+            handleMouseMove(e) {
+                if (this.isFrozen) return;
+                
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                this.mouseX = (e.clientX - centerX) / centerX;
+                this.mouseY = (e.clientY - centerY) / centerY;
+                
+                this.animate();
+            }
+            
+            animate() {
+                const bgMultiplier = 100;
+                const screenMultiplier = 100;
+                
+                const targetBgX = -this.mouseX * bgMultiplier;
+                const targetBgY = -this.mouseY * bgMultiplier;
+                const targetScreenX = -this.mouseX * screenMultiplier;
+                const targetScreenY = -this.mouseY * screenMultiplier;
+                
+                gsap.to(this.bgLayer, {
+                    x: targetBgX,
+                    y: targetBgY,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    overwrite: true
+                });
+                
+                gsap.to(this.screenLayer, {
+                    x: targetScreenX,
+                    y: targetScreenY,
+                    duration: 0.6,
+                    ease: "power2.out",
+                    overwrite: true
+                });
+            }
+            
+            freeze() {
+                this.isFrozen = true;
+                gsap.killTweensOf([this.bgLayer, this.screenLayer]);
+                gsap.set([this.bgLayer, this.screenLayer], { x: 0, y: 0 });
+            }
+            
+            isFrozenState() {
+                return this.isFrozen;
+            }
+            
+            unfreeze() {
+                this.isFrozen = false;
+            }
+        }
+
+        class FlyingIconEffect {
+            constructor() {
+                this.container = document.getElementById('flying-icon-container');
+                this.startX = 0;
+                this.startY = 0;
+                this.endX = 0;
+                this.endY = 0;
+            }
+            
+            flyToCenter(element, onComplete) {
+                const iconEl = element.querySelector('.grid-icon');
+                if (!iconEl || !this.container) {
+                    onComplete();
+                    return;
+                }
+                
+                const screenLayer = document.querySelector('.edu-screen-layer');
+                const screenRect = screenLayer.getBoundingClientRect();
+                const iconRect = iconEl.getBoundingClientRect();
+                
+                this.startX = iconRect.left - screenRect.left;
+                this.startY = iconRect.top - screenRect.top;
+                
+                const svgClone = iconEl.cloneNode(true);
+                svgClone.classList.remove('grid-icon');
+                svgClone.style.width = '32px';
+                svgClone.style.height = '32px';
+                svgClone.style.color = 'rgba(200, 240, 255, 1)';
+                svgClone.style.filter = 'drop-shadow(0 0 20px rgba(100, 200, 255, 0.9))';
+                
+                this.container.innerHTML = '';
+                this.container.appendChild(svgClone);
+                
+                const centerX = screenRect.width / 2 - 50;
+                const centerY = screenRect.height / 2 - 50;
+                
+                this.container.style.display = 'block';
+                this.container.style.left = this.startX + 'px';
+                this.container.style.top = this.startY + 'px';
+                
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        this.endX = centerX;
+                        this.endY = centerY;
+                        this.container.style.display = 'none';
+                        onComplete();
+                    }
+                });
+                
+                tl.to(this.container, {
+                    left: centerX,
+                    top: centerY,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                }, 0)
+                .to(svgClone, {
+                    width: 100,
+                    height: 100,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                }, 0);
+            }
+            
+            returnToGrid(element, onComplete) {
+                const iconEl = element.querySelector('.grid-icon');
+                if (!iconEl || !this.container) {
+                    onComplete();
+                    return;
+                }
+                
+                const screenLayer = document.querySelector('.edu-screen-layer');
+                const screenRect = screenLayer.getBoundingClientRect();
+                
+                const svgClone = iconEl.cloneNode(true);
+                svgClone.classList.remove('grid-icon');
+                svgClone.style.width = '100px';
+                svgClone.style.height = '100px';
+                svgClone.style.color = 'rgba(200, 240, 255, 1)';
+                svgClone.style.filter = 'drop-shadow(0 0 20px rgba(100, 200, 255, 0.9))';
+                
+                this.container.innerHTML = '';
+                this.container.appendChild(svgClone);
+                
+                const startX = this.endX || (screenRect.width / 2 - 50);
+                const startY = this.endY || (screenRect.height / 2 - 50);
+                
+                this.container.style.display = 'block';
+                this.container.style.left = startX + 'px';
+                this.container.style.top = startY + 'px';
+                
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        this.container.style.display = 'none';
+                        setTimeout(onComplete, 150);
+                    }
+                });
+                
+                tl.to(this.container, {
+                    left: this.startX,
+                    top: this.startY,
+                    duration: 0.7,
+                    ease: "power2.inOut"
+                })
+                .to(svgClone, {
+                    width: 32,
+                    height: 32,
+                    duration: 0.7,
+                    ease: "power2.inOut"
+                }, "<");
+            }
+        }
+
+        class EducationFocusManager {
+            constructor() {
+                this.grid = document.querySelector('.edu-grid');
+                this.detailView = document.getElementById('edu-detail-view');
+                this.sceneWrapper = document.querySelector('.edu-scene-wrapper');
+                this.typewriterText = document.getElementById('typewriter-text');
+                this.detailTitle = document.querySelector('.detail-title');
+                this.returnBtn = document.getElementById('btn-return');
+                this.parallaxManager = null;
+                this.typewriterInterval = null;
+                this.isFocused = false;
+                this.flyingIconEffect = new FlyingIconEffect();
+                this.lastClickedItem = null;
+                
+                this.educationData = {
+                    0: {
+                        title: "Fizyka Kwantowa",
+                        text: "Badania nad zachowaniem cząstek elementarnych w skali subatomowej. Implementacja symulacji mechaniki kwantowej przy użyciu Python i Qiskit."
+                    },
+                    1: {
+                        title: "Algorytmy AI",
+                        text: "Projektowanie sieci neuronowych i modeli uczenia maszynowego. Specjalizacja w deep learning i computer vision."
+                    },
+                    2: {
+                        title: "Cyberbezpieczeństwo",
+                        text: "Analiza podatności systemów informatycznych. Ethical hacking i penetration testing w środowiskach korporacyjnych."
+                    },
+                    3: {
+                        title: "Grafika 3D",
+                        text: "Modelowanie i renderowanie scen trójwymiarowych. Doświadczenie w Blenderze, Three.js i shaderach GLSL."
+                    },
+                    4: {
+                        title: "Systemy Rozproszone",
+                        text: "Architektura mikrousług i cloud computing. Kubernetes, Docker, AWS i GCP w praktyce produkcyjnej."
+                    },
+                    5: {
+                        title: "UI/UX Design",
+                        text: "Projektowanie interfejsów użytkownika z naciskiem na dostępność i doświadczenie użytkownika. Figma, Adobe XD."
+                    }
+                };
+                
+                if (this.grid && this.detailView) {
+                    this.init();
+                }
+            }
+            
+            init() {
+                this.gridItems = this.grid.querySelectorAll('.grid-item');
+                this.gridItems.forEach(item => {
+                    item.addEventListener('click', (e) => this.enterFocus(e.target));
+                });
+                
+                this.returnBtn.addEventListener('click', () => this.exitFocus());
+            }
+            
+            setParallaxManager(manager) {
+                this.parallaxManager = manager;
+            }
+            
+            enterFocus(item) {
+                if (this.isFocused) return;
+                this.isFocused = true;
+                this.lastClickedItem = item;
+                
+                const index = item.dataset.index;
+                const data = this.educationData[index];
+                if (!data) return;
+                
+                if (this.parallaxManager) {
+                    this.parallaxManager.freeze();
+                }
+                
+                this.detailTitle.textContent = data.title;
+                this.typewriterText.textContent = '';
+                
+                const iconEl = item.querySelector('.grid-icon');
+                const detailIcon = document.getElementById('detail-icon-el');
+                if (iconEl && detailIcon) {
+                    const iconName = iconEl.getAttribute('data-lucide');
+                    detailIcon.setAttribute('data-lucide', iconName);
+                    lucide.createIcons();
+                }
+                
+                gsap.to(this.grid.querySelectorAll('.grid-item'), {
+                    opacity: 0.15,
+                    filter: 'brightness(0.3)',
+                    duration: 0.3,
+                    stagger: 0.02
+                });
+                
+                gsap.to(item, { opacity: 1, duration: 0.1 });
+                
+                this.flyingIconEffect.flyToCenter(item, () => {
+                    this.startZoomAndShowDetail(data);
+                });
+            }
+            
+            startZoomAndShowDetail(data) {
+                const screenWrapper = document.querySelector('.edu-screen-wrapper');
+                const screenRect = screenWrapper.getBoundingClientRect();
+                const viewportCenterX = window.innerWidth / 2;
+                const viewportCenterY = window.innerHeight / 2;
+                const screenCenterX = screenRect.left + screenRect.width / 2;
+                const screenCenterY = screenRect.top + screenRect.height / 2;
+                
+                const offsetX = (viewportCenterX - screenCenterX) * 1.5;
+                const offsetY = (viewportCenterY - screenCenterY) * 1.5;
+                
+                this.grid.style.display = 'none';
+                this.detailView.style.display = 'flex';
+                
+                const tl = gsap.timeline();
+                
+                tl.to(this.sceneWrapper, {
+                    scale: 1.5,
+                    x: offsetX,
+                    y: offsetY,
+                    duration: 1.0,
+                    ease: "power2.inOut"
+                })
+                .to(this.detailView, {
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        this.startTypewriter(data.text);
+                    }
+                }, "-=0.3");
+            }
+            
+            startTypewriter(text) {
+                if (this.typewriterInterval) {
+                    clearInterval(this.typewriterInterval);
+                }
+                
+                let index = 0;
+                this.typewriterText.textContent = '';
+                
+                this.typewriterInterval = setInterval(() => {
+                    if (index < text.length) {
+                        this.typewriterText.textContent += text[index];
+                        index++;
+                    } else {
+                        clearInterval(this.typewriterInterval);
+                        this.typewriterInterval = null;
+                    }
+                }, 15);
+            }
+            
+            exitFocus() {
+                if (!this.isFocused) return;
+                
+                if (this.typewriterInterval) {
+                    clearInterval(this.typewriterInterval);
+                    this.typewriterInterval = null;
+                }
+                
+                gsap.to(this.detailView, {
+                    opacity: 0,
+                    duration: 0.2,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        this.detailView.style.display = 'none';
+                    }
+                });
+                
+                this.grid.style.display = 'grid';
+                
+                if (this.lastClickedItem) {
+                    this.flyingIconEffect.returnToGrid(this.lastClickedItem, () => {
+                        gsap.to(this.sceneWrapper, {
+                            scale: 1,
+                            x: 0,
+                            y: 0,
+                            duration: 0.6,
+                            ease: "power2.inOut",
+                            onComplete: () => {
+                                gsap.to(this.grid.querySelectorAll('.grid-item'), {
+                                    opacity: 1,
+                                    filter: 'brightness(1)',
+                                    duration: 0.3,
+                                    onComplete: () => {
+                                        this.isFocused = false;
+                                        if (this.parallaxManager) {
+                                            this.parallaxManager.unfreeze();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    gsap.to(this.sceneWrapper, {
+                        scale: 1,
+                        x: 0,
+                        y: 0,
+                        duration: 0.6,
+                        ease: "power2.inOut"
+                    });
+                    gsap.to(this.grid.querySelectorAll('.grid-item'), {
+                        opacity: 1,
+                        filter: 'brightness(1)',
+                        duration: 0.3,
+                        onComplete: () => {
+                            this.isFocused = false;
+                            if (this.parallaxManager) {
+                                this.parallaxManager.unfreeze();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            const parallaxManager = new ParallaxManager();
+            const focusManager = new EducationFocusManager();
+            focusManager.setParallaxManager(parallaxManager);
+            
+            // GLaDOS 2.5D Interactive Component
+            const gladosContainer = document.querySelector('#glados-container');
+            const gladosHead = document.querySelector('.glados-head');
+            const gladosNeck = document.querySelector('.glados-neck');
+            const gladosArm = document.querySelector('.glados-arm');
+            
+            if (gladosHead) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let windowWidth = window.innerWidth;
+                let windowHeight = window.innerHeight;
+                
+                const eyeOffsetX = 20;
+                const eyeOffsetY = 50;
+                gladosHead.style.setProperty('--eye-x', `${eyeOffsetX}%`);
+                gladosHead.style.setProperty('--eye-y', `${eyeOffsetY}%`);
+                
+                window.addEventListener('resize', () => {
+                    windowWidth = window.innerWidth;
+                    windowHeight = window.innerHeight;
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    const rect = gladosHead.getBoundingClientRect();
+                    const headCenterX = rect.left + rect.width / 2;
+                    const headCenterY = rect.top + rect.height / 2;
+                    
+                    const deltaX = mouseX - headCenterX;
+                    const deltaY = mouseY - headCenterY;
+                    
+                    const normalizeX = Math.max(-1, Math.min(1, deltaX / (windowWidth / 2)));
+                    const normalizeY = Math.max(-1, Math.min(1, deltaY / (windowHeight / 2)));
+                    
+                    const headMaxAngle = 25;
+                    const headRotate = -normalizeY * headMaxAngle;
+                    gladosHead.style.setProperty('--head-rotate', `${headRotate}deg`);
+                    
+                    const headTranslateX = -normalizeX * 10;
+                    const headTranslateY = -normalizeY * 20;
+                    gladosHead.style.setProperty('--head-translate-x', `${headTranslateX}px`);
+                    gladosHead.style.setProperty('--head-translate-y', `${headTranslateY}px`);
+                    
+                    const neckRotate = -normalizeX * 8;
+                    gladosNeck.style.setProperty('--neck-rotate', `${neckRotate}deg`);
+                    
+                    const neckTranslateX = -normalizeX * 5;
+                    const neckTranslateY = -normalizeY * 8;
+                    gladosNeck.style.setProperty('--neck-translate-x', `${neckTranslateX}px`);
+                    gladosNeck.style.setProperty('--neck-translate-y', `${neckTranslateY}px`);
+                    
+                    const armMaxAngle = 20;
+                    const armRotate = -normalizeX * armMaxAngle;
+                    gladosArm.style.setProperty('--parallax-rotate', `${armRotate}deg`);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
