@@ -6,13 +6,19 @@
     <title>Aperture Science Interactive Portfolio</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
+<body class="page-loading">
+    <div class="page-transition-overlay"></div>
     <div id="app">
         <section id="view-menu" class="view active" style="opacity: 1;">
             <div id="debug-info" style="position: fixed; top: 10px; left: 10px; color: lime; font-family: monospace; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px;">Loading...</div>
             <video autoplay loop muted playsinline class="bg-video" poster="assets/education_background.png" id="bg-video">
                 <source src="assets/video/menu_background.mp4" type="video/mp4">
             </video>
+            
+            <!-- Background Music - Menu Soundtrack -->
+            <audio id="bg-music" loop autoplay muted>
+                <source src="assets/tracks/mainmenu-soundtrack.mp3" type="audio/mpeg">
+            </audio>
             
             <nav class="main-menu">
                 <ul class="menu-list">
@@ -95,6 +101,54 @@
                 });
                 debug.innerHTML += 'Video ready<br>';
             }
+            
+            // Background music - 30% volume, unmute on first click
+            const bgMusic = document.getElementById('bg-music');
+            if (bgMusic) {
+                bgMusic.volume = 0.3;
+                console.log('Audio found, src:', bgMusic.querySelector('source')?.src);
+                
+                const unmuteAudio = () => {
+                    console.log('Click detected, trying to unmute...');
+                    if (bgMusic.muted) {
+                        bgMusic.muted = false;
+                        bgMusic.play().then(() => {
+                            console.log('Audio playing!');
+                        }).catch(e => {
+                            console.error('Audio play error:', e);
+                        });
+                    }
+                };
+                
+                document.addEventListener('click', unmuteAudio, { once: true });
+            } else {
+                console.error('Audio element not found!');
+            }
+            
+            // Page transition - fade in on load
+            setTimeout(() => {
+                document.body.classList.remove('page-loading');
+                document.body.classList.add('page-loaded');
+            }, 100);
+            
+            // Page transition - fade out before leaving
+            document.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+                // Tylko linki wewnętrzne (kończące się na .html, bez http)
+                if (!href || href.startsWith('http') || href.startsWith('#') || !href.includes('.html')) {
+                    return;
+                }
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const overlay = document.querySelector('.page-transition-overlay');
+                    overlay.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 400);
+                });
+            });
         });
     </script>
 </body>

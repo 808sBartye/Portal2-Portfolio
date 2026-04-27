@@ -6,7 +6,8 @@
     <title>Social Media - Aperture Science</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
+<body class="page-loading">
+    <div class="page-transition-overlay"></div>
     <div class="education-page">
         <div class="edu-scene-wrapper">
             <div class="edu-bg-layer">
@@ -71,5 +72,30 @@
             text-shadow: 0 0 20px rgba(160, 216, 255, 0.8);
         }
     </style>
+    <script>
+        // Page transition - fade in on load
+        setTimeout(() => {
+            document.body.classList.remove('page-loading');
+            document.body.classList.add('page-loaded');
+        }, 100);
+        
+        // Page transition - fade out before leaving
+        document.querySelectorAll('a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('http') || href.startsWith('#') || !href.includes('.html')) {
+                return;
+            }
+            
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const overlay = document.querySelector('.page-transition-overlay');
+                overlay.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 400);
+            });
+        });
+    </script>
 </body>
 </html>
