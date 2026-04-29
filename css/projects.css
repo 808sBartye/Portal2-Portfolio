@@ -110,3 +110,106 @@ body.page-loaded .page-transition-overlay {
     z-index: 5;
     pointer-events: none;
 }
+
+/* Robots Container */
+#robots-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Robot Containers (robot + stand together) */
+.robot-container {
+    position: absolute;
+    width: 200px;
+    height: 350px; /* Robot + stand height */
+    pointer-events: auto;
+}
+
+#robot-pbody-container {
+    left: 12%;
+    bottom: 7%;
+}
+
+#robot-atlas-container {
+    left: 65%;
+    bottom: 10%;
+}
+
+/* Robot Stands */
+.robot-stand {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 60px;
+    object-fit: contain;
+}
+
+/* Robot Sprites */
+.robot-sprite {
+    position: absolute;
+    bottom: 30px; /* Above the stand */
+    transform: translateX(-50%);
+    width: 160px; /* Zmniejszone z 200px */
+    height: 224px; /* Zmniejszone z 280px */
+    cursor: pointer;
+    object-fit: contain;
+    image-rendering: pixelated;
+    transition: opacity 0.3s ease; /* Płynny cross-fade */
+}
+
+/* Robot Overlay (for cross-fade morph) */
+.robot-overlay {
+    opacity: 0; /* Domyślnie ukryty */
+    pointer-events: none; /* Kliknięcia przechodzą do głównego obrazka */
+}
+
+/* Robot Animation (separate size control) */
+.robot-sprite.animating {
+    width: 500px; /* Rozmiar animacji - dostosuj tutaj */
+    height: 240px; /* Rozmiar animacji - dostosuj tutaj */
+    left: 50%;
+    transform: translateX(-50%); /* Centrowanie */
+}
+
+/* P-Body specific positioning */
+#robot-pbody {
+    left: 60%;
+}
+
+/* Atlas specific positioning */
+#robot-atlas {
+    left: 40%;
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+    .robot-sprite {
+        width: 150px;
+        height: 210px;
+    }
+    
+    #robot-pbody {
+        left: 20%;
+        bottom: 8%;
+    }
+    
+    #robot-atlas {
+        left: 70%;
+        bottom: 8%;
+    }
+}
+
+@media (max-width: 480px) {
+    .robot-sprite {
+        width: 120px;
+        height: 168px;
+    }
+}
+
