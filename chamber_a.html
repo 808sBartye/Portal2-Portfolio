@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overgrown Chamber - Aperture Science</title>
+    <link rel="stylesheet" href="css/chamber.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="chamber-postapo">
+    <!-- Noise overlay -->
+    <div class="noise-overlay"></div>
+    
+    <!-- Vignette -->
+    <div class="vignette"></div>
+    
+    <!-- Return button - always fixed -->
+    <button class="return-btn" onclick="returnToNexus()">
+        <span>&larr;</span> POWRÓT DO NEXUSA
+    </button>
+    
+    <!-- Next Project Button -->
+    <button class="next-project-btn" onclick="goToNextProject()">
+        NASTĘPNY PROJEKT <span>&rarr;</span>
+    </button>
+    
+    <!-- Environment Wrapper with background -->
+    <div class="environment-wrapper">
+        <!-- Chamber Content Container -->
+        <div id="chamber-content">
+            
+            <!-- VIEW: Grid Overview -->
+            <div id="grid-view" class="view active">
+                <!-- Left Column: 3 horizontal bars -->
+                <div class="left-column">
+                    <div class="info-bar" data-section="main-info" onclick="showSection('main-info')">
+                        <h3>GŁÓWNY OPIS</h3>
+                        <p>Kliknij aby zobaczyć szczegóły</p>
+                    </div>
+                    <div class="info-bar" data-section="about" onclick="showSection('about')">
+                        <h3>O PROJEKCIE</h3>
+                        <p>Informacje o aplikacji</p>
+                    </div>
+                    <div class="info-bar" data-section="description" onclick="showSection('description')">
+                        <h3>OPIS TECHNICZNY</h3>
+                        <p>Szczegóły techniczne</p>
+                    </div>
+                </div>
+                
+                <!-- Right Grid: 2x3 with icons -->
+                <div class="right-grid">
+                    <div class="grid-tile" data-section="tech-stack" onclick="showSection('tech-stack')">
+                        <i class="fas fa-code"></i>
+                        <h4>TECH STACK</h4>
+                        <span>React, Node.js, Three.js</span>
+                    </div>
+                    <div class="grid-tile" data-section="challenges" onclick="showSection('challenges')">
+                        <i class="fas fa-mountain"></i>
+                        <h4>WYZWANIA</h4>
+                        <span>Optymalizacja wydajności</span>
+                    </div>
+                    <div class="grid-tile" data-section="features" onclick="showSection('features')">
+                        <i class="fas fa-star"></i>
+                        <h4>CECHY</h4>
+                        <span>Kluczowe funkcjonalności</span>
+                    </div>
+                    <div class="grid-tile" data-section="demo" onclick="showSection('demo')">
+                        <i class="fas fa-play-circle"></i>
+                        <h4>LIVE DEMO</h4>
+                        <span>Zobacz w akcji</span>
+                    </div>
+                    <div class="grid-tile" data-section="github" onclick="showSection('github')">
+                        <i class="fab fa-github"></i>
+                        <h4>GITHUB</h4>
+                        <span>Kod źródłowy</span>
+                    </div>
+                    <div class="grid-tile contact-tile" data-section="contact" onclick="showSection('contact')">
+                        <i class="fas fa-envelope"></i>
+                        <h4>KONTAKT</h4>
+                        <span>Napisz do mnie</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VIEW: Section Detail (hidden by default) -->
+            <div id="section-view" class="view">
+                <button class="back-btn" onclick="showGrid()">
+                    <i class="fas fa-arrow-left"></i> WRÓĆ
+                </button>
+                <div class="section-content" id="section-content">
+                    <!-- Content loaded dynamically -->
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Page Transition Overlay -->
+    <div class="page-transition-overlay"></div>
+    
+    <script>
+        // Section content data
+        const sectionData = {
+            'main-info': {
+                title: 'GŁÓWNY OPIS',
+                content: '<p>Projekt Overgrown - eksperymentalna aplikacja webowa łącząca nowoczesne technologie z postapokaliptycznym designem. Zbudowana w oparciu o Three.js i React.</p><p>Aplikacja oferuje immersyjne doświadczenie 3D z interaktywnymi portalem i robotami.</p>'
+            },
+            'about': {
+                title: 'O PROJEKCIE',
+                content: '<p>Inspiracją była seria gier Portal. Chciałem stworzyć portfolio, które samo w sobie jest interaktywnym doświadczeniem.</p><p>Projekt łączy estetykę science fiction z funkcjonalnością nowoczesnej aplikacji webowej.</p>'
+            },
+            'description': {
+                title: 'OPIS TECHNICZNY',
+                content: '<p>Frontend: React + Three.js</p><p>Backend: Node.js + Express</p><p>Baza danych: MongoDB</p><p>Hosting: Vercel</p>'
+            },
+            'tech-stack': {
+                title: 'TECH STACK',
+                content: '<ul><li><i class="fab fa-react"></i> React - UI library</li><li><i class="fab fa-js"></i> Three.js - 3D graphics</li><li><i class="fab fa-node"></i> Node.js - Backend</li><li><i class="fas fa-database"></i> MongoDB - Database</li></ul>'
+            },
+            'challenges': {
+                title: 'WYZWANIA',
+                content: '<p>Głównym wyzwaniem była optymalizacja wydajności renderowania 3D oraz synchronizacja pozycji HTML z Three.js.</p><p>Rozwiązaniem było użycie invisible meshe do śledzenia pozycji.</p>'
+            },
+            'features': {
+                title: 'CECHY',
+                content: '<ul><li>Interaktywne portale 3D</li><li>System paralaksy kamery</li><li>Animacje robotów</li><li>Płynne przejścia między stronami</li></ul>'
+            },
+            'demo': {
+                title: 'LIVE DEMO',
+                content: '<p>Aplikacja jest dostępna pod adresem:</p><a href="#" class="demo-link">www.projekt-overgrown.pl</a><p>Zapraszam do przetestowania!</p>'
+            },
+            'github': {
+                title: 'GITHUB',
+                content: '<p>Kod źródłowy dostępny na GitHub:</p><a href="#" class="github-link"><i class="fab fa-github"></i> github.com/overgrown</a><p>Projekt open source - zapraszam do współpracy!</p>'
+            },
+            'contact': {
+                title: 'KONTAKT',
+                content: '<form class="contact-form"><input type="text" placeholder="Imię"><input type="email" placeholder="Email"><textarea placeholder="Wiadomość"></textarea><button type="submit">WYŚLIJ</button></form>'
+            }
+        };
+        
+        // Show section with GSAP animation (like education)
+        function showSection(sectionId) {
+            const gridView = document.getElementById('grid-view');
+            const sectionView = document.getElementById('section-view');
+            const sectionContent = document.getElementById('section-content');
+            
+            const data = sectionData[sectionId];
+            if (!data) return;
+            
+            sectionContent.innerHTML = `<h2>${data.title}</h2>${data.content}`;
+            
+            // GSAP transition
+            const tl = gsap.timeline();
+            
+            tl.to(gridView, {
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: () => {
+                    gridView.classList.remove('active');
+                    sectionView.classList.add('active');
+                }
+            })
+            .fromTo(sectionView, 
+                { opacity: 0, x: 50 },
+                { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }
+            )
+            .fromTo('.section-content > *', 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.3, stagger: 0.1 }
+            );
+        }
+        
+        // Show grid with GSAP animation
+        function showGrid() {
+            const gridView = document.getElementById('grid-view');
+            const sectionView = document.getElementById('section-view');
+            
+            const tl = gsap.timeline();
+            
+            tl.to(sectionView, {
+                opacity: 0,
+                x: -50,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: () => {
+                    sectionView.classList.remove('active');
+                    gridView.classList.add('active');
+                }
+            })
+            .fromTo(gridView,
+                { opacity: 0, scale: 0.95 },
+                { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+            );
+        }
+        
+        // Return to Nexus
+        function returnToNexus() {
+            const overlay = document.querySelector('.page-transition-overlay');
+            overlay.classList.add('fade-out');
+            
+            setTimeout(() => {
+                window.location.href = 'projects.html';
+            }, 600);
+        }
+        
+        // Next project button (cycles A -> B -> A)
+        function goToNextProject() {
+            const overlay = document.querySelector('.page-transition-overlay');
+            overlay.classList.add('fade-out');
+            
+            setTimeout(() => {
+                window.location.href = 'chamber_b.html';
+            }, 600);
+        }
+    </script>
+</body>
+</html>

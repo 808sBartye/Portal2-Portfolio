@@ -92,6 +92,7 @@ function init() {
         
         // Setup click handlers
         setupRobotAnimations();
+        setupPortalClickAnimation();
         
         // Hide loading text
         const loadingText = document.getElementById('loading-text');
@@ -524,6 +525,57 @@ function animateParticles(particles, time, speedMultiplier = 1.0) {
         particles.position.x = particles.userData.basePos.x + currentHubPos.x;
         particles.position.y = particles.userData.basePos.y + currentHubPos.y;
     }
+}
+
+// Setup portal click animation with FOV tunnel effect
+function setupPortalClickAnimation() {
+    window.addEventListener('click', (event) => {
+        // Sprawdź czy kliknięto w portal
+        const portalMouse = new THREE.Vector2();
+        portalMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        portalMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        
+        const portalRaycaster = new THREE.Raycaster();
+        portalRaycaster.setFromCamera(portalMouse, camera);
+        const intersects = portalRaycaster.intersectObjects([portal1, portal2].filter(Boolean));
+        
+        if (intersects.length > 0) {
+            const portal = intersects[0].object;
+            const targetUrl = portal === portal1 ? 'chamber_a.html' : 'chamber_b.html';
+            
+            // Zablokuj ruch myszki
+            window.removeEventListener('mousemove', onMouseMove);
+            
+            // Pokaż overlay
+            const overlay = document.querySelector('.page-transition-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'auto';
+            
+            // GSAP animacja: FOV tunnel + fade to white
+            gsap.timeline()
+                .to(camera, {
+                    fov: 120,
+                    duration: 0.4,
+                    ease: "power2.in",
+                    onUpdate: () => camera.updateProjectionMatrix()
+                })
+                .to(camera.position, {
+                    x: portal.position.x,
+                    y: portal.position.y,
+                    z: portal.position.z + 0.5,
+                    duration: 0.4,
+                    ease: "power2.in"
+                }, "<")
+                .to(overlay, {
+                    opacity: 1,
+                    duration: 0.3,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        window.location.href = targetUrl;
+                    }
+                }, "-=0.2");
+        }
+    });
 }
 
 // Setup page navigation with fade
