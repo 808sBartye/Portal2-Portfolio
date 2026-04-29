@@ -8,6 +8,7 @@ let hubPlane, portal1, portal2;
 let ring1, ring2; // Shader ringi
 let particles1, particles2; // Cząsteczki energii wokół portali
 let robotPbody, robotAtlas; // Roboty jako invisible meshe dla pozycji
+let menuMeshes = []; // Invisible meshe dla pozycji menu
 let raycaster, mouse;
 let hoveredPortal = null;
 let targetCameraPos = { x: 0, y: 0 };
@@ -32,6 +33,7 @@ const CONFIG = {
 
 // Initialize the scene
 function init() {
+    console.log('Initializing scene...');
     // Scene setup
     scene = new THREE.Scene();
     
@@ -78,12 +80,17 @@ function init() {
         loadTexture(textureLoader, 'assets/projects/portal_hub_bg.webp'),
         loadTexture(textureLoader, 'assets/projects/project1_visualisation.png'),
         loadTexture(textureLoader, 'assets/projects/project2_visualisation.png')
-    ]).then(([hubTexture, portal1Texture, portal2Texture]) => {
+    ]).then((textures) => {
+        const hubTexture = textures[0];
+        const portal1Texture = textures[1];
+        const portal2Texture = textures[2];
+        console.log('Textures loaded, creating scene...');
         createHub(hubTexture);
         createPortals(portal1Texture, portal2Texture);
         createRobotInvisibleMeshes();
+        createMenuInvisibleMeshes();
         
-        // Setup robot click handlers
+        // Setup click handlers
         setupRobotAnimations();
         
         // Hide loading text
@@ -111,7 +118,7 @@ function init() {
     setupNavigation();
 }
 
-// Helper: Load texture with promise
+// Load texture with error handling
 function loadTexture(loader, url) {
     return new Promise((resolve, reject) => {
         loader.load(url, resolve, undefined, reject);
@@ -399,12 +406,12 @@ function animatePortal(portal, isHovered) {
 // Smooth camera and hub parallax with LERP
 // Portale są ZLOKOWANE do tła - poruszają się razem z hubPlane
 function updateCameraParallax() {
-    // LERP interpolation for smooth movement
-    currentCameraPos.x += (targetCameraPos.x - currentCameraPos.x) * 0.05;
-    currentCameraPos.y += (targetCameraPos.y - currentCameraPos.y) * 0.05;
+    // LERP interpolation for smooth movement - faster response
+    currentCameraPos.x += (targetCameraPos.x - currentCameraPos.x) * 0.15;
+    currentCameraPos.y += (targetCameraPos.y - currentCameraPos.y) * 0.15;
     
-    currentHubPos.x += (targetHubPos.x - currentHubPos.x) * 0.05;
-    currentHubPos.y += (targetHubPos.y - currentHubPos.y) * 0.05;
+    currentHubPos.x += (targetHubPos.x - currentHubPos.x) * 0.15;
+    currentHubPos.y += (targetHubPos.y - currentHubPos.y) * 0.15;
     
     // Kamera przesuwa się (jak w Education - lewo-prawo)
     camera.position.x = currentCameraPos.x;
@@ -441,8 +448,17 @@ function updateCameraParallax() {
         robotAtlas.position.y = robotAtlas.userData.basePos.y + currentHubPos.y;
     }
     
+    // Menu jest ZLOKOWANE do tła - porusza się razem z hubPlane
+    if (menuMeshes.length > 0) {
+        menuMeshes.forEach(mesh => {
+            mesh.position.x = mesh.userData.basePos.x + currentHubPos.x;
+            mesh.position.y = mesh.userData.basePos.y + currentHubPos.y;
+        });
+    }
+    
     // Synchronizuj pozycje HTML overlay z pozycją Three.js meshe
     syncRobotOverlayPositions();
+    syncMenuPositions();
 }
 
 // Handle window resize
@@ -578,26 +594,27 @@ function createRobotInvisibleMeshes() {
     
     // P-Body invisible mesh (dostosowane do pozycji CSS)
     robotPbody = new THREE.Mesh(robotGeometry, invisibleMaterial);
-    robotPbody.position.set(-0.8, -0.4, 0.15);
+    robotPbody.position.set(-2.6, -1, 0.15);
     robotPbody.userData = {
         id: 'robotPbody',
-        basePos: { x: -2.5, y: -1, z: 0.15 },
+        basePos: { x: -2.6, y: -1, z: 0.15 },
         isRobot: true
     };
     scene.add(robotPbody);
     
-    // Atlas invisible mesh (dostosowane do pozycji CSS)
-    robotAtlas = new THREE.Mesh(robotGeometry, invisibleMaterial);
-    robotAtlas.position.set(0.8, -0.4, 0.15);
+    // Atlas invisible mesh (dostosowane do pozycji CSS, 3/5 wysokości P-Body)
+    const atlasGeometry = new THREE.PlaneGeometry(0.5, 0.504); // 3/5 z 0.84
+    robotAtlas = new THREE.Mesh(atlasGeometry, invisibleMaterial);
+    robotAtlas.position.set(3.3, -1, 0.15);
     robotAtlas.userData = {
         id: 'robotAtlas',
-        basePos: { x: 3.2, y: -1, z: 0.15 },
+        basePos: { x: 3.3, y: -1, z: 0.15 },
         isRobot: true
     };
     scene.add(robotAtlas);
 }
 
-// Robot animation state
+// ...
 let robotAnimations = {
     pbody: { isAnimating: false },
     atlas: { isAnimating: false }
@@ -664,6 +681,48 @@ function playRobotAnimation(sprite, overlay, robotName) {
             anim.isAnimating = false;
         }, 300); // Czekaj na transition opacity
     }, ANIMATION_DURATION);
+}
+
+// Create single invisible mesh for entire menu
+function createMenuInvisibleMeshes() {
+    const invisibleMaterial = new THREE.MeshBasicMaterial({
+        transparent: true,
+        opacity: 0
+    });
+    
+    // Jeden mesh dla caÅego menu (1.2 szerokoÅÄ x 1.5 wysokoÅci)
+    const geometry = new THREE.PlaneGeometry(1.2, 1.5);
+    const mesh = new THREE.Mesh(geometry, invisibleMaterial);
+    mesh.position.set(-3.6, 0, 0.5);
+    mesh.rotation.y = Math.PI / 6; // 30 stopni - obrót jak Åciana po lewej
+    mesh.userData = {
+        id: 'menuContainer',
+        basePos: { x: -3.8, y: 0, z: 0.5 },
+        rotation: Math.PI / 6
+    };
+    scene.add(mesh);
+    menuMeshes.push(mesh);
+}
+
+// Synchronizuj pozycjÄ kontenera menu z pozycjÄ Three.js mesha
+function syncMenuPositions() {
+    const menuContainer = document.getElementById('left-wall-menu');
+    if (!menuContainer || menuMeshes.length === 0) return;
+    
+    const mesh = menuMeshes[0]; // Tylko jeden mesh dla caÅego menu
+    const vector = mesh.position.clone();
+    vector.project(camera);
+    
+    const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+    const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
+    
+    // Konwersja radianów na stopnie dla CSS
+    const rotationDeg = (mesh.rotation.y * 180 / Math.PI);
+    
+    menuContainer.style.position = 'absolute';
+    menuContainer.style.left = x + 'px';
+    menuContainer.style.top = y + 'px';
+    menuContainer.style.transform = `translate(0, -50%) rotateY(${rotationDeg}deg)`;
 }
 
 // Initialize when DOM is ready
