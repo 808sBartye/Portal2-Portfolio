@@ -1,101 +1,505 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media - Aperture Science</title>
+    <title>Social Media — Aperture Science Personnel Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-</head>
-<body class="page-loading">
-    <div class="page-transition-overlay"></div>
-    <div class="education-page">
-        <div class="edu-scene-wrapper">
-            <div class="edu-bg-layer">
-                <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
-                
-                <div class="menu-container">
-                    <nav class="portal-menu">
-                        <a href="index.html" class="portal-nav-item">
-                            <span class="portal-text">MENU</span>
-                        </a>
-                        <a href="education.html" class="portal-nav-item">
-                            <span class="portal-text">EDUKACJA</span>
-                        </a>
-                        <a href="projects.html" class="portal-nav-item">
-                            <span class="portal-text">PROJEKTY</span>
-                        </a>
-                        <a href="social.html" class="portal-nav-item active">
-                            <span class="portal-text">SOCIAL MEDIA</span>
-                            <span class="portal-underline"></span>
-                        </a>
-                    </nav>
-                </div>
-            </div>
-            
-            <div class="coming-soon">
-                <h1>SOCIAL MEDIA</h1>
-                <p>Wkrótce dostępne...</p>
-                <a href="index.html" class="back-link">← POWRÓT DO MENU</a>
-            </div>
-        </div>
-    </div>
-    
+
     <style>
-        .coming-soon {
+        /* ============================================================
+           SOCIAL PAGE — PERSONALITY CORES
+           ============================================================ */
+
+        .social-page {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* ── TAŁO ────────────────────────────────────────────────── */
+        .social-bg {
             position: absolute;
+            inset: 0;
+            background-image: url('assets/social-media-bg.webp');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        /* delikatna ciemna winietka na górze żeby nav był czytelny */
+        .social-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.55) 0%,
+                    rgba(0, 0, 0, 0.0) 30%,
+                    rgba(0, 0, 0, 0.0) 70%,
+                    rgba(0, 0, 0, 0.2) 100%);
+            pointer-events: none;
+        }
+
+        /* ── NAWIGACJA (lewa strona, spójna z resztą portfolio) ──── */
+        .social-nav-container {
+            position: fixed;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            font-family: 'Rajdhani', sans-serif;
+            left: 2.5rem;
+            transform: translateY(-50%);
+            z-index: 100;
         }
-        .coming-soon h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            letter-spacing: 4px;
-        }
-        .coming-soon p {
-            font-size: 1.5rem;
-            opacity: 0.7;
-            margin-bottom: 2rem;
-        }
-        .back-link {
-            color: #a0d8ff;
+
+        .social-nav-container .portal-nav-item {
+            position: relative;
+            display: block;
+            padding: 10px 0;
             text-decoration: none;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.55);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
         }
-        .back-link:hover {
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(160, 216, 255, 0.8);
+
+        .social-nav-container .portal-nav-item:hover {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .social-nav-container .portal-nav-item:hover .portal-text {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.75);
+        }
+
+        .social-nav-container .portal-nav-item.active {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .social-nav-container .portal-nav-item.active .portal-text {
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+        }
+
+        .social-nav-container .portal-text {
+            display: inline-block;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .social-nav-container .portal-underline {
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* ── HEADER label ────────────────────────────────────────── */
+        .social-header {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .social-header-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.35);
+            display: block;
+        }
+
+        .social-header-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.75);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ── CORES CONTAINER ─────────────────────────────────────── */
+        .cores-container {
+            position: absolute;
+            bottom: 32%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 1vw;
+            align-items: flex-end;
+        }
+
+        /* ── POJEDYNCZY RDZEŃ ────────────────────────────────────── */
+        .core-link {
+            position: relative;
+            display: block;
+            width: 150px;
+            height: 150px;
+            text-decoration: none;
+            flex-shrink: 0;
+
+            /* Idle mechanical vibration */
+            animation: core-idle-vibrate 3s ease-in-out infinite;
+        }
+
+        /* Różne opóźnienia dla każdego rdzenia */
+        .core-link:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .core-link:nth-child(2) {
+            animation-delay: 0.75s;
+        }
+
+        .core-link:nth-child(3) {
+            animation-delay: 1.5s;
+        }
+
+        .core-link:nth-child(4) {
+            animation-delay: 2.25s;
+        }
+
+        @keyframes core-idle-vibrate {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            15% {
+                transform: translateY(-3px) rotate(-0.3deg);
+            }
+
+            30% {
+                transform: translateY(-5px) rotate(0.2deg);
+            }
+
+            45% {
+                transform: translateY(-3px) rotate(-0.1deg);
+            }
+
+            60% {
+                transform: translateY(-6px) rotate(0.3deg);
+            }
+
+            75% {
+                transform: translateY(-3px) rotate(-0.2deg);
+            }
+        }
+
+        /* Hover: stop idle animation, scale up */
+        .core-link:hover {
+            animation-play-state: paused;
+            transform: scale(1.07) translateY(-4px);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Obrazki wewnątrz */
+        .core-link img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .core-off {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .core-on {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .core-link:hover .core-off {
+            opacity: 0;
+        }
+
+        .core-link:hover .core-on {
+            opacity: 1;
+        }
+
+        /* Glow halo po hover — kolor per rdzeń */
+        .core-link::after {
+            content: '';
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(20px);
+        }
+
+        /* Linkedin — niebieski */
+        .core-link[data-color="blue"]::after {
+            background: radial-gradient(ellipse, rgba(80, 140, 220, 0.7) 0%, transparent 70%);
+        }
+
+        /* Instagram — fioletowy */
+        .core-link[data-color="purple"]::after {
+            background: radial-gradient(ellipse, rgba(160, 80, 220, 0.7) 0%, transparent 70%);
+        }
+
+        /* CV — żółty */
+        .core-link[data-color="yellow"]::after {
+            background: radial-gradient(ellipse, rgba(220, 180, 50, 0.7) 0%, transparent 70%);
+        }
+
+        /* Github — szary */
+        .core-link[data-color="grey"]::after {
+            background: radial-gradient(ellipse, rgba(160, 160, 180, 0.6) 0%, transparent 70%);
+        }
+
+        .core-link:hover::after {
+            opacity: 1;
+        }
+
+        /* ── DIEGETIC LABELS — na panelach konsoli ──────────────── */
+        .console-labels {
+            position: absolute;
+            bottom: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9;
+            display: flex;
+            gap: 1vw;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+
+        .console-label {
+            width: 150px;
+            flex-shrink: 0;
+            text-align: center;
+            transform: perspective(400px) rotateX(22deg);
+            transform-origin: top center;
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(30, 30, 30, 0.85);
+            text-shadow:
+                0px 1px 0px rgba(255,255,255,0.25),
+                0px -1px 0px rgba(0,0,0,0.4);
+            user-select: none;
+        }
+
+        /* ── STATUS BAR u dołu ───────────────────────────────────── */
+        .social-status-bar {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            pointer-events: none;
+        }
+
+        .status-line {
+            width: 40px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.25);
         }
     </style>
+</head>
+
+<body class="page-loading">
+    <div class="page-transition-overlay"></div>
+
+    <div class="social-page">
+
+        <!-- TŁO -->
+        <div class="social-bg"></div>
+
+        <!-- NAWIGACJA — Portal 2 style, lewa strona -->
+        <div class="social-nav-container" id="social-nav">
+            <nav class="portal-menu">
+                <a href="index.html" class="portal-nav-item">
+                    <span class="portal-text">MENU</span>
+                </a>
+                <a href="education.html" class="portal-nav-item">
+                    <span class="portal-text">EDUKACJA</span>
+                </a>
+                <a href="projects.html" class="portal-nav-item">
+                    <span class="portal-text">PROJEKTY</span>
+                </a>
+                <a href="social.html" class="portal-nav-item active">
+                    <span class="portal-text">SOCIAL MEDIA</span>
+                    <span class="portal-underline"></span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- HEADER -->
+        <div class="social-header">
+            <span class="social-header-label">Aperture Science — Personnel Directory</span>
+            <span class="social-header-title">Personality Cores</span>
+        </div>
+
+        <!-- RDZENIE OSOBOWOŚCI -->
+        <div class="cores-container" id="cores-container">
+
+            <!-- LINKEDIN — Niebieski Rdzeń (Adventure) -->
+            <a href="https://www.linkedin.com/in/bartosz-majocha/" target="_blank" rel="noopener noreferrer"
+                class="core-link" data-color="blue" id="core-linkedin">
+                <img src="assets/socialbots/blue-linkedin-off.webp" alt="LinkedIn" class="core-off">
+                <img src="assets/socialbots/blue-linkedin-on.webp" alt="LinkedIn aktywny" class="core-on">
+            </a>
+
+            <!-- INSTAGRAM — Fioletowy Rdzeń (Curiosity) -->
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="core-link"
+                data-color="purple" id="core-instagram">
+                <img src="assets/socialbots/purple-ig-off.webp" alt="Instagram" class="core-off">
+                <img src="assets/socialbots/purple-ig-on.webp" alt="Instagram aktywny" class="core-on">
+            </a>
+
+            <!-- CV — Żółty Rdzeń (Intelligence) -->
+            <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" class="core-link" data-color="yellow"
+                id="core-cv">
+                <img src="assets/socialbots/yellow-cv-off.webp" alt="CV" class="core-off">
+                <img src="assets/socialbots/yellow-cv-on.webp" alt="CV aktywny" class="core-on">
+            </a>
+
+            <!-- GITHUB — Szary Rdzeń (Fact) -->
+            <a href="https://github.com/808sBartye" target="_blank" rel="noopener noreferrer" class="core-link"
+                data-color="grey" id="core-github">
+                <img src="assets/socialbots/grey-github-off.webp" alt="GitHub" class="core-off">
+                <img src="assets/socialbots/grey-github-on.webp" alt="GitHub aktywny" class="core-on">
+            </a>
+
+        </div>
+
+        <!-- DIEGETIC LABELS — nadruki na panelach konsoli -->
+        <div class="console-labels" id="console-labels">
+            <span class="console-label">LinkedIn</span>
+            <span class="console-label">Instagram</span>
+            <span class="console-label">Curriculum Vitae</span>
+            <span class="console-label">GitHub</span>
+        </div>
+
+        <!-- STATUS BAR -->
+        <div class="social-status-bar">
+            <div class="status-line"></div>
+            <span class="status-text">Aperture Science Enrichment Center — Core Bay 04</span>
+            <div class="status-line"></div>
+        </div>
+
+    </div><!-- /.social-page -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
-        // Page transition - fade in on load
+        // ── PAGE TRANSITION: fade-in on load ─────────────────────────
         setTimeout(() => {
             document.body.classList.remove('page-loading');
             document.body.classList.add('page-loaded');
-        }, 100);
-        
-        // Page transition - fade out before leaving
+        }, 80);
+
+        // ── PAGE TRANSITION: fade-out before leaving ──────────────────
         document.querySelectorAll('a').forEach(link => {
             const href = link.getAttribute('href');
+            // Tylko linki wewnętrzne do .html
             if (!href || href.startsWith('http') || href.startsWith('#') || !href.includes('.html')) {
                 return;
             }
-            
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const overlay = document.querySelector('.page-transition-overlay');
                 overlay.classList.add('fade-out');
-                
                 setTimeout(() => {
                     window.location.href = href;
-                }, 400);
+                }, 420);
+            });
+        });
+
+        // ── GSAP ENTRANCE ─────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            const cores     = document.querySelectorAll('.core-link');
+            const labels    = document.querySelectorAll('.console-label');
+            const header    = document.querySelector('.social-header');
+            const nav       = document.querySelector('#social-nav');
+            const statusBar = document.querySelector('.social-status-bar');
+
+            // Nawigacja wjeżdża z lewej
+            gsap.from(nav, {
+                opacity: 0,
+                x: -20,
+                duration: 0.8,
+                delay: 0.2,
+                ease: 'power2.out'
+            });
+
+            // Header z góry
+            gsap.from(header, {
+                opacity: 0,
+                y: -12,
+                duration: 0.8,
+                delay: 0.3,
+                ease: 'power2.out'
+            });
+
+            // Rdzenie wlatują z dołu, ze staggeriem
+            gsap.from(cores, {
+                opacity: 0,
+                y: 60,
+                scale: 0.85,
+                duration: 0.9,
+                delay: 0.5,
+                stagger: 0.12,
+                ease: 'back.out(1.4)'
+            });
+
+            // Etykiety konsolowe pojawiają się po rdzeniach
+            gsap.from(labels, {
+                opacity: 0,
+                duration: 0.6,
+                delay: 1.0,
+                stagger: 0.1,
+                ease: 'power1.out'
+            });
+
+            // Status bar
+            gsap.from(statusBar, {
+                opacity: 0,
+                duration: 1,
+                delay: 1.2,
+                ease: 'power1.out'
             });
         });
     </script>
 </body>
+
 </html>
