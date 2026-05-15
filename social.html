@@ -277,6 +277,30 @@
             opacity: 1;
         }
 
+        /* ── LABEL pod rdzeniem (pojawia się na hover) ───────────── */
+        .core-label {
+            position: absolute;
+            bottom: -27px;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .core-link:hover .core-label {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         /* ── DIEGETIC LABELS — na panelach konsoli ──────────────── */
         .console-labels {
             position: absolute;
@@ -291,20 +315,20 @@
         }
 
         .console-label {
-            width: 150px;
+            width: 200px;
             flex-shrink: 0;
             text-align: center;
             transform: perspective(400px) rotateX(22deg);
             transform-origin: top center;
             font-family: 'Share Tech Mono', 'Courier New', monospace;
-            font-size: 10px;
+            font-size: 17px;
             font-weight: 400;
             letter-spacing: 2.5px;
             text-transform: uppercase;
             color: rgba(30, 30, 30, 0.85);
             text-shadow:
-                0px 1px 0px rgba(255,255,255,0.25),
-                0px -1px 0px rgba(0,0,0,0.4);
+                0px 1px 0px rgba(255, 255, 255, 0.25),
+                0px -1px 0px rgba(0, 0, 0, 0.4);
             user-select: none;
         }
 
@@ -378,6 +402,7 @@
                 class="core-link" data-color="blue" id="core-linkedin">
                 <img src="assets/socialbots/blue-linkedin-off.webp" alt="LinkedIn" class="core-off">
                 <img src="assets/socialbots/blue-linkedin-on.webp" alt="LinkedIn aktywny" class="core-on">
+                <span class="core-label">LinkedIn</span>
             </a>
 
             <!-- INSTAGRAM — Fioletowy Rdzeń (Curiosity) -->
@@ -385,6 +410,7 @@
                 data-color="purple" id="core-instagram">
                 <img src="assets/socialbots/purple-ig-off.webp" alt="Instagram" class="core-off">
                 <img src="assets/socialbots/purple-ig-on.webp" alt="Instagram aktywny" class="core-on">
+                <span class="core-label">Instagram</span>
             </a>
 
             <!-- CV — Żółty Rdzeń (Intelligence) -->
@@ -392,6 +418,7 @@
                 id="core-cv">
                 <img src="assets/socialbots/yellow-cv-off.webp" alt="CV" class="core-off">
                 <img src="assets/socialbots/yellow-cv-on.webp" alt="CV aktywny" class="core-on">
+                <span class="core-label">Curriculum Vitae</span>
             </a>
 
             <!-- GITHUB — Szary Rdzeń (Fact) -->
@@ -399,16 +426,14 @@
                 data-color="grey" id="core-github">
                 <img src="assets/socialbots/grey-github-off.webp" alt="GitHub" class="core-off">
                 <img src="assets/socialbots/grey-github-on.webp" alt="GitHub aktywny" class="core-on">
+                <span class="core-label">GitHub</span>
             </a>
 
         </div>
 
         <!-- DIEGETIC LABELS — nadruki na panelach konsoli -->
         <div class="console-labels" id="console-labels">
-            <span class="console-label">LinkedIn</span>
-            <span class="console-label">Instagram</span>
-            <span class="console-label">Curriculum Vitae</span>
-            <span class="console-label">GitHub</span>
+            <span class="console-label">Click the Core for more :)</span>
         </div>
 
         <!-- STATUS BAR -->
@@ -447,10 +472,10 @@
 
         // ── GSAP ENTRANCE ─────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
-            const cores     = document.querySelectorAll('.core-link');
-            const labels    = document.querySelectorAll('.console-label');
-            const header    = document.querySelector('.social-header');
-            const nav       = document.querySelector('#social-nav');
+            const cores = document.querySelectorAll('.core-link');
+            const labels = document.querySelectorAll('.console-label');
+            const header = document.querySelector('.social-header');
+            const nav = document.querySelector('#social-nav');
             const statusBar = document.querySelector('.social-status-bar');
 
             // Nawigacja wjeżdża z lewej
