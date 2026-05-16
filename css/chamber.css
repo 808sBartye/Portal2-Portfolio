@@ -219,6 +219,12 @@
     font-weight: 800;
 }
 
+.info-bar h3 i {
+    color: #00aaff;
+    margin-right: 6px;
+    font-size: 14px;
+}
+
 .info-bar p {
     color: rgba(255, 255, 255, 0.8);
     font-size: 10px;
@@ -525,6 +531,10 @@
     color: rgba(37, 36, 35, 0.95);
     font-size: 13px;
     font-weight: 800;
+}
+
+.chamber-office .info-bar h3 i {
+    color: #ff6600;
 }
 
 .chamber-office .info-bar p,
