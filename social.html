@@ -60,13 +60,13 @@
         .social-nav-container .portal-nav-item {
             position: relative;
             display: block;
-            padding: 10px 0;
+            padding: 12px 0;
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(255, 255, 255, 0.65);
             font-family: 'Rajdhani', sans-serif;
-            font-size: 16px;
-            font-weight: 400;
-            letter-spacing: 4px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 5px;
             text-transform: uppercase;
             transition: color 0.3s ease;
         }
@@ -363,88 +363,88 @@
 
 <body class="page-loading">
     <div id="aperture-viewport">
-    <div class="page-transition-overlay"></div>
+        <div class="page-transition-overlay"></div>
 
-    <div class="social-page">
+        <div class="social-page">
 
-        <!-- TŁO -->
-        <div class="social-bg"></div>
+            <!-- TŁO -->
+            <div class="social-bg"></div>
 
-        <!-- NAWIGACJA — Portal 2 style, lewa strona -->
-        <div class="social-nav-container" id="social-nav">
-            <nav class="portal-menu">
-                <a href="index.html" class="portal-nav-item">
-                    <span class="portal-text">MENU</span>
+            <!-- NAWIGACJA — Portal 2 style, lewa strona -->
+            <div class="social-nav-container" id="social-nav">
+                <nav class="portal-menu">
+                    <a href="index.html" class="portal-nav-item">
+                        <span class="portal-text">MENU</span>
+                    </a>
+                    <a href="education.html" class="portal-nav-item">
+                        <span class="portal-text">WYKSZTAŁCENIE</span>
+                    </a>
+                    <a href="projects.html" class="portal-nav-item">
+                        <span class="portal-text">PROJEKTY</span>
+                    </a>
+                    <a href="social.html" class="portal-nav-item active">
+                        <span class="portal-text">SOCIAL MEDIA</span>
+                        <span class="portal-underline"></span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- HEADER -->
+            <div class="social-header">
+                <span class="social-header-label">Aperture Science — Personnel Directory</span>
+                <span class="social-header-title">Personality Cores</span>
+            </div>
+
+            <!-- RDZENIE OSOBOWOŚCI -->
+            <div class="cores-container" id="cores-container">
+
+                <!-- LINKEDIN — Niebieski Rdzeń (Adventure) -->
+                <a href="https://www.linkedin.com/in/bartosz-majocha/" target="_blank" rel="noopener noreferrer"
+                    class="core-link" data-color="blue" id="core-linkedin">
+                    <img src="assets/socialbots/blue-linkedin-off.webp" alt="LinkedIn" class="core-off">
+                    <img src="assets/socialbots/blue-linkedin-on.webp" alt="LinkedIn aktywny" class="core-on">
+                    <span class="core-label">LinkedIn</span>
                 </a>
-                <a href="education.html" class="portal-nav-item">
-                    <span class="portal-text">EDUKACJA</span>
+
+                <!-- INSTAGRAM — Fioletowy Rdzeń (Curiosity) -->
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="core-link"
+                    data-color="purple" id="core-instagram">
+                    <img src="assets/socialbots/purple-ig-off.webp" alt="Instagram" class="core-off">
+                    <img src="assets/socialbots/purple-ig-on.webp" alt="Instagram aktywny" class="core-on">
+                    <span class="core-label">Instagram</span>
                 </a>
-                <a href="projects.html" class="portal-nav-item">
-                    <span class="portal-text">PROJEKTY</span>
+
+                <!-- CV — Żółty Rdzeń (Intelligence) -->
+                <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" class="core-link" data-color="yellow"
+                    id="core-cv">
+                    <img src="assets/socialbots/yellow-cv-off.webp" alt="CV" class="core-off">
+                    <img src="assets/socialbots/yellow-cv-on.webp" alt="CV aktywny" class="core-on">
+                    <span class="core-label">Curriculum Vitae</span>
                 </a>
-                <a href="social.html" class="portal-nav-item active">
-                    <span class="portal-text">SOCIAL MEDIA</span>
-                    <span class="portal-underline"></span>
+
+                <!-- GITHUB — Szary Rdzeń (Fact) -->
+                <a href="https://github.com/808sBartye" target="_blank" rel="noopener noreferrer" class="core-link"
+                    data-color="grey" id="core-github">
+                    <img src="assets/socialbots/grey-github-off.webp" alt="GitHub" class="core-off">
+                    <img src="assets/socialbots/grey-github-on.webp" alt="GitHub aktywny" class="core-on">
+                    <span class="core-label">GitHub</span>
                 </a>
-            </nav>
-        </div>
 
-        <!-- HEADER -->
-        <div class="social-header">
-            <span class="social-header-label">Aperture Science — Personnel Directory</span>
-            <span class="social-header-title">Personality Cores</span>
-        </div>
+            </div>
 
-        <!-- RDZENIE OSOBOWOŚCI -->
-        <div class="cores-container" id="cores-container">
+            <!-- DIEGETIC LABELS — nadruki na panelach konsoli -->
+            <div class="console-labels" id="console-labels">
+                <span class="console-label">Click the Core for more :)</span>
+            </div>
 
-            <!-- LINKEDIN — Niebieski Rdzeń (Adventure) -->
-            <a href="https://www.linkedin.com/in/bartosz-majocha/" target="_blank" rel="noopener noreferrer"
-                class="core-link" data-color="blue" id="core-linkedin">
-                <img src="assets/socialbots/blue-linkedin-off.webp" alt="LinkedIn" class="core-off">
-                <img src="assets/socialbots/blue-linkedin-on.webp" alt="LinkedIn aktywny" class="core-on">
-                <span class="core-label">LinkedIn</span>
-            </a>
+            <!-- STATUS BAR -->
+            <div class="social-status-bar">
+                <div class="status-line"></div>
+                <span class="status-text">Aperture Science Enrichment Center — Core Bay 04</span>
+                <div class="status-line"></div>
+            </div>
 
-            <!-- INSTAGRAM — Fioletowy Rdzeń (Curiosity) -->
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="core-link"
-                data-color="purple" id="core-instagram">
-                <img src="assets/socialbots/purple-ig-off.webp" alt="Instagram" class="core-off">
-                <img src="assets/socialbots/purple-ig-on.webp" alt="Instagram aktywny" class="core-on">
-                <span class="core-label">Instagram</span>
-            </a>
-
-            <!-- CV — Żółty Rdzeń (Intelligence) -->
-            <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" class="core-link" data-color="yellow"
-                id="core-cv">
-                <img src="assets/socialbots/yellow-cv-off.webp" alt="CV" class="core-off">
-                <img src="assets/socialbots/yellow-cv-on.webp" alt="CV aktywny" class="core-on">
-                <span class="core-label">Curriculum Vitae</span>
-            </a>
-
-            <!-- GITHUB — Szary Rdzeń (Fact) -->
-            <a href="https://github.com/808sBartye" target="_blank" rel="noopener noreferrer" class="core-link"
-                data-color="grey" id="core-github">
-                <img src="assets/socialbots/grey-github-off.webp" alt="GitHub" class="core-off">
-                <img src="assets/socialbots/grey-github-on.webp" alt="GitHub aktywny" class="core-on">
-                <span class="core-label">GitHub</span>
-            </a>
-
-        </div>
-
-        <!-- DIEGETIC LABELS — nadruki na panelach konsoli -->
-        <div class="console-labels" id="console-labels">
-            <span class="console-label">Click the Core for more :)</span>
-        </div>
-
-        <!-- STATUS BAR -->
-        <div class="social-status-bar">
-            <div class="status-line"></div>
-            <span class="status-text">Aperture Science Enrichment Center — Core Bay 04</span>
-            <div class="status-line"></div>
-        </div>
-
-    </div><!-- /.social-page -->
+        </div><!-- /.social-page -->
     </div><!-- /#aperture-viewport -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -527,6 +527,7 @@
             });
         });
     </script>
+    <script src="js/aperture-transitions.js"></script>
     <script src="js/aperture-scale.js"></script>
 </body>
 

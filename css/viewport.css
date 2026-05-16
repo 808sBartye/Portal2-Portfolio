@@ -21,3 +21,16 @@ html, body {
     overflow: hidden;
     flex-shrink: 0;
 }
+
+/* ══ CHAMBER OVERLAY — Audio-visual transition layer ══ */
+/* Starts fully opaque (black screen) on each page load.  */
+/* aperture-transitions.js fades it in/out on navigation. */
+.chamber-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 1s ease;
+}

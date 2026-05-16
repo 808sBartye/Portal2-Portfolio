@@ -203,24 +203,23 @@
         
         // Return to Nexus
         function returnToNexus() {
-            const overlay = document.querySelector('.page-transition-overlay');
-            overlay.classList.add('fade-out');
-            
-            setTimeout(() => {
+            if (typeof transitionTo === 'function') {
+                transitionTo('projects.html');
+            } else {
                 window.location.href = 'projects.html';
-            }, 600);
+            }
         }
         
         // Next project button (cycles B -> A)
         function goToNextProject() {
-            const overlay = document.querySelector('.page-transition-overlay');
-            overlay.classList.add('fade-out');
-            
-            setTimeout(() => {
+            if (typeof transitionTo === 'function') {
+                transitionTo('chamber_a.html');
+            } else {
                 window.location.href = 'chamber_a.html';
-            }, 600);
+            }
         }
     </script>
+    <script src="js/aperture-transitions.js"></script>
     <script src="js/aperture-scale.js"></script>
     </div><!-- /#aperture-viewport -->
 </body>
