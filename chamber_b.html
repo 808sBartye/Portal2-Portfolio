@@ -39,58 +39,57 @@
             <div id="grid-view" class="view active">
                 <!-- Left Column: 3 horizontal bars -->
                 <div class="left-column">
-                    <div class="info-bar" data-section="main-info" onclick="showSection('main-info')">
+                    <div class="info-bar" data-section="lebwweb-about" onclick="showSection('lebwweb-about')">
                         <div class="info-bar-content">
-                            <h3>GŁÓWNY OPIS</h3>
-                            <p>Kliknij aby zobaczyć szczegóły</p>
+                            <h3>ŁEB W WEB</h3>
+                            <p>Kampania społeczna</p>
                         </div>
                     </div>
-                    <div class="info-bar" data-section="about" onclick="showSection('about')">
+                    <div class="info-bar" data-section="zsemtv-media" onclick="showSection('zsemtv-media')">
                         <div class="info-bar-content">
-                            <h3>O PROJEKCIE</h3>
-                            <p>Informacje o aplikacji</p>
+                            <h3>ZSEM TV</h3>
+                            <p>Media & Transmisje live</p>
                         </div>
                     </div>
-                    <div class="info-bar" data-section="description" onclick="showSection('description')">
+                    <div class="info-bar" data-section="memorycage-prototype" onclick="showSection('memorycage-prototype')">
                         <div class="info-bar-content">
-                            <h3>OPIS TECHNICZNY</h3>
-                            <p>Szczegóły techniczne</p>
+                            <h3>MEMORYCAGE</h3>
+                            <p>Prototypowanie Hardware / IoT</p>
                         </div>
-                        <i class="fas fa-server info-bar-icon"></i>
                     </div>
                 </div>
                 
                 <!-- Right Grid: 2x3 with icons -->
                 <div class="right-grid">
-                    <div class="grid-tile" data-section="tech-stack" onclick="showSection('tech-stack')">
-                        <i class="fas fa-code"></i>
-                        <h4>TECH STACK</h4>
-                        <span>Vue.js, Python, PostgreSQL</span>
+                    <div class="grid-tile" data-section="lebwweb-scale" onclick="showSection('lebwweb-scale')">
+                        <i class="fas fa-users"></i>
+                        <h4>SKALA DZIAŁANIA</h4>
+                        <span>Ponad 2300 odbiorców</span>
                     </div>
-                    <div class="grid-tile" data-section="challenges" onclick="showSection('challenges')">
-                        <i class="fas fa-mountain"></i>
-                        <h4>WYZWANIA</h4>
-                        <span>Skalowalność systemu</span>
+                    <div class="grid-tile" data-section="lebwweb-law" onclick="showSection('lebwweb-law')">
+                        <i class="fas fa-landmark"></i>
+                        <h4>LEGISLACJA & NASK</h4>
+                        <span>Sejm RP & Eksperci</span>
                     </div>
-                    <div class="grid-tile" data-section="features" onclick="showSection('features')">
-                        <i class="fas fa-star"></i>
-                        <h4>CECHY</h4>
-                        <span>Kluczowe funkcjonalności</span>
+                    <div class="grid-tile" data-section="zsemtv-events" onclick="showSection('zsemtv-events')">
+                        <i class="fas fa-video"></i>
+                        <h4>PRODUKCJA EVENTÓW</h4>
+                        <span>Transmisje wielokamerowe</span>
                     </div>
-                    <div class="grid-tile" data-section="demo" onclick="showSection('demo')">
-                        <i class="fas fa-play-circle"></i>
-                        <h4>LIVE DEMO</h4>
-                        <span>Zobacz w akcji</span>
+                    <div class="grid-tile" data-section="zsemtv-skills" onclick="showSection('zsemtv-skills')">
+                        <i class="fas fa-microphone"></i>
+                        <h4>SKILLE MIĘKKIE</h4>
+                        <span>Wystąpienia & Certyfikaty</span>
                     </div>
-                    <div class="grid-tile" data-section="github" onclick="showSection('github')">
-                        <i class="fab fa-github"></i>
-                        <h4>GITHUB</h4>
-                        <span>Kod źródłowy</span>
+                    <div class="grid-tile" data-section="memorycage-pitching" onclick="showSection('memorycage-pitching')">
+                        <i class="fas fa-bullhorn"></i>
+                        <h4>PUBLIC PITCHING</h4>
+                        <span>Prezentacje sceniczne</span>
                     </div>
-                    <div class="grid-tile contact-tile" data-section="contact" onclick="showSection('contact')">
-                        <i class="fas fa-envelope"></i>
-                        <h4>KONTAKT</h4>
-                        <span>Napisz do mnie</span>
+                    <div class="grid-tile contact-tile" data-section="memorycage-success" onclick="showSection('memorycage-success')">
+                        <i class="fas fa-trophy"></i>
+                        <h4>NAGRODA PUBLICZNOŚCI</h4>
+                        <span>Główne wyróżnienie</span>
                     </div>
                 </div>
             </div>
@@ -114,41 +113,46 @@
     <script>
         // Section content data
         const sectionData = {
-            'main-info': {
-                title: 'GŁÓWNY OPIS',
-                content: '<p>Projekt Retro - klasyczna aplikacja biurowa z nowoczesnym twistem. Zaprojektowana z myślą o wydajności i ergonomii.</p><p>Wykorzystuje Vue.js z backendem w Pythonie i PostgreSQL.</p>'
+            // --- RZĄD 1: „ŁEB W WEB” (Projekt Społeczny) ---
+            'lebwweb-about': {
+                title: 'O KAMPANII',
+                content: '<p>Inicjatywa edukacyjna stworzona w ramach olimpiady Zwolnieni z Teorii, skupiona na cyberbezpieczeństwie.</p><p>Jako <strong>Lider Projektu</strong> zarządzałem strukturą zespołu, harmonogramem działań operacyjnych oraz budżetem w wysokości 4500 PLN.</p>'
             },
-            'about': {
-                title: 'O PROJEKCIE',
-                content: '<p>Aplikacja stworzona dla małych i średnich firm. Ułatwia zarządzanie projektami, klientami i dokumentacją.</p><p>Intuicyjny interfejs i szybka obsługa to kluczowe zalety.</p>'
+            'lebwweb-scale': {
+                title: 'SKALA DZIAŁANIA',
+                content: '<p>Zasięg projektu to <strong>ponad 2300 bezpośrednich odbiorców</strong>.</p><p>Przeprowadziliśmy ponad 30 autorskich warsztatów w szkołach, edukując młodzież o zagrożeniach sieciowych, atakach phishingowych i higienie cyfrowej.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @lebwweb</p>'
             },
-            'description': {
-                title: 'OPIS TECHNICZNY',
-                content: '<p>Frontend: Vue.js + Vuex</p><p>Backend: Python + Flask</p><p>Baza danych: PostgreSQL</p><p>Hosting: AWS</p>'
+            'lebwweb-law': {
+                title: 'LEGISLACJA & NASK',
+                content: '<p>Sukces inicjatywy zaowocował zaproszeniem do <strong>Kancelarii Marszałka Sejmu RP</strong>, gdzie brałem udział w oficjalnych konsultacjach legislacyjnych.</p><p>Projekt był realizowany i weryfikowany pod okiem ekspertów z instytutu badawczego NASK.</p>'
             },
-            'tech-stack': {
-                title: 'TECH STACK',
-                content: '<ul><li><i class="fab fa-vuejs"></i> Vue.js - Progressive framework</li><li><i class="fab fa-python"></i> Python - Backend logic</li><li><i class="fas fa-database"></i> PostgreSQL - Relational DB</li><li><i class="fab fa-aws"></i> AWS - Cloud hosting</li></ul>'
+
+            // --- RZĄD 2: ZSEM TV (Media i Transmisje live) ---
+            'zsemtv-media': {
+                title: 'REALIZACJA LIVE',
+                content: '<p>Prowadzenie szkolnego zespołu medialnego ZSEM TV.</p><p>Odpowiadałem za pełną organizację zaplecza technicznego, konfigurację mikserów audio-wideo, oprawę graficzną oraz zarządzanie zasobami ludzkimi w warunkach wymagających natychmiastowego podejmowania decyzji.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @zsemtv</p>'
             },
-            'challenges': {
-                title: 'WYZWANIA',
-                content: '<p>Największym wyzwaniem była skalowalność przy rosnącej liczbie użytkowników.</p><p>Zastosowaliśmy caching i optymalizację zapytań SQL.</p>'
+            'zsemtv-events': {
+                title: 'PRODUKCJA EVENTÓW',
+                content: '<p>Zrealizowałem wielokamerowe transmisje live z kluczowych wydarzeń, w tym:</p><ul><li><i class="fas fa-video"></i> Mistrzostwa Nowego Sącza w GeoGuessr 2025</li><li><i class="fas fa-microphone"></i> Oficjalne Debaty Oksfordzkie</li></ul><p>Praca oparta w głównej mierze o zaawansowaną obsługę OBS Studio.</p>'
             },
-            'features': {
-                title: 'CECHY',
-                content: '<ul><li>System zarządzania projektami</li><li>Śledzenie czasu pracy</li><li>Generowanie raportów PDF</li><li>Integracja z kalendarzem</li></ul>'
+            'zsemtv-skills': {
+                title: 'SKILLE MIĘKKIE',
+                content: '<p>Kompetencje potwierdzone oficjalnymi certyfikatami <strong>Organizatora Wydarzeń</strong> i <strong>Realizatora Transmisji</strong>.</p><p>Doświadczenie to ukształtowało moje umiejętności interpersonalne: wystąpienia przed kamerą, prowadzenie wywiadów oraz odporność na stres w krytycznych momentach produkcji.</p>'
             },
-            'demo': {
-                title: 'LIVE DEMO',
-                content: '<p>Aplikacja dostępna pod adresem:</p><a href="#" class="demo-link">www.projekt-retro.pl</a><p>Testowe konto: demo / demo123</p>'
+
+            // --- RZĄD 3: MEMORYCAGE (Hardware / Pitching) ---
+            'memorycage-prototype': {
+                title: 'PROTOTYPOWANIE',
+                content: '<p>Współtworzenie funkcjonalnego prototypu fizycznego urządzenia (projekt MemoryCage).</p><p>Projekt wymagał inżynieryjnego podejścia do elektroniki, mikrokomponentów oraz połączenia warstwy sprzętowej z napisaną logiką sterowania (software).</p>'
             },
-            'github': {
-                title: 'GITHUB',
-                content: '<p>Kod źródłowy na GitHub:</p><a href="#" class="github-link"><i class="fab fa-github"></i> github.com/retro-office</a><p>PR-y mile widziane!</p>'
+            'memorycage-pitching': {
+                title: 'PUBLIC PITCHING',
+                content: '<p>Urządzenie zostało oficjalnie zaprezentowane szerokiemu audytorium podczas targów naukowych (2025).</p><p>Zadanie polegało na skutecznym, prostym i atrakcyjnym przedstawieniu skomplikowanych technologii przed zróżnicowanym gronem jurorów oraz odwiedzających.</p>'
             },
-            'contact': {
-                title: 'KONTAKT',
-                content: '<form class="contact-form"><input type="text" placeholder="Imię"><input type="email" placeholder="Email"><textarea placeholder="Wiadomość"></textarea><button type="submit">WYŚLIJ</button></form>'
+            'memorycage-success': {
+                title: 'NAGRODA PUBLICZNOŚCI',
+                content: '<p>Połączenie twardych umiejętności inżynieryjnych z dynamiczną, profesjonalną prezentacją sceniczną zaowocowało zdobyciem głównej <strong>Nagrody Publiczności</strong>.</p><p>To wyróżnienie udowadnia moją zdolność do skutecznej komunikacji wartości technicznej (pitchingu).</p>'
             }
         };
         
