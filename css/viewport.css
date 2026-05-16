@@ -14,7 +14,7 @@ html, body {
 }
 
 /* Interaktywne elementy - kursor */
-a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"], .robot-sprite, .grid-item, .grid-tile, .info-bar, .core-link, a * {
+a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"], .robot-sprite, .grid-item, .grid-tile, .info-bar, .core-link, body.portal-hover, body.portal-hover *, a * {
     cursor: url('../assets/cursor/Alternate-Link.cur'), pointer !important;
 }
 

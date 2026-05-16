@@ -376,14 +376,14 @@ function checkPortalHover() {
             }
             hoveredPortal = object;
             animatePortal(hoveredPortal, true);
-            document.body.style.cursor = "url('assets/cursor/Alternate-Link.cur'), pointer";
+            document.body.classList.add('portal-hover');
         }
     } else {
         if (hoveredPortal) {
             // Mouse left portal
             animatePortal(hoveredPortal, false);
             hoveredPortal = null;
-            document.body.style.cursor = "url('assets/cursor/Normal.cur'), auto";
+            document.body.classList.remove('portal-hover');
         }
     }
 }
