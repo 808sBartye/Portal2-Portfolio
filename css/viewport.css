@@ -14,7 +14,7 @@ html, body {
 }
 
 /* Interaktywne elementy - kursor */
-a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"], .robot-sprite, .grid-item, .grid-tile, .info-bar, .core-link, body.portal-hover, body.portal-hover *, a * {
+a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"], .robot-sprite, .grid-item, .grid-tile, .info-bar, .core-link, body.portal-hover, body.portal-hover *, a *, #control-gear-btn, #control-gear-btn *, .aperture-btn, .aperture-btn *, input[type="range"] {
     cursor: url('../assets/cursor/Alternate-Link.cur'), pointer !important;
 }
 
@@ -128,4 +128,194 @@ a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"]
     background: #ff3333;
     color: #000;
     box-shadow: 0 0 20px #ff3333;
+}
+
+/* ══ GLOBAL APERTURE CONTROL PANEL ══ */
+/* ══ GLOBAL APERTURE CONTROL PANEL (Surowy Terminal) ══ */
+#aperture-control-panel {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    z-index: 100000;
+    font-family: monospace;
+    user-select: none;
+}
+
+#control-gear-btn {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 28px;
+    transition: transform 0.3s ease, color 0.2s ease;
+    cursor: pointer;
+    margin-left: auto;
+    box-shadow: none;
+}
+
+#control-gear-btn:hover,
+#aperture-control-panel.open #control-gear-btn {
+    background-color: transparent;
+    color: #fff;
+    transform: rotate(180deg) scale(1.1);
+    box-shadow: none;
+}
+
+#control-gear-btn i.gear-icon {
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#control-gear-btn:hover i.gear-icon,
+#aperture-control-panel.open #control-gear-btn i.gear-icon {
+    transform: rotate(360deg);
+}
+
+#control-panel {
+    position: absolute;
+    top: 65px;
+    right: 0;
+    width: 320px;
+    background: #000;
+    border: 1px solid #555;
+    box-shadow: none;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-15px);
+    transform-origin: top right;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    border-radius: 0;
+}
+
+#aperture-control-panel.open #control-panel {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.panel-header {
+    font-family: monospace;
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #444;
+}
+
+.panel-section {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panel-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    color: #ccc;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Audio Volume Container & Slider */
+.volume-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+#volume-value {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    color: #fff;
+    min-width: 45px;
+    text-align: right;
+}
+
+input[type="range"].aperture-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"].aperture-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 20px;
+    background: #ccc;
+    border: 1px solid #fff;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+input[type="range"].aperture-slider::-webkit-slider-thumb:hover {
+    background: #F26622;
+}
+
+.aperture-btn {
+    background: #000;
+    border: 1px solid #555;
+    color: #ccc;
+    padding: 12px 18px;
+    font-family: monospace;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.aperture-btn:hover:not(:disabled) {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    box-shadow: none;
+}
+
+.aperture-btn.active {
+    background: #0078D7;
+    color: #fff;
+    border-color: #0078D7;
+    box-shadow: none;
+}
+
+.aperture-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #444;
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
 }

@@ -15,11 +15,23 @@
     const SOUND_BASE = 'assets/sounds/';
     const TRACK_BASE = 'assets/tracks/';
 
+    window.apertureAudio = window.apertureAudio || { bgm: null };
+
+    function getEffectiveVolume() {
+        if (localStorage.getItem('aperture_muted') === 'true') return 0;
+        let saved = localStorage.getItem('aperture_volume');
+        let vol = saved !== null ? parseFloat(saved) : 0.3;
+        return isNaN(vol) ? 0.3 : vol;
+    }
+
     // Helper for playing sounds
-    function playSFX(src, volume = 0.3) {
+    function playSFX(src) {
+        const effVol = getEffectiveVolume();
+        if (effVol <= 0) return;
+
         try {
             const audio = new Audio(SOUND_BASE + src);
-            audio.volume = volume;
+            audio.volume = Math.max(0, Math.min(1, effVol));
             audio.play().catch(() => { });
         } catch (e) { }
     }
@@ -28,7 +40,7 @@
     function initBGM() {
         const currentPath = window.location.pathname;
         let pageName = currentPath.substring(currentPath.lastIndexOf('/') + 1).toLowerCase();
-        
+
         // Domyślna strona jeśli URL to katalog
         if (pageName === '' || pageName === '/') {
             pageName = 'index';
@@ -36,14 +48,13 @@
             pageName = pageName.replace('.html', '');
         }
 
-        // Ścieżki mają teraz dokładne nazwy jak strony (np. index-soundtrack.mp3, chamber_a-soundtrack.mp3)
         const bgmFile = pageName + '-soundtrack.mp3';
-        
-        // Niestety JS nie ma prostej metody sprawdzenia, czy plik istnieje bez robienia requestu.
-        // Spróbujemy po prostu odtworzyć; jeśli pliku nie ma, wyrzuci błąd w catch.
+
         const bgm = new Audio(TRACK_BASE + bgmFile);
         bgm.loop = true;
-        bgm.volume = 0.2;
+
+        window.apertureAudio.bgm = bgm;
+        bgm.volume = Math.max(0, Math.min(1, getEffectiveVolume() * 0.7));
 
         bgm.play().catch(error => {
             console.warn(`Autoplay zablokowany lub brak pliku ${bgmFile}, spróbuję przy interakcji.`, error);
@@ -65,8 +76,13 @@
             const target = e.target.closest(interactiveSelectors);
 
             if (target) {
+                // Ignore specific control panel buttons handled separately
+                if (target.closest('#control-gear-btn') || target.closest('#mute-btn') || target.closest('#audio-volume-slider')) {
+                    return;
+                }
+
                 // Play click sound
-                playSFX('portal_button_down_01.wav', 0.3);
+                playSFX('portal_button_down_01.wav');
 
                 // Handle Links
                 if (target.tagName.toLowerCase() === 'a') {
@@ -105,16 +121,15 @@
     }
 
     // Export robot audio function so projects.js can trigger it directly
-    // This solves the hitbox mismatch and infinite trigger issues.
-    window.playRobotAudio = function(robotName) {
+    window.playRobotAudio = function (robotName) {
         if (robotName === 'atlas') {
             setTimeout(() => {
-                playSFX('atlas-animation.wav', 0.5);
-            }, 500); // User-defined delay
+                playSFX('atlas-animation.wav');
+            }, 500);
         } else if (robotName === 'pbody') {
             setTimeout(() => {
-                playSFX('pbody-animation.wav', 0.5);
-            }, 400); // User-defined delay
+                playSFX('pbody-animation.wav');
+            }, 400);
         }
     };
 
@@ -130,7 +145,7 @@
             trigger.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                playSFX('portal_button_down_01.wav', 0.3);
+                playSFX('portal_button_down_01.wav');
                 overlay.classList.add('active');
             });
         });
@@ -139,14 +154,14 @@
             closeBtn.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                playSFX('portal_button_down_01.wav', 0.3);
+                playSFX('portal_button_down_01.wav');
                 overlay.classList.remove('active');
             });
         }
 
         overlay.addEventListener('click', function (e) {
             if (e.target === overlay) {
-                playSFX('portal_button_down_01.wav', 0.3);
+                playSFX('portal_button_down_01.wav');
                 overlay.classList.remove('active');
             }
         });
@@ -159,11 +174,118 @@
         });
     }
 
+    // 4. Obsługa Panelu Sterowania (Control Panel w prawym górnym rogu)
+    function initControlPanel() {
+        const viewport = document.getElementById('aperture-viewport');
+        if (!viewport) return;
+
+        if (document.getElementById('aperture-control-panel')) return;
+
+        const panelHTML = `
+            <div id="aperture-control-panel" class="control-panel-wrapper">
+                <div id="control-gear-btn" role="button" aria-label="Control Panel">
+                    <i class="fas fa-cog gear-icon"></i>
+                </div>
+                <div id="control-panel">
+                    <div class="panel-header">GŁÓWNY PANEL STEROWANIA</div>
+                    <div class="panel-section">
+                        <span class="section-title">&gt; AUDIO</span>
+                        <div class="volume-slider-container">
+                            <input type="range" id="audio-volume-slider" class="aperture-slider" min="0" max="1" step="0.05" value="0.3">
+                            <span id="volume-value">30%</span>
+                        </div>
+                        <button id="mute-btn" class="aperture-btn">WYCISZ DŹWIĘK</button>
+                    </div>
+                    <div class="panel-section">
+                        <span class="section-title">&gt; JĘZYK</span>
+                        <div id="lang-selectors"></div>
+                    </div>
+                    <div class="panel-section">
+                        <span class="section-title">&gt; TRYB WIDOKU</span>
+                        <div class="btn-group">
+                            <button class="aperture-btn active" disabled>3D LAB</button>
+                            <button class="aperture-btn" disabled>STATIC</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        viewport.insertAdjacentHTML('beforeend', panelHTML);
+
+        const panelWrapper = document.getElementById('aperture-control-panel');
+        const gearBtn = document.getElementById('control-gear-btn');
+        const slider = document.getElementById('audio-volume-slider');
+        const display = document.getElementById('volume-value');
+        const muteBtn = document.getElementById('mute-btn');
+
+        let savedVol = localStorage.getItem('aperture_volume');
+        let currentVol = savedVol !== null ? parseFloat(savedVol) : 0.3;
+        if (isNaN(currentVol)) currentVol = 0.3;
+        let isMuted = localStorage.getItem('aperture_muted') === 'true';
+
+        slider.value = currentVol;
+
+        function updateVolumeUI() {
+            if (isMuted) {
+                muteBtn.textContent = 'PRZYWRÓĆ DŹWIĘK';
+                muteBtn.classList.add('active');
+                slider.disabled = true;
+                display.textContent = 'WYC.';
+            } else {
+                const v = parseFloat(slider.value);
+                muteBtn.textContent = 'WYCISZ DŹWIĘK';
+                muteBtn.classList.remove('active');
+                slider.disabled = false;
+                display.textContent = Math.round(v * 100) + '%';
+            }
+
+            if (window.apertureAudio && window.apertureAudio.bgm) {
+                window.apertureAudio.bgm.volume = Math.max(0, Math.min(1, getEffectiveVolume() * 0.7));
+            }
+        }
+
+        updateVolumeUI();
+
+        gearBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSFX('portal_button_down_01.wav');
+            panelWrapper.classList.toggle('open');
+        });
+
+        document.addEventListener('mousedown', (e) => {
+            if (!panelWrapper.contains(e.target)) {
+                panelWrapper.classList.remove('open');
+            }
+        });
+
+        slider.addEventListener('input', (e) => {
+            const v = parseFloat(e.target.value);
+            localStorage.setItem('aperture_volume', v);
+            if (isMuted) {
+                isMuted = false;
+                localStorage.setItem('aperture_muted', 'false');
+            }
+            updateVolumeUI();
+        });
+
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isMuted = !isMuted;
+            localStorage.setItem('aperture_muted', isMuted);
+            updateVolumeUI();
+            if (!isMuted) {
+                playSFX('portal_button_down_01.wav');
+            }
+        });
+    }
+
     // Init
     window.addEventListener('load', function () {
         initBGM();
         setupClickDelegation();
         initCVModal();
+        initControlPanel();
     });
 
 })();

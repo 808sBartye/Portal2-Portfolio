@@ -46,9 +46,15 @@
 
     function playSound(src) {
         if (!src) return;
+        if (localStorage.getItem('aperture_muted') === 'true') return;
+        var savedVol = localStorage.getItem('aperture_volume');
+        var vol = savedVol !== null ? parseFloat(savedVol) : 0.3;
+        if (isNaN(vol)) vol = 0.3;
+        if (vol <= 0) return;
+
         try {
             var audio = new Audio(src);
-            audio.volume = 0.7;
+            audio.volume = Math.max(0, Math.min(1, vol));
             audio.play().catch(function () { /* ignore */ });
         } catch (e) { /* ignore */ }
     }
