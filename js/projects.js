@@ -376,14 +376,14 @@ function checkPortalHover() {
             }
             hoveredPortal = object;
             animatePortal(hoveredPortal, true);
-            document.body.style.cursor = 'pointer';
+            document.body.style.cursor = "url('assets/cursor/Alternate-Link.cur'), pointer";
         }
     } else {
         if (hoveredPortal) {
             // Mouse left portal
             animatePortal(hoveredPortal, false);
             hoveredPortal = null;
-            document.body.style.cursor = 'default';
+            document.body.style.cursor = "url('assets/cursor/Normal.cur'), auto";
         }
     }
 }
@@ -744,6 +744,12 @@ function playRobotAnimation(sprite, overlay, robotName) {
     if (anim.isAnimating) return;
 
     anim.isAnimating = true;
+
+    // Trigger audio exactly when animation starts
+    // This uses the aperture-audio.js logic which handles the specific delays per robot
+    if (typeof window.playRobotAudio === 'function') {
+        window.playRobotAudio(robotName);
+    }
 
     // Cross-fade: sprite opacity 1->0, overlay opacity 0->1
     // Cache-busting to force animation restart from beginning

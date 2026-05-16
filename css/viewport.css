@@ -5,11 +5,17 @@ html, body {
     padding: 0;
     overflow: hidden;
     background: #000;
+    cursor: url('../assets/cursor/Normal.cur'), auto !important;
     /* Letterbox: center the viewport box */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+}
+
+/* Interaktywne elementy - kursor */
+a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"], .robot-sprite, .grid-item, .grid-tile, .info-bar, .core-link, a * {
+    cursor: url('../assets/cursor/Alternate-Link.cur'), pointer !important;
 }
 
 /* ══ GLOBAL APERTURE VIEWPORT — Letterbox container ══ */

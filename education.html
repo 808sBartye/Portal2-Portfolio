@@ -14,11 +14,7 @@
         <div class="edu-scene-wrapper">
             <div class="edu-bg-layer">
                 <img src="assets/education_background.png" alt="Chamber Background" class="edu-bg-img">
-                
-                <!-- Background Music - Education Soundtrack -->
-                <audio id="bg-music" loop autoplay muted>
-                    <source src="assets/tracks/education-soundtrack.mp3" type="audio/mpeg">
-                </audio>
+
                 
                 <!-- GLaDOS 2.5D Component - locked to background -->
                 <div id="glados-container">
@@ -564,48 +560,14 @@
                     gladosArm.style.setProperty('--parallax-rotate', `${armRotate}deg`);
                 });
             }
-            
-            // Background music - 30% volume, unmute on first click
-            const bgMusic = document.getElementById('bg-music');
-            if (bgMusic) {
-                bgMusic.volume = 0.3;
-                
-                const unmuteAudio = () => {
-                    if (bgMusic.muted) {
-                        bgMusic.muted = false;
-                        bgMusic.play().catch(() => {});
-                    }
-                };
-                
-                document.addEventListener('click', unmuteAudio, { once: true });
-            }
-            
             // Page transition - fade in on load
             setTimeout(() => {
                 document.body.classList.remove('page-loading');
                 document.body.classList.add('page-loaded');
             }, 100);
-            
-            // Page transition - fade out before leaving
-            document.querySelectorAll('a').forEach(link => {
-                const href = link.getAttribute('href');
-                // Tylko linki wewnętrzne
-                if (!href || href.startsWith('http') || href.startsWith('#') || !href.includes('.html')) {
-                    return;
-                }
-                
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const overlay = document.querySelector('.page-transition-overlay');
-                    overlay.classList.add('fade-out');
-                    
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 400);
-                });
-            });
         });
     </script>
+    <script src="js/aperture-audio.js"></script>
     <script src="js/aperture-transitions.js"></script>
     <script src="js/aperture-scale.js"></script>
 </body>
