@@ -753,7 +753,7 @@ function playRobotAnimation(sprite, overlay, robotName) {
 
     // Cross-fade: sprite opacity 1->0, overlay opacity 0->1
     // Cache-busting to force animation restart from beginning
-    const animUrl = robotName === 'pbody' ? 'assets/projects/pbody-animation.png' : 'assets/projects/atlas-animation.png';
+    const animUrl = robotName === 'pbody' ? 'assets/projects/pbody-animation.webp' : 'assets/projects/atlas-animation.webp';
     overlay.src = animUrl + '?t=' + Date.now();
     overlay.classList.add('animating');
 
