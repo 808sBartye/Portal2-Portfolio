@@ -156,6 +156,10 @@
             
             sectionContent.innerHTML = `<h2>${data.title}</h2>${data.content}`;
             
+            if (data.githubUrl) {
+                window.open(data.githubUrl, '_blank');
+            }
+            
             const tl = gsap.timeline();
             
             tl.to(gridView, {
