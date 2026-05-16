@@ -816,5 +816,18 @@ function syncMenuPositions() {
     menuContainer.style.transform = `translate(0, -50%) rotateY(${rotationDeg}deg)`;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const imagesToPreload = [
+        'assets/projects/atlas-animation.png',
+        'assets/projects/pbody-animation.png'
+    ];
+
+    imagesToPreload.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+});
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
+

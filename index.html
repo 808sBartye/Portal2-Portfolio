@@ -12,7 +12,6 @@
     <div class="page-transition-overlay"></div>
     <div id="app">
         <section id="view-menu" class="view active" style="opacity: 1;">
-            <div id="debug-info" style="position: fixed; top: 10px; left: 10px; color: lime; font-family: monospace; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px;">Loading...</div>
             <video autoplay loop muted playsinline class="bg-video" poster="assets/education_background.png" id="bg-video">
                 <source src="assets/video/menu_background.mp4" type="video/mp4">
             </video>
@@ -89,17 +88,6 @@
             
             lucide.createIcons();
             
-            const debug = document.getElementById('debug-info');
-            const video = document.getElementById('bg-video');
-            if (video && debug) {
-                video.addEventListener('loadeddata', () => {
-                    debug.innerHTML += 'Video: loaded<br>';
-                });
-                video.addEventListener('error', () => {
-                    debug.innerHTML += 'Video: ERROR<br>';
-                });
-                debug.innerHTML += 'Video ready<br>';
-            }
             // Page transition - fade in on load
             setTimeout(() => {
                 document.body.classList.remove('page-loading');
