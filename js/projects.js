@@ -818,8 +818,8 @@ function syncMenuPositions() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const imagesToPreload = [
-        'assets/projects/atlas-animation.png',
-        'assets/projects/pbody-animation.png'
+        'assets/projects/atlas-animation.webp',
+        'assets/projects/pbody-animation.webp'
     ];
 
     imagesToPreload.forEach(src => {
