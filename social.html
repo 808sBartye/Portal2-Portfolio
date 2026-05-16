@@ -416,8 +416,7 @@
                 </a>
 
                 <!-- CV — Żółty Rdzeń (Intelligence) -->
-                <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" class="core-link" data-color="yellow"
-                    id="core-cv">
+                <a href="#" class="core-link cv-trigger" data-color="yellow" id="core-cv">
                     <img src="assets/socialbots/yellow-cv-off.webp" alt="CV" class="core-off">
                     <img src="assets/socialbots/yellow-cv-on.webp" alt="CV aktywny" class="core-on">
                     <span class="core-label">Curriculum Vitae</span>
@@ -528,6 +527,19 @@
             });
         });
     </script>
+
+    <!-- ══ CV MODAL ══ -->
+    <div id="cv-modal-overlay">
+        <div id="cv-modal-box">
+            <h3>[ WYBIERZ WERSJĘ CV ]</h3>
+            <div class="cv-buttons">
+                <a href="Bartosz_Majocha_Resume_PL.pdf" target="_blank" class="cv-btn">🇵🇱 Wersja PL</a>
+                <a href="Bartosz_Majocha_Resume_EN.pdf" target="_blank" class="cv-btn">🇬🇧 Wersja ENG</a>
+            </div>
+            <button id="close-cv-modal">[ X ] ANULUJ</button>
+        </div>
+    </div>
+
     <script src="js/aperture-audio.js"></script>
     <script src="js/aperture-transitions.js"></script>
     <script src="js/aperture-scale.js"></script>

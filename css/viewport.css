@@ -40,3 +40,92 @@ a, button, .education-card, .rozszerz-opis, .expand-description, [role="button"]
     opacity: 1;
     transition: opacity 1s ease;
 }
+
+/* ══ CV MODAL OVERLAY ══ */
+#cv-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+#cv-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#cv-modal-box {
+    background: #000;
+    border: 2px solid #00aaff;
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.4);
+    padding: 40px 50px;
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    color: #fff;
+    max-width: 500px;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#cv-modal-overlay.active #cv-modal-box {
+    transform: scale(1);
+}
+
+#cv-modal-box h3 {
+    color: #00aaff;
+    font-size: 20px;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.cv-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 35px;
+}
+
+.cv-btn {
+    background: rgba(0, 170, 255, 0.15);
+    border: 1px solid #00aaff;
+    color: #00aaff;
+    padding: 14px 28px;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.cv-btn:hover {
+    background: #00aaff;
+    color: #000;
+    box-shadow: 0 0 20px #00aaff;
+}
+
+#close-cv-modal {
+    background: rgba(255, 50, 50, 0.15);
+    border: 1px solid #ff3333;
+    color: #ff3333;
+    padding: 10px 24px;
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#close-cv-modal:hover {
+    background: #ff3333;
+    color: #000;
+    box-shadow: 0 0 20px #ff3333;
+}

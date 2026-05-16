@@ -118,10 +118,52 @@
         }
     };
 
+    // 3. Obsługa Modala CV
+    function initCVModal() {
+        const overlay = document.getElementById('cv-modal-overlay');
+        const closeBtn = document.getElementById('close-cv-modal');
+        const triggers = document.querySelectorAll('.cv-trigger');
+
+        if (!overlay) return;
+
+        triggers.forEach(trigger => {
+            trigger.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                playSFX('portal_button_down_01.wav', 0.3);
+                overlay.classList.add('active');
+            });
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                playSFX('portal_button_down_01.wav', 0.3);
+                overlay.classList.remove('active');
+            });
+        }
+
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) {
+                playSFX('portal_button_down_01.wav', 0.3);
+                overlay.classList.remove('active');
+            }
+        });
+
+        const cvBtns = overlay.querySelectorAll('.cv-btn');
+        cvBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                overlay.classList.remove('active');
+            });
+        });
+    }
+
     // Init
     window.addEventListener('load', function () {
         initBGM();
         setupClickDelegation();
+        initCVModal();
     });
 
 })();
