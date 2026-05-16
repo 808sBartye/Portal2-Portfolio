@@ -34,13 +34,18 @@ const CONFIG = {
 // Initialize the scene
 function init() {
     console.log('Initializing scene...');
+    // Get the viewport container (letterbox container)
+    const viewport = document.getElementById('aperture-viewport');
+    const W = viewport.clientWidth;
+    const H = viewport.clientHeight;
+
     // Scene setup
     scene = new THREE.Scene();
     
     // Camera setup
     camera = new THREE.PerspectiveCamera(
         CONFIG.fov,
-        window.innerWidth / window.innerHeight,
+        W / H,
         0.1,
         1000
     );
@@ -51,7 +56,7 @@ function init() {
         antialias: true,
         alpha: true 
     });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     document.getElementById('webgl-container').appendChild(renderer.domElement);
     
@@ -128,8 +133,9 @@ function loadTexture(loader, url) {
 
 // Create Hub background plane
 function createHub(texture) {
-    // Calculate plane size to cover viewport
-    const aspect = window.innerWidth / window.innerHeight;
+    // Calculate plane size to cover the aperture viewport
+    const viewport = document.getElementById('aperture-viewport');
+    const aspect = viewport.clientWidth / viewport.clientHeight;
     const planeHeight = 5 * Math.tan((CONFIG.fov * Math.PI / 180) / 2) * 2;
     const planeWidth = planeHeight * aspect;
     
@@ -309,9 +315,13 @@ function createPortalParticles(colorHex, basePos) {
 
 // Handle mouse movement for raycasting, parallax and texture offset
 function onMouseMove(event) {
-    // Update mouse coordinates for raycaster
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    const viewport = document.getElementById('aperture-viewport');
+    const rect = viewport.getBoundingClientRect();
+    const W = viewport.clientWidth;
+    const H = viewport.clientHeight;
+    // Normalize mouse coords relative to the aperture viewport
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     
     // Kamera przesuwa się jak w Education - mocny ruch lewo-prawo
     targetCameraPos.x = mouse.x * CONFIG.parallaxStrength;
@@ -464,15 +474,17 @@ function updateCameraParallax() {
 
 // Handle window resize
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    const viewport = document.getElementById('aperture-viewport');
+    const W = viewport.clientWidth;
+    const H = viewport.clientHeight;
+
+    camera.aspect = W / H;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    // Composer wyłączony - brak aktualizacji rozmiaru
+    renderer.setSize(W, H);
     
     // Update hub plane size
     if (hubPlane) {
-        const aspect = window.innerWidth / window.innerHeight;
+        const aspect = W / H;
         const planeHeight = 5 * Math.tan((CONFIG.fov * Math.PI / 180) / 2) * 2;
         const planeWidth = planeHeight * aspect;
         hubPlane.geometry.dispose();
@@ -531,9 +543,11 @@ function animateParticles(particles, time, speedMultiplier = 1.0) {
 function setupPortalClickAnimation() {
     window.addEventListener('click', (event) => {
         // Sprawdź czy kliknięto w portal
+        const viewport = document.getElementById('aperture-viewport');
+        const rect = viewport.getBoundingClientRect();
         const portalMouse = new THREE.Vector2();
-        portalMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        portalMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        portalMouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        portalMouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
         
         const portalRaycaster = new THREE.Raycaster();
         portalRaycaster.setFromCamera(portalMouse, camera);
@@ -608,9 +622,11 @@ function syncRobotOverlayPositions() {
     if (pbodyContainer && robotPbody) {
         const vector = robotPbody.position.clone();
         vector.project(camera);
-        
-        const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
+        const viewport = document.getElementById('aperture-viewport');
+        const W = viewport.clientWidth;
+        const H = viewport.clientHeight;
+        const x = (vector.x * 0.5 + 0.5) * W;
+        const y = (-(vector.y * 0.5) + 0.5) * H;
         
         pbodyContainer.style.position = 'absolute';
         pbodyContainer.style.left = x + 'px';
@@ -621,9 +637,11 @@ function syncRobotOverlayPositions() {
     if (atlasContainer && robotAtlas) {
         const vector = robotAtlas.position.clone();
         vector.project(camera);
-        
-        const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
+        const viewport = document.getElementById('aperture-viewport');
+        const W = viewport.clientWidth;
+        const H = viewport.clientHeight;
+        const x = (vector.x * 0.5 + 0.5) * W;
+        const y = (-(vector.y * 0.5) + 0.5) * H;
         
         atlasContainer.style.position = 'absolute';
         atlasContainer.style.left = x + 'px';
@@ -689,8 +707,9 @@ function setupRobotAnimations() {
     const robotMouse = new THREE.Vector2();
     
     window.addEventListener('click', (event) => {
-        robotMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        robotMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        const vpRect = document.getElementById('aperture-viewport').getBoundingClientRect();
+        robotMouse.x = ((event.clientX - vpRect.left) / vpRect.width) * 2 - 1;
+        robotMouse.y = -((event.clientY - vpRect.top) / vpRect.height) * 2 + 1;
         
         robotRaycaster.setFromCamera(robotMouse, camera);
         const intersects = robotRaycaster.intersectObjects([robotPbody, robotAtlas].filter(Boolean));
@@ -761,14 +780,16 @@ function syncMenuPositions() {
     const menuContainer = document.getElementById('left-wall-menu');
     if (!menuContainer || menuMeshes.length === 0) return;
     
-    const mesh = menuMeshes[0]; // Tylko jeden mesh dla caÅego menu
+    const mesh = menuMeshes[0];
     const vector = mesh.position.clone();
     vector.project(camera);
+    const viewport = document.getElementById('aperture-viewport');
+    const W = viewport.clientWidth;
+    const H = viewport.clientHeight;
     
-    const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-    const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
+    const x = (vector.x * 0.5 + 0.5) * W;
+    const y = (-(vector.y * 0.5) + 0.5) * H;
     
-    // Konwersja radianów na stopnie dla CSS
     const rotationDeg = (mesh.rotation.y * 180 / Math.PI);
     
     menuContainer.style.position = 'absolute';

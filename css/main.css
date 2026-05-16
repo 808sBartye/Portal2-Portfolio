@@ -13,15 +13,35 @@
 html, body {
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     background: #000;
+    /* Letterbox: center the viewport box */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
+
+/* ══ GLOBAL APERTURE VIEWPORT — Letterbox container ══ */
+/* Locks aspect ratio 1920/876 — black bars on top/bottom on wider screens */
+#aperture-viewport {
+    position: relative;
+    width: 1920px;
+    height: 876px;
+    transform-origin: center center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
 
 #app {
     width: 100%;
     height: 100%;
     position: relative;
 }
+
 
 #view-menu {
     position: relative;
@@ -127,10 +147,10 @@ html, body {
 /* Layer 1: Background (Z-Index: 1) - Overscan for parallax */
 .edu-bg-layer {
     position: absolute;
-    top: -15vh;
-    left: -15vw;
-    width: 130vw;
-    height: 130vh;
+    top: -131px;
+    left: -288px;
+    width: 2496px;
+    height: 1139px;
     z-index: 1;
     will-change: transform;
 }
@@ -658,7 +678,7 @@ html, body {
    ============================================ */
 
 .page-transition-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;

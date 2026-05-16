@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wykształcenie - Aperture Science</title>
+    <link rel="stylesheet" href="css/viewport.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="page-loading">
+    <div id="aperture-viewport">
     <div class="page-transition-overlay"></div>
     <div class="education-page">
         <div class="edu-scene-wrapper">
@@ -92,7 +94,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!-- /.education-page -->
+    </div><!-- /#aperture-viewport -->
     </div>
     
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -603,5 +606,6 @@
             });
         });
     </script>
+    <script src="js/aperture-scale.js"></script>
 </body>
 </html>

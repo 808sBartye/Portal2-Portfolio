@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aperture Science Interactive Portfolio</title>
+    <link rel="stylesheet" href="css/viewport.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="page-loading">
+    <div id="aperture-viewport">
     <div class="page-transition-overlay"></div>
     <div id="app">
         <section id="view-menu" class="view active" style="opacity: 1;">
@@ -44,7 +46,8 @@
             </nav>
         </section>
         
-    </div>
+    </div><!-- /#app -->
+    </div><!-- /#aperture-viewport -->
     
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -151,5 +154,6 @@
             });
         });
     </script>
+    <script src="js/aperture-scale.js"></script>
 </body>
 </html>

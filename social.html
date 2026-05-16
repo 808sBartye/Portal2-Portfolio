@@ -18,7 +18,7 @@
            ============================================================ */
 
         .social-page {
-            position: fixed;
+            position: absolute;
             inset: 0;
             overflow: hidden;
             background: #000;
@@ -50,7 +50,7 @@
 
         /* ── NAWIGACJA (lewa strona, spójna z resztą portfolio) ──── */
         .social-nav-container {
-            position: fixed;
+            position: absolute;
             top: 50%;
             left: 2.5rem;
             transform: translateY(-50%);
@@ -104,7 +104,7 @@
 
         /* ── HEADER label ────────────────────────────────────────── */
         .social-header {
-            position: fixed;
+            position: absolute;
             top: 2rem;
             left: 50%;
             transform: translateX(-50%);
@@ -142,7 +142,7 @@
             transform: translateX(-50%);
             z-index: 10;
             display: flex;
-            gap: 1vw;
+            gap: 19.2px;
             align-items: flex-end;
         }
 
@@ -309,7 +309,7 @@
             transform: translateX(-50%);
             z-index: 9;
             display: flex;
-            gap: 1vw;
+            gap: 19.2px;
             align-items: flex-start;
             pointer-events: none;
         }
@@ -334,7 +334,7 @@
 
         /* ── STATUS BAR u dołu ───────────────────────────────────── */
         .social-status-bar {
-            position: fixed;
+            position: absolute;
             bottom: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
@@ -362,6 +362,7 @@
 </head>
 
 <body class="page-loading">
+    <div id="aperture-viewport">
     <div class="page-transition-overlay"></div>
 
     <div class="social-page">
@@ -444,6 +445,7 @@
         </div>
 
     </div><!-- /.social-page -->
+    </div><!-- /#aperture-viewport -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
@@ -525,6 +527,7 @@
             });
         });
     </script>
+    <script src="js/aperture-scale.js"></script>
 </body>
 
 </html>
