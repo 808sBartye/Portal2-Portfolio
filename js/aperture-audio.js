@@ -77,7 +77,7 @@
 
             if (target) {
                 // Ignore specific control panel buttons handled separately
-                if (target.closest('#control-gear-btn') || target.closest('#mute-btn') || target.closest('#audio-volume-slider')) {
+                if (target.closest('#control-gear-btn') || target.closest('#mute-btn') || target.closest('#audio-volume-slider') || target.closest('#lang-selectors')) {
                     return;
                 }
 
@@ -187,21 +187,24 @@
                     <i class="fas fa-cog gear-icon"></i>
                 </div>
                 <div id="control-panel">
-                    <div class="panel-header">GŁÓWNY PANEL STEROWANIA</div>
+                    <div class="panel-header" data-i18n="panel_title">GŁÓWNY PANEL STEROWANIA</div>
                     <div class="panel-section">
-                        <span class="section-title">&gt; AUDIO</span>
+                        <span class="section-title" data-i18n="panel_audio">&gt; AUDIO</span>
                         <div class="volume-slider-container">
                             <input type="range" id="audio-volume-slider" class="aperture-slider" min="0" max="1" step="0.05" value="0.3">
                             <span id="volume-value">30%</span>
                         </div>
-                        <button id="mute-btn" class="aperture-btn">WYCISZ DŹWIĘK</button>
+                        <button id="mute-btn" class="aperture-btn" data-i18n="panel_mute">WYCISZ DŹWIĘK</button>
                     </div>
                     <div class="panel-section">
-                        <span class="section-title">&gt; JĘZYK</span>
-                        <div id="lang-selectors"></div>
+                        <span class="section-title" data-i18n="panel_lang">&gt; JĘZYK</span>
+                        <div id="lang-selectors" class="btn-group">
+                            <button id="lang-pl-btn" class="aperture-btn active">PL</button>
+                            <button id="lang-en-btn" class="aperture-btn">ENG</button>
+                        </div>
                     </div>
                     <div class="panel-section">
-                        <span class="section-title">&gt; TRYB WIDOKU</span>
+                        <span class="section-title" data-i18n="panel_view">&gt; TRYB WIDOKU</span>
                         <div class="btn-group">
                             <button class="aperture-btn active" disabled>3D LAB</button>
                             <button class="aperture-btn" disabled>STATIC</button>
@@ -218,6 +221,8 @@
         const slider = document.getElementById('audio-volume-slider');
         const display = document.getElementById('volume-value');
         const muteBtn = document.getElementById('mute-btn');
+        const plBtn = document.getElementById('lang-pl-btn');
+        const enBtn = document.getElementById('lang-en-btn');
 
         let savedVol = localStorage.getItem('aperture_volume');
         let currentVol = savedVol !== null ? parseFloat(savedVol) : 0.3;
@@ -226,15 +231,41 @@
 
         slider.value = currentVol;
 
+        const currentLang = localStorage.getItem('aperture_lang') || 'pl';
+        if (plBtn && enBtn) {
+            if (currentLang === 'en') {
+                plBtn.classList.remove('active');
+                enBtn.classList.add('active');
+            } else {
+                enBtn.classList.remove('active');
+                plBtn.classList.add('active');
+            }
+
+            plBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playSFX('portal_button_down_01.wav');
+                if (window.apertureI18n) window.apertureI18n.setLang('pl');
+                updateVolumeUI();
+            });
+
+            enBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playSFX('portal_button_down_01.wav');
+                if (window.apertureI18n) window.apertureI18n.setLang('en');
+                updateVolumeUI();
+            });
+        }
+
         function updateVolumeUI() {
+            const isEng = (localStorage.getItem('aperture_lang') || 'pl') === 'en';
             if (isMuted) {
-                muteBtn.textContent = 'PRZYWRÓĆ DŹWIĘK';
+                muteBtn.textContent = isEng ? 'UNMUTE AUDIO' : 'PRZYWRÓĆ DŹWIĘK';
                 muteBtn.classList.add('active');
                 slider.disabled = true;
-                display.textContent = 'WYC.';
+                display.textContent = isEng ? 'MUTED' : 'WYC.';
             } else {
                 const v = parseFloat(slider.value);
-                muteBtn.textContent = 'WYCISZ DŹWIĘK';
+                muteBtn.textContent = isEng ? 'MUTE AUDIO' : 'WYCISZ DŹWIĘK';
                 muteBtn.classList.remove('active');
                 slider.disabled = false;
                 display.textContent = Math.round(v * 100) + '%';
@@ -246,6 +277,7 @@
         }
 
         updateVolumeUI();
+        if (window.apertureI18n) window.apertureI18n.apply();
 
         gearBtn.addEventListener('click', (e) => {
             e.stopPropagation();
