@@ -264,6 +264,65 @@ html, body {
     }
 }
 
+/* Dynamic Chamber Status Mask over baked-in screen.png text */
+.screen-status-header {
+    position: absolute;
+    top: 11.5%;
+    left: 8%;
+    width: 84%;
+    height: 31%;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 18px;
+}
+
+.status-bg-mask {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    z-index: 1;
+}
+
+.status-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.status-title {
+    font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 500;
+    color: rgba(210, 235, 255, 0.9);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    text-shadow: 0 0 12px rgba(100, 200, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.status-line-sep {
+    width: 100%;
+    height: 1px;
+    background: rgba(160, 210, 255, 0.4);
+    box-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
+    margin-bottom: 6px;
+}
+
+.chamber-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5.2rem;
+    font-weight: 700;
+    color: #c8e6ff;
+    line-height: 0.85;
+    letter-spacing: -2px;
+    text-shadow: 0 0 25px rgba(150, 210, 255, 0.7);
+    transition: opacity 0.3s ease;
+}
+
 /* Layer 3: Grid (Z-Index: 3) - 3x2 Layout inside screen panel */
 .edu-grid {
     position: absolute;

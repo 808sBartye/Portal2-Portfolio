@@ -58,6 +58,14 @@
                     <div class="edu-screen-glow"></div>
                     <div class="edu-screen-layer">
                         <img src="assets/screen.png" alt="UI Panel" class="edu-screen-img">
+                        <div id="screen-status-header" class="screen-status-header">
+                            <div class="status-bg-mask"></div>
+                            <div class="status-content">
+                                <div class="status-title">CHAMBER STATUS: <span data-i18n="status_edu">Wykształcenie</span></div>
+                                <div class="status-line-sep"></div>
+                                <div id="chamber-number" class="chamber-number">01</div>
+                            </div>
+                        </div>
                         <div id="flying-icon-container"
                             style="position: absolute; z-index: 100; pointer-events: none; display: none;"></div>
                         <div class="edu-grid">
@@ -416,6 +424,7 @@
                     stagger: 0.02
                 });
 
+                gsap.to('#chamber-number', { opacity: 0, duration: 0.3 });
                 gsap.to(item, { opacity: 1, duration: 0.1 });
 
                 this.flyingIconEffect.flyToCenter(item, () => {
@@ -482,6 +491,8 @@
                     clearInterval(this.typewriterInterval);
                     this.typewriterInterval = null;
                 }
+
+                gsap.to('#chamber-number', { opacity: 1, duration: 0.3 });
 
                 gsap.to(this.detailView, {
                     opacity: 0,

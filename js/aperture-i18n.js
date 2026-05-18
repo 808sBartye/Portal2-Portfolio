@@ -26,7 +26,8 @@ window.apertureI18n = {
             edu_grid_2: "CYBERSEC",
             edu_grid_3: "3D",
             edu_grid_4: "IT ADMIN.",
-            edu_grid_5: "MEDIA &amp; GFX"
+            edu_grid_5: "MEDIA &amp; GFX",
+            status_edu: "Wykształcenie"
         },
         en: {
             panel_title: "MAIN CONTROL PANEL",
@@ -49,7 +50,8 @@ window.apertureI18n = {
             edu_grid_2: "CYBERSEC",
             edu_grid_3: "3D DESIGN",
             edu_grid_4: "IT ADMIN.",
-            edu_grid_5: "MEDIA &amp; UI"
+            edu_grid_5: "MEDIA &amp; UI",
+            status_edu: "Education"
         }
     },
 
