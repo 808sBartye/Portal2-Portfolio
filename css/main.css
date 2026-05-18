@@ -295,13 +295,14 @@ html, body {
 
 .status-title {
     font-family: 'Rajdhani', 'Orbitron', sans-serif;
-    font-size: 1.55rem;
+    font-size: 1.45rem;
     font-weight: 500;
     color: rgba(210, 235, 255, 0.9);
     letter-spacing: 1px;
     margin-bottom: 4px;
     text-shadow: 0 0 12px rgba(100, 200, 255, 0.5);
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .status-line-sep {
