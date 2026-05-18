@@ -19,7 +19,14 @@ window.apertureI18n = {
             wall_menu: "MENU",
             wall_edu: "WYKSZTAŁCENIE",
             wall_proj: "PROJEKTY",
-            wall_soc: "SOCIAL MEDIA"
+            wall_soc: "SOCIAL MEDIA",
+            edu_return: "COFNIJ -&gt;",
+            edu_grid_0: "TECHNIK PR.",
+            edu_grid_1: "PROJECT MAN.",
+            edu_grid_2: "CYBERSEC",
+            edu_grid_3: "3D",
+            edu_grid_4: "IT ADMIN.",
+            edu_grid_5: "MEDIA &amp; GFX"
         },
         en: {
             panel_title: "MAIN CONTROL PANEL",
@@ -35,7 +42,14 @@ window.apertureI18n = {
             wall_menu: "MENU",
             wall_edu: "EDUCATION",
             wall_proj: "PROJECTS",
-            wall_soc: "SOCIAL MEDIA"
+            wall_soc: "SOCIAL MEDIA",
+            edu_return: "RETURN -&gt;",
+            edu_grid_0: "SOFTWARE DEV",
+            edu_grid_1: "PROJECT MAN.",
+            edu_grid_2: "CYBERSEC",
+            edu_grid_3: "3D DESIGN",
+            edu_grid_4: "IT ADMIN.",
+            edu_grid_5: "MEDIA &amp; UI"
         }
     },
 

@@ -39,17 +39,17 @@
                     <div class="menu-container">
                         <nav class="portal-menu">
                             <a href="index.html" class="portal-nav-item">
-                                <span class="portal-text">MENU</span>
+                                <span class="portal-text" data-i18n="wall_menu">MENU</span>
                             </a>
                             <a href="education.html" class="portal-nav-item active">
-                                <span class="portal-text">WYKSZTAŁCENIE</span>
+                                <span class="portal-text" data-i18n="wall_edu">WYKSZTAŁCENIE</span>
                                 <span class="portal-underline"></span>
                             </a>
                             <a href="projects.html" class="portal-nav-item">
-                                <span class="portal-text">PROJEKTY</span>
+                                <span class="portal-text" data-i18n="wall_proj">PROJEKTY</span>
                             </a>
                             <a href="social.html" class="portal-nav-item">
-                                <span class="portal-text">SOCIAL MEDIA</span>
+                                <span class="portal-text" data-i18n="wall_soc">SOCIAL MEDIA</span>
                             </a>
                         </nav>
                     </div>
@@ -63,34 +63,34 @@
                         <div class="edu-grid">
                             <div class="grid-item" data-index="0">
                                 <i data-lucide="atom" class="grid-icon"></i>
-                                <span class="grid-label">TECHNIK PR.</span>
+                                <span class="grid-label" data-i18n="edu_grid_0">TECHNIK PR.</span>
                             </div>
                             <div class="grid-item" data-index="1">
                                 <i data-lucide="brain" class="grid-icon"></i>
-                                <span class="grid-label">PROJECT MAN.</span>
+                                <span class="grid-label" data-i18n="edu_grid_1">PROJECT MAN.</span>
                             </div>
                             <div class="grid-item" data-index="2">
                                 <i data-lucide="shield" class="grid-icon"></i>
-                                <span class="grid-label">CYBERSEC</span>
+                                <span class="grid-label" data-i18n="edu_grid_2">CYBERSEC</span>
                             </div>
                             <div class="grid-item" data-index="3">
                                 <i data-lucide="box" class="grid-icon"></i>
-                                <span class="grid-label">3D</span>
+                                <span class="grid-label" data-i18n="edu_grid_3">3D</span>
                             </div>
                             <div class="grid-item" data-index="4">
                                 <i data-lucide="server" class="grid-icon"></i>
-                                <span class="grid-label">IT ADMIN.</span>
+                                <span class="grid-label" data-i18n="edu_grid_4">IT ADMIN.</span>
                             </div>
                             <div class="grid-item" data-index="5">
                                 <i data-lucide="layout" class="grid-icon"></i>
-                                <span class="grid-label">MEDIA & GFX</span>
+                                <span class="grid-label" data-i18n="edu_grid_5">MEDIA & GFX</span>
                             </div>
                         </div>
                         <div id="edu-detail-view" style="display: none;">
                             <i data-lucide="circle" class="detail-icon" id="detail-icon-el"></i>
                             <h2 class="detail-title">TITLE_PLACEHOLDER</h2>
                             <p id="typewriter-text"></p>
-                            <button id="btn-return">COFNIJ -></button>
+                            <button id="btn-return" data-i18n="edu_return">COFNIJ -></button>
                         </div>
                     </div>
                 </div>
@@ -300,29 +300,57 @@
                 this.lastClickedItem = null;
 
                 this.educationData = {
-                    0: {
-                        title: "Technik Programista, ZSEM w Nowym Sączu",
-                        text: "Solidny fundament programistyczny i algorytmiczny. Ukończenie szkoły z wyróżnieniem (Wpis do Złotej Księgi). Baza, na której buduję zaawansowane aplikacje webowe i mobilne."
+                    pl: {
+                        0: {
+                            title: "Technik Programista, ZSEM w Nowym Sączu",
+                            text: "Solidny fundament programistyczny i algorytmiczny. Ukończenie szkoły z wyróżnieniem (Wpis do Złotej Księgi). Baza, na której buduję zaawansowane aplikacje webowe i mobilne."
+                        },
+                        1: {
+                            title: "Project Management",
+                            text: "Certyfikaty PM Principles & Fundamentals (Zwolnieni z Teorii). Praktyczna znajomość cyklu życia projektu: od planowania budżetu po wdrożenie. Potwierdzona umiejętność prowadzenia zespołów."
+                        },
+                        2: {
+                            title: "Cyberbezpieczeństwo",
+                            text: "Lider ogólnopolskiej kampanii \"Łeb w Web\" (2200+ uczestników). Ścisła współpraca z NASK oraz konsultacje legislacyjne w Sejmie RP. Praktyczne zaplecze z zakresu cyberbezpieczeństwa."
+                        },
+                        3: {
+                            title: "Projektowanie 3D",
+                            text: "Certyfikowany, 30-godzinny kurs projektowania w Autodesk Fusion 360. Rozwinięta wyobraźnia przestrzenna i znajomość środowiska CAD, kluczowa przy prototypowaniu urządzeń (hardware)."
+                        },
+                        4: {
+                            title: "Administracja IT",
+                            text: "Zaawansowana administracja Windows Server 2016 (60-godzinne szkolenie). Praktyczna wiedza z zarządzania infrastrukturą, Active Directory i politykami GPO. Zrozumienie warstwy sieciowej."
+                        },
+                        5: {
+                            title: "Media & Frontend",
+                            text: "Certyfikowane kompetencje medialne. Doświadczenie w montażu wideo i realizacji transmisji na żywo (OBS, grafika). Świetne wyczucie estetyki, które przekładam bezpośrednio na projektowanie interfejsów (UI/UX)."
+                        }
                     },
-                    1: {
-                        title: "Project Management",
-                        text: "Certyfikaty PM Principles & Fundamentals (Zwolnieni z Teorii). Praktyczna znajomość cyklu życia projektu: od planowania budżetu po wdrożenie. Potwierdzona umiejętność prowadzenia zespołów."
-                    },
-                    2: {
-                        title: "Cyberbezpieczeństwo",
-                        text: "Lider ogólnopolskiej kampanii \"Łeb w Web\" (2200+ uczestników). Ścisła współpraca z NASK oraz konsultacje legislacyjne w Sejmie RP. Praktyczne zaplecze z zakresu cyberbezpieczeństwa."
-                    },
-                    3: {
-                        title: "Projektowanie 3D",
-                        text: "Certyfikowany, 30-godzinny kurs projektowania w Autodesk Fusion 360. Rozwinięta wyobraźnia przestrzenna i znajomość środowiska CAD, kluczowa przy prototypowaniu urządzeń (hardware)."
-                    },
-                    4: {
-                        title: "Administracja IT",
-                        text: "Zaawansowana administracja Windows Server 2016 (60-godzinne szkolenie). Praktyczna wiedza z zarządzania infrastrukturą, Active Directory i politykami GPO. Zrozumienie warstwy sieciowej."
-                    },
-                    5: {
-                        title: "Media & Frontend",
-                        text: "Certyfikowane kompetencje medialne. Doświadczenie w montażu wideo i realizacji transmisji na żywo (OBS, grafika). Świetne wyczucie estetyki, które przekładam bezpośrednio na projektowanie interfejsów (UI/UX)."
+                    en: {
+                        0: {
+                            title: "Software Developer, ZSEM in Nowy Sącz",
+                            text: "Solid foundation in programming and algorithms. Graduated with honors (Honor Roll / Golden Book Award). The core base upon which I build advanced web and mobile applications."
+                        },
+                        1: {
+                            title: "Project Management",
+                            text: "PM Principles & Fundamentals certificates (Zwolnieni z Teorii). Practical knowledge of the project lifecycle: from budgeting to deployment. Proven team leadership and organizational skills."
+                        },
+                        2: {
+                            title: "Cybersecurity",
+                            text: "Leader of a nationwide educational campaign (\"Łeb w Web\" Project, 2200+ participants). Close cooperation with NASK experts and legislative consultations at the Sejm of the RP. Practical cybersecurity background."
+                        },
+                        3: {
+                            title: "3D Design",
+                            text: "Certified 30-hour course in Autodesk Fusion 360 (SARR Technical Training). Developed spatial imagination and CAD environment proficiency, essential for hardware prototyping and product design."
+                        },
+                        4: {
+                            title: "IT Administration",
+                            text: "Advanced Windows Server 2016 administration (60h training, SARR Technical Training). Practical knowledge of infrastructure management, Active Directory, and GPO. Clear understanding of the network layer."
+                        },
+                        5: {
+                            title: "Media & Frontend",
+                            text: "Certified media competences (ZSEM TV). Hands-on experience in video editing and live broadcast production (OBS, live graphics). Strong sense of aesthetics applied directly to app UI/UX design."
+                        }
                     }
                 };
 
@@ -338,6 +366,18 @@
                 });
 
                 this.returnBtn.addEventListener('click', () => this.exitFocus());
+
+                window.addEventListener('apertureLangChanged', (e) => {
+                    const newLang = e.detail;
+                    if (this.isFocused && this.lastClickedItem) {
+                        const index = this.lastClickedItem.dataset.index;
+                        const data = this.educationData[newLang][index];
+                        if (data) {
+                            this.detailTitle.textContent = data.title;
+                            this.typewriterText.textContent = data.text;
+                        }
+                    }
+                });
             }
 
             setParallaxManager(manager) {
@@ -350,7 +390,8 @@
                 this.lastClickedItem = item;
 
                 const index = item.dataset.index;
-                const data = this.educationData[index];
+                const lang = (window.apertureI18n && window.apertureI18n.lang) || 'pl';
+                const data = this.educationData[lang][index];
                 if (!data) return;
 
                 if (this.parallaxManager) {
