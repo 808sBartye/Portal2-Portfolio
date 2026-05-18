@@ -20,12 +20,13 @@
         <div class="vignette"></div>
 
         <!-- Return button - always fixed -->
-        <button class="return-btn" onclick="returnToNexus()">
+        <!-- Return button - always fixed -->
+        <button class="return-btn" onclick="returnToNexus()" data-i18n="return_nexus">
             <span>&larr;</span> POWRÓT DO NEXUSA
         </button>
 
         <!-- Next Project Button -->
-        <button class="next-project-btn" onclick="goToNextProject()">
+        <button class="next-project-btn" onclick="goToNextProject()" data-i18n="next_project">
             NASTĘPNY PROJEKT <span>&rarr;</span>
         </button>
 
@@ -41,13 +42,13 @@
                         <div class="info-bar" data-section="main-info" onclick="showSection('main-info')">
                             <div class="info-bar-content">
                                 <h3>INTERACTIVE PORTFOLIO</h3>
-                                <p>Aperture Science UI</p>
+                                <p data-i18n="cham_a_sub_0">Aperture Science UI</p>
                             </div>
                         </div>
                         <div class="info-bar" data-section="about" onclick="showSection('about')">
                             <div class="info-bar-content">
                                 <h3>SPORTRECRUT</h3>
-                                <p>Aplikacja mobilna</p>
+                                <p data-i18n="cham_a_sub_1">Aplikacja mobilna</p>
                             </div>
                         </div>
                         <div class="info-bar" data-section="description" onclick="showSection('description')">
@@ -64,40 +65,40 @@
                         <div class="grid-tile" data-section="tech-stack" onclick="showSection('tech-stack')">
                             <i class="fas fa-layer-group"></i>
                             <h4>CORE STACK</h4>
-                            <span>Frontend & 3D</span>
+                            <span data-i18n="cham_a_tile_0">Frontend & 3D</span>
                         </div>
                         <div class="grid-tile" data-section="challenges" onclick="showSection('challenges')">
                             <i class="fas fa-terminal"></i>
-                            <h4>KOD ŹRÓDŁOWY</h4>
-                            <span>Zobacz jak to działa</span>
+                            <h4 data-i18n="cham_a_tile_1_t">KOD ŹRÓDŁOWY</h4>
+                            <span data-i18n="cham_a_tile_1">Zobacz jak to działa</span>
                         </div>
                         <div class="grid-tile" data-section="features" onclick="showSection('features')">
                             <i class="fas fa-cloud"></i>
                             <h4>MOBILE & CLOUD</h4>
-                            <span>Backend Architecture</span>
+                            <span data-i18n="cham_a_tile_2">Backend Architecture</span>
                         </div>
                         <div class="grid-tile" data-section="demo" onclick="showSection('demo')">
                             <i class="fas fa-code-branch"></i>
-                            <h4>REPOZYTORIUM</h4>
-                            <span>Baza kodu aplikacji</span>
+                            <h4 data-i18n="cham_a_tile_3_t">REPOZYTORIUM</h4>
+                            <span data-i18n="cham_a_tile_3">Baza kodu aplikacji</span>
                         </div>
                         <div class="grid-tile" data-section="github" onclick="showSection('github')">
                             <i class="fas fa-address-card"></i>
-                            <h4>KONTAKT</h4>
-                            <span>Mail & Telefon</span>
+                            <h4 data-i18n="cham_a_tile_4_t">KONTAKT</h4>
+                            <span data-i18n="cham_a_tile_4">Mail & Telefon</span>
                         </div>
                         <div class="grid-tile contact-tile" data-section="contact" onclick="showSection('contact')">
                             <i class="fas fa-map-marker-alt"></i>
-                            <h4>DOSTĘPNOŚĆ</h4>
-                            <span>Otwarty na współpracę</span>
+                            <h4 data-i18n="cham_a_tile_5_t">DOSTĘPNOŚĆ</h4>
+                            <span data-i18n="cham_a_tile_5">Otwarty na współpracę</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- VIEW: Section Detail (hidden by default) -->
                 <div id="section-view" class="view">
-                    <button class="back-btn" onclick="showGrid()">
-                        <i class="fas fa-arrow-left"></i> WRÓĆ
+                    <button class="back-btn" onclick="showGrid()" data-i18n="edu_return">
+                        <i class="fas fa-arrow-left"></i> COFNIJ -&gt;
                     </button>
                     <div class="section-content" id="section-content">
                         <!-- Content loaded dynamically -->
@@ -113,46 +114,102 @@
         <script>
             // Section content data
             const sectionData = {
-                'main-info': {
-                    title: 'O PROJEKCIE',
-                    content: '<p>Projekt, w którym się obecnie znajdujesz. W pełni responsywne portfolio webowe zaprojektowane od zera w estetyce terminali laboratoryjnych z Portala 2. Strona stanowi moje bezpośrednie środowisko testowe. Zaimplementowałem tu customowe animacje, zarządzanie stanem oraz integrację obiektów 3D, dbając o pełną optymalizację kodu i płynność interfejsu.</p>'
+                pl: {
+                    'main-info': {
+                        title: 'O PROJEKCIE',
+                        content: '<p>Projekt, w którym się obecnie znajdujesz. W pełni responsywne portfolio webowe zaprojektowane od zera w estetyce terminali laboratoryjnych z Portala 2. Strona stanowi moje bezpośrednie środowisko testowe. Zaimplementowałem tu customowe animacje, zarządzanie stanem oraz integrację obiektów 3D, dbając o pełną optymalizację kodu i płynność interfejsu.</p>'
+                    },
+                    'about': {
+                        title: 'O PROJEKCIE',
+                        content: '<p>Zaawansowana platforma mobilna (iOS/Android) rozwiązująca problem rekrutacji do amatorskich drużyn sportowych.</p><p>Jako główny twórca zaimplementowałem systemy grywalizacji oparte na utrzymywaniu aktywności (streaki), moduły analityczne oraz zaawansowane heatmapy odwzorowujące aktywność użytkowników na mapie.</p><p><strong>🏆 Projekt zajął 3. miejsce na lokalnym hackathonie.</strong></p>'
+                    },
+                    'description': {
+                        title: 'PROFIL GITHUB',
+                        githubUrl: 'https://github.com/808sBartye',
+                        content: '<p>Przekierowanie do głównego profilu. Zobacz historię commitów, workflow i pozostałe mniejsze projekty.</p><p><a href="https://github.com/808sBartye" target="_blank" class="action-btn"><i class="fab fa-github"></i> Przejdź do profilu @808sBartye</a></p>'
+                    },
+                    'tech-stack': {
+                        title: 'CORE STACK',
+                        content: '<p>Architektura aplikacji oparta na czystym i wydajnym kodzie:</p><ul><li><i class="fab fa-react"></i> React & TypeScript &ndash; logika i UI</li><li><i class="fab fa-css3-alt"></i> Zaawansowany CSS &ndash; customowe animacje i responsywność</li><li><i class="fas fa-cube"></i> Three.js &ndash; renderowanie obiektów przestrzennych 3D</li></ul>'
+                    },
+                    'challenges': {
+                        title: 'KOD ŹRÓDŁOWY',
+                        githubUrl: 'https://github.com/808sBartye/Poral2-Portfolio',
+                        content: '<p>Przekierowanie do repozytorium. Zobacz architekturę całego interfejsu w kodzie źródłowym.</p><p><a href="https://github.com/808sBartye/Poral2-Portfolio" target="_blank" class="action-btn"><i class="fab fa-github"></i> Kod źródłowy portfolio</a></p>'
+                    },
+                    'features': {
+                        title: 'MOBILE & CLOUD',
+                        content: '<p>Projekt zbudowany w środowisku cross-platformowym z chmurowym backendem:</p><ul><li><i class="fab fa-react"></i> React Native &ndash; aplikacja mobilna (iOS/Android)</li><li><i class="fas fa-database"></i> Supabase & PostgreSQL &ndash; relacyjna baza danych i logika</li><li><i class="fas fa-fire"></i> Firebase &ndash; autoryzacja i system powiadomień</li></ul>'
+                    },
+                    'demo': {
+                        title: 'REPOZYTORIUM',
+                        githubUrl: 'https://github.com/ekipa-pieronskich-legend/CN2026-SportRecrut',
+                        content: '<p>Przekierowanie do repozytorium. Sprawdź czystość kodu i strukturę bazy danych aplikacji SportRecrut.</p><p><a href="https://github.com/ekipa-pieronskich-legend/CN2026-SportRecrut" target="_blank" class="action-btn"><i class="fab fa-github"></i> Repozytorium SportRecrut</a></p>'
+                    },
+                    'github': {
+                        title: 'KONTAKT',
+                        content: '<p>Zapraszam do bezpośredniego kontaktu biznesowego i rekrutacyjnego:</p><ul><li><i class="fas fa-envelope"></i> <strong>E-mail:</strong> bmajocha@outlook.com</li><li><i class="fas fa-phone"></i> <strong>Telefon:</strong> +48 668 170 858</li></ul>'
+                    },
+                    'contact': {
+                        title: 'DOSTĘPNOŚĆ',
+                        content: '<p><strong>Aktualna lokalizacja:</strong> Nowy Sącz (i okolice)</p><p>Jestem w pełni gotowy do podjęcia pracy jako Junior Developer lub stażysta. Aktywnie rozważam pracę w modelu zdalnym, hybrydowym oraz <strong>pełną relokację</strong>.</p>'
+                    }
                 },
-                'about': {
-                    title: 'O PROJEKCIE',
-                    content: '<p>Zaawansowana platforma mobilna (iOS/Android) rozwiązująca problem rekrutacji do amatorskich drużyn sportowych.</p><p>Jako główny twórca zaimplementowałem systemy grywalizacji oparte na utrzymywaniu aktywności (streaki), moduły analityczne oraz zaawansowane heatmapy odwzorowujące aktywność użytkowników na mapie.</p><p><strong>🏆 Projekt zajął 3. miejsce na lokalnym hackathonie.</strong></p>'
-                },
-                'description': {
-                    title: 'PROFIL GITHUB',
-                    githubUrl: 'https://github.com/808sBartye',
-                    content: '<p>Przekierowanie do głównego profilu. Zobacz historię commitów, workflow i pozostałe mniejsze projekty.</p><p><a href="https://github.com/808sBartye" target="_blank" class="action-btn"><i class="fab fa-github"></i> Przejdź do profilu @808sBartye</a></p>'
-                },
-                'tech-stack': {
-                    title: 'CORE STACK',
-                    content: '<p>Architektura aplikacji oparta na czystym i wydajnym kodzie:</p><ul><li><i class="fab fa-react"></i> React & TypeScript &ndash; logika i UI</li><li><i class="fab fa-css3-alt"></i> Zaawansowany CSS &ndash; customowe animacje i responsywność</li><li><i class="fas fa-cube"></i> Three.js &ndash; renderowanie obiektów przestrzennych 3D</li></ul>'
-                },
-                'challenges': {
-                    title: 'KOD ŹRÓDŁOWY',
-                    githubUrl: 'https://github.com/808sBartye/Poral2-Portfolio',
-                    content: '<p>Przekierowanie do repozytorium. Zobacz architekturę całego interfejsu w kodzie źródłowym.</p><p><a href="https://github.com/808sBartye/Poral2-Portfolio" target="_blank" class="action-btn"><i class="fab fa-github"></i> Kod źródłowy portfolio</a></p>'
-                },
-                'features': {
-                    title: 'MOBILE & CLOUD',
-                    content: '<p>Projekt zbudowany w środowisku cross-platformowym z chmurowym backendem:</p><ul><li><i class="fab fa-react"></i> React Native &ndash; aplikacja mobilna (iOS/Android)</li><li><i class="fas fa-database"></i> Supabase & PostgreSQL &ndash; relacyjna baza danych i logika</li><li><i class="fas fa-fire"></i> Firebase &ndash; autoryzacja i system powiadomień</li></ul>'
-                },
-                'demo': {
-                    title: 'REPOZYTORIUM',
-                    githubUrl: 'https://github.com/ekipa-pieronskich-legend/CN2026-SportRecrut',
-                    content: '<p>Przekierowanie do repozytorium. Sprawdź czystość kodu i strukturę bazy danych aplikacji SportRecrut.</p><p><a href="https://github.com/ekipa-pieronskich-legend/CN2026-SportRecrut" target="_blank" class="action-btn"><i class="fab fa-github"></i> Repozytorium SportRecrut</a></p>'
-                },
-                'github': {
-                    title: 'KONTAKT',
-                    content: '<p>Zapraszam do bezpośredniego kontaktu biznesowego i rekrutacyjnego:</p><ul><li><i class="fas fa-envelope"></i> <strong>E-mail:</strong> bmajocha@outlook.com</li><li><i class="fas fa-phone"></i> <strong>Telefon:</strong> +48 668 170 858</li></ul>'
-                },
-                'contact': {
-                    title: 'DOSTĘPNOŚĆ',
-                    content: '<p><strong>Aktualna lokalizacja:</strong> Nowy Sącz (i okolice)</p><p>Jestem w pełni gotowy do podjęcia pracy jako Junior Developer lub stażysta. Aktywnie rozważam pracę w modelu zdalnym, hybrydowym oraz <strong>pełną relokację</strong>.</p>'
+                en: {
+                    'main-info': {
+                        title: 'ABOUT PROJECT',
+                        content: '<p>The project you are currently viewing. A fully responsive web portfolio designed from scratch in the aesthetics of Portal 2 laboratory terminals.</p><p>This site serves as my direct testing environment. I implemented custom animations, state management, and 3D object integration, focusing on code optimization and a seamless user experience.</p>'
+                    },
+                    'about': {
+                        title: 'ABOUT PROJECT',
+                        content: '<p>An advanced cross-platform mobile application (iOS/Android) designed to streamline recruitment for amateur sports teams.</p><p>As the lead developer, I integrated gamification features based on user activity (streaks), analytical modules, and live activity heatmaps tracking local sports fields.</p><p><strong>🏆 The project won 1st place at a local programming hackathon.</strong></p>'
+                    },
+                    'description': {
+                        title: 'GITHUB PROFILE',
+                        githubUrl: 'https://github.com/808sBartye',
+                        content: '<p>Redirect to main profile. Review commit history, production workflows, and other standalone technical projects.</p><p><a href="https://github.com/808sBartye" target="_blank" class="action-btn"><i class="fab fa-github"></i> Open profile @808sBartye</a></p>'
+                    },
+                    'tech-stack': {
+                        title: 'CORE STACK',
+                        content: '<p>Application architecture based on clean and efficient code:</p><ul><li><i class="fab fa-react"></i> React & TypeScript &ndash; logic and UI</li><li><i class="fab fa-css3-alt"></i> Advanced CSS &ndash; custom animations and responsiveness</li><li><i class="fas fa-cube"></i> Three.js &ndash; spatial 3D object rendering</li></ul>'
+                    },
+                    'challenges': {
+                        title: 'SOURCE CODE',
+                        githubUrl: 'https://github.com/808sBartye/Poral2-Portfolio',
+                        content: '<p>Redirect to repository. Explore the architecture and clean codebase of this entire terminal interface.</p><p><a href="https://github.com/808sBartye/Poral2-Portfolio" target="_blank" class="action-btn"><i class="fab fa-github"></i> Portfolio source code</a></p>'
+                    },
+                    'features': {
+                        title: 'MOBILE & CLOUD',
+                        content: '<p>Built in a cross-platform environment paired with scalable cloud architecture:</p><ul><li><i class="fab fa-react"></i> React Native &ndash; mobile app (iOS/Android)</li><li><i class="fas fa-database"></i> Supabase & PostgreSQL &ndash; relational database and core logic</li><li><i class="fas fa-fire"></i> Firebase &ndash; authentication and push notification system</li></ul>'
+                    },
+                    'demo': {
+                        title: 'REPOSITORY',
+                        githubUrl: 'https://github.com/ekipa-pieronskich-legend/CN2026-SportRecrut',
+                        content: '<p>Redirect to repository. Check the code quality, components, and database structures of the SportRecrut application.</p><p><a href="https://github.com/ekipa-pieronskich-legend/CN2026-SportRecrut" target="_blank" class="action-btn"><i class="fab fa-github"></i> SportRecrut repository</a></p>'
+                    },
+                    'github': {
+                        title: 'CONTACT CHANNELS',
+                        content: '<p>Feel free to reach out directly for business, mentoring, or recruitment inquiries:</p><ul><li><i class="fas fa-envelope"></i> <strong>E-mail:</strong> bmajocha@outlook.com</li><li><i class="fas fa-phone"></i> <strong>Phone:</strong> +48 668 170 858</li></ul>'
+                    },
+                    'contact': {
+                        title: 'OPERATIONAL STATUS',
+                        content: '<p><strong>Current Location:</strong> Nowy Sącz, Poland</p><p>Fully ready to undertake a Junior Developer role or an instructive internship. Actively considering remote work, hybrid models, and <strong>full relocation</strong> (logistically prepared to relocate to Warsaw immediately).</p>'
+                    }
                 }
             };
+
+            let currentOpenSectionId = null;
+
+            window.addEventListener('apertureLangChanged', function(e) {
+                const newLang = e.detail;
+                if (currentOpenSectionId && sectionData[newLang] && sectionData[newLang][currentOpenSectionId]) {
+                    const data = sectionData[newLang][currentOpenSectionId];
+                    const sectionContent = document.getElementById('section-content');
+                    if (sectionContent) {
+                        sectionContent.innerHTML = `<h2>${data.title}</h2>${data.content}`;
+                    }
+                }
+            });
 
             // Show section with GSAP animation (like education)
             function showSection(sectionId) {
@@ -160,8 +217,12 @@
                 const sectionView = document.getElementById('section-view');
                 const sectionContent = document.getElementById('section-content');
 
-                const data = sectionData[sectionId];
+                const lang = (window.apertureI18n && window.apertureI18n.lang) || localStorage.getItem('aperture_lang') || 'pl';
+                const dataGroup = sectionData[lang] || sectionData.pl;
+                const data = dataGroup[sectionId];
                 if (!data) return;
+
+                currentOpenSectionId = sectionId;
 
                 sectionContent.innerHTML = `<h2>${data.title}</h2>${data.content}`;
 

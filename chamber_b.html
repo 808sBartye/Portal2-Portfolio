@@ -21,12 +21,13 @@
     <div class="scanlines"></div>
     
     <!-- Return button - always fixed -->
-    <button class="return-btn" onclick="returnToNexus()">
+    <!-- Return button - always fixed -->
+    <button class="return-btn" onclick="returnToNexus()" data-i18n="return_nexus">
         <span>&larr;</span> POWRÓT DO NEXUSA
     </button>
     
     <!-- Next Project Button -->
-    <button class="next-project-btn" onclick="goToNextProject()">
+    <button class="next-project-btn" onclick="goToNextProject()" data-i18n="next_project">
         NASTĘPNY PROJEKT <span>&rarr;</span>
     </button>
     
@@ -42,19 +43,19 @@
                     <div class="info-bar" data-section="lebwweb-about" onclick="showSection('lebwweb-about')">
                         <div class="info-bar-content">
                             <h3>ŁEB W WEB</h3>
-                            <p>Kampania społeczna</p>
+                            <p data-i18n="cham_b_sub_0">Kampania społeczna</p>
                         </div>
                     </div>
                     <div class="info-bar" data-section="zsemtv-media" onclick="showSection('zsemtv-media')">
                         <div class="info-bar-content">
                             <h3>ZSEM TV</h3>
-                            <p>Media & Transmisje live</p>
+                            <p data-i18n="cham_b_sub_1">Media & Transmisje live</p>
                         </div>
                     </div>
                     <div class="info-bar" data-section="memorycage-prototype" onclick="showSection('memorycage-prototype')">
                         <div class="info-bar-content">
                             <h3>MEMORYCAGE</h3>
-                            <p>Prototypowanie Hardware / IoT</p>
+                            <p data-i18n="cham_b_sub_2">Prototypowanie Hardware / IoT</p>
                         </div>
                     </div>
                 </div>
@@ -63,41 +64,41 @@
                 <div class="right-grid">
                     <div class="grid-tile" data-section="lebwweb-scale" onclick="showSection('lebwweb-scale')">
                         <i class="fas fa-users"></i>
-                        <h4>SKALA DZIAŁANIA</h4>
-                        <span>Ponad 2300 odbiorców</span>
+                        <h4 data-i18n="cham_b_tile_0_t">SKALA DZIAŁANIA</h4>
+                        <span data-i18n="cham_b_tile_0">Ponad 2300 odbiorców</span>
                     </div>
                     <div class="grid-tile" data-section="lebwweb-law" onclick="showSection('lebwweb-law')">
                         <i class="fas fa-landmark"></i>
-                        <h4>LEGISLACJA & NASK</h4>
-                        <span>Sejm RP & Eksperci</span>
+                        <h4 data-i18n="cham_b_tile_1_t">LEGISLACJA & NASK</h4>
+                        <span data-i18n="cham_b_tile_1">Sejm RP & Eksperci</span>
                     </div>
                     <div class="grid-tile" data-section="zsemtv-events" onclick="showSection('zsemtv-events')">
                         <i class="fas fa-video"></i>
-                        <h4>PRODUKCJA EVENTÓW</h4>
-                        <span>Transmisje wielokamerowe</span>
+                        <h4 data-i18n="cham_b_tile_2_t">PRODUKCJA EVENTÓW</h4>
+                        <span data-i18n="cham_b_tile_2">Transmisje wielokamerowe</span>
                     </div>
                     <div class="grid-tile" data-section="zsemtv-skills" onclick="showSection('zsemtv-skills')">
                         <i class="fas fa-microphone"></i>
-                        <h4>SKILLE MIĘKKIE</h4>
-                        <span>Wystąpienia & Certyfikaty</span>
+                        <h4 data-i18n="cham_b_tile_3_t">SKILLE MIĘKKIE</h4>
+                        <span data-i18n="cham_b_tile_3">Wystąpienia & Certyfikaty</span>
                     </div>
                     <div class="grid-tile" data-section="memorycage-pitching" onclick="showSection('memorycage-pitching')">
                         <i class="fas fa-bullhorn"></i>
-                        <h4>PUBLIC PITCHING</h4>
-                        <span>Prezentacje sceniczne</span>
+                        <h4 data-i18n="cham_b_tile_4_t">PUBLIC PITCHING</h4>
+                        <span data-i18n="cham_b_tile_4">Prezentacje sceniczne</span>
                     </div>
                     <div class="grid-tile contact-tile" data-section="memorycage-success" onclick="showSection('memorycage-success')">
                         <i class="fas fa-trophy"></i>
-                        <h4>NAGRODA PUBLICZNOŚCI</h4>
-                        <span>Główne wyróżnienie</span>
+                        <h4 data-i18n="cham_b_tile_5_t">NAGRODA PUBLICZNOŚCI</h4>
+                        <span data-i18n="cham_b_tile_5">Główne wyróżnienie</span>
                     </div>
                 </div>
             </div>
             
             <!-- VIEW: Section Detail (hidden by default) -->
             <div id="section-view" class="view">
-                <button class="back-btn" onclick="showGrid()">
-                    <i class="fas fa-arrow-left"></i> WRÓĆ
+                <button class="back-btn" onclick="showGrid()" data-i18n="edu_return">
+                    <i class="fas fa-arrow-left"></i> COFNIJ -&gt;
                 </button>
                 <div class="section-content" id="section-content">
                     <!-- Content loaded dynamically -->
@@ -113,48 +114,96 @@
     <script>
         // Section content data
         const sectionData = {
-            // --- RZĄD 1: „ŁEB W WEB” (Projekt Społeczny) ---
-            'lebwweb-about': {
-                title: 'O KAMPANII',
-                content: '<p>Inicjatywa edukacyjna stworzona w ramach olimpiady Zwolnieni z Teorii, skupiona na cyberbezpieczeństwie.</p><p>Jako <strong>Lider Projektu</strong> zarządzałem strukturą zespołu, harmonogramem działań operacyjnych oraz budżetem w wysokości 4500 PLN.</p>'
+            pl: {
+                'lebwweb-about': {
+                    title: 'O KAMPANII',
+                    content: '<p>Inicjatywa edukacyjna stworzona w ramach olimpiady Zwolnieni z Teorii, skupiona na cyberbezpieczeństwie.</p><p>Jako <strong>Lider Projektu</strong> zarządzałem strukturą zespołu, harmonogramem działań operacyjnych oraz budżetem w wysokości 4500 PLN.</p>'
+                },
+                'lebwweb-scale': {
+                    title: 'SKALA DZIAŁANIA',
+                    content: '<p>Zasięg projektu to <strong>ponad 2300 bezpośrednich odbiorców</strong>.</p><p>Przeprowadziliśmy ponad 30 autorskich warsztatów w szkołach, edukując młodzież o zagrożeniach sieciowych, atakach phishingowych i higienie cyfrowej.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @lebwweb</p>'
+                },
+                'lebwweb-law': {
+                    title: 'LEGISLACJA & NASK',
+                    content: '<p>Sukces inicjatywy zaowocował zaproszeniem do <strong>Kancelarii Marszałka Sejmu RP</strong>, gdzie brałem udział w oficjalnych konsultacjach legislacyjnych.</p><p>Projekt był realizowany i weryfikowany pod okiem ekspertów z instytutu badawczego NASK.</p>'
+                },
+                'zsemtv-media': {
+                    title: 'REALIZACJA LIVE',
+                    content: '<p>Prowadzenie szkolnego zespołu medialnego ZSEM TV.</p><p>Odpowiadałem za pełną organizację zaplecza technicznego, konfigurację mikserów audio-wideo, oprawę graficzną oraz zarządzanie zasobami ludzkimi w warunkach wymagających natychmiastowego podejmowania decyzji.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @zsemtv</p>'
+                },
+                'zsemtv-events': {
+                    title: 'PRODUKCJA EVENTÓW',
+                    content: '<p>Zrealizowałem wielokamerowe transmisje live z kluczowych wydarzeń, w tym:</p><ul><li><i class="fas fa-video"></i> Mistrzostwa Nowego Sącza w GeoGuessr 2025</li><li><i class="fas fa-microphone"></i> Oficjalne Debaty Oksfordzkie</li></ul><p>Praca oparta w głównej mierze o zaawansowaną obsługę OBS Studio.</p>'
+                },
+                'zsemtv-skills': {
+                    title: 'SKILLE MIĘKKIE',
+                    content: '<p>Kompetencje potwierdzone oficjalnymi certyfikatami <strong>Organizatora Wydarzeń</strong> i <strong>Realizatora Transmisji</strong>.</p><p>Doświadczenie to ukształtowało moje umiejętności interpersonalne: wystąpienia przed kamerą, prowadzenie wywiadów oraz odporność na stres w krytycznych momentach produkcji.</p>'
+                },
+                'memorycage-prototype': {
+                    title: 'PROTOTYPOWANIE',
+                    content: '<p>Współtworzenie funkcjonalnego prototypu fizycznego urządzenia (projekt MemoryCage).</p><p>Projekt wymagał inżynieryjnego podejścia do elektroniki, mikrokomponentów oraz połączenia warstwy sprzętowej z napisaną logiką sterowania (software).</p>'
+                },
+                'memorycage-pitching': {
+                    title: 'PUBLIC PITCHING',
+                    content: '<p>Urządzenie zostało oficjalnie zaprezentowane szerokiemu audytorium podczas targów naukowych (2025).</p><p>Zadanie polegało na skutecznym, prostym i atrakcyjnym przedstawieniu skomplikowanych technologii przed zróżnicowanym gronem jurorów oraz odwiedzających.</p>'
+                },
+                'memorycage-success': {
+                    title: 'NAGRODA PUBLICZNOŚCI',
+                    content: '<p>Połączenie twardych umiejętności inżynieryjnych z dynamiczną, profesjonalną prezentacją sceniczną zaowocowało zdobyciem głównej <strong>Nagrody Publiczności</strong>.</p><p>To wyróżnienie udowadnia moją zdolność do skutecznej komunikacji wartości technicznej (pitchingu).</p>'
+                }
             },
-            'lebwweb-scale': {
-                title: 'SKALA DZIAŁANIA',
-                content: '<p>Zasięg projektu to <strong>ponad 2300 bezpośrednich odbiorców</strong>.</p><p>Przeprowadziliśmy ponad 30 autorskich warsztatów w szkołach, edukując młodzież o zagrożeniach sieciowych, atakach phishingowych i higienie cyfrowej.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @lebwweb</p>'
-            },
-            'lebwweb-law': {
-                title: 'LEGISLACJA & NASK',
-                content: '<p>Sukces inicjatywy zaowocował zaproszeniem do <strong>Kancelarii Marszałka Sejmu RP</strong>, gdzie brałem udział w oficjalnych konsultacjach legislacyjnych.</p><p>Projekt był realizowany i weryfikowany pod okiem ekspertów z instytutu badawczego NASK.</p>'
-            },
-
-            // --- RZĄD 2: ZSEM TV (Media i Transmisje live) ---
-            'zsemtv-media': {
-                title: 'REALIZACJA LIVE',
-                content: '<p>Prowadzenie szkolnego zespołu medialnego ZSEM TV.</p><p>Odpowiadałem za pełną organizację zaplecza technicznego, konfigurację mikserów audio-wideo, oprawę graficzną oraz zarządzanie zasobami ludzkimi w warunkach wymagających natychmiastowego podejmowania decyzji.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @zsemtv</p>'
-            },
-            'zsemtv-events': {
-                title: 'PRODUKCJA EVENTÓW',
-                content: '<p>Zrealizowałem wielokamerowe transmisje live z kluczowych wydarzeń, w tym:</p><ul><li><i class="fas fa-video"></i> Mistrzostwa Nowego Sącza w GeoGuessr 2025</li><li><i class="fas fa-microphone"></i> Oficjalne Debaty Oksfordzkie</li></ul><p>Praca oparta w głównej mierze o zaawansowaną obsługę OBS Studio.</p>'
-            },
-            'zsemtv-skills': {
-                title: 'SKILLE MIĘKKIE',
-                content: '<p>Kompetencje potwierdzone oficjalnymi certyfikatami <strong>Organizatora Wydarzeń</strong> i <strong>Realizatora Transmisji</strong>.</p><p>Doświadczenie to ukształtowało moje umiejętności interpersonalne: wystąpienia przed kamerą, prowadzenie wywiadów oraz odporność na stres w krytycznych momentach produkcji.</p>'
-            },
-
-            // --- RZĄD 3: MEMORYCAGE (Hardware / Pitching) ---
-            'memorycage-prototype': {
-                title: 'PROTOTYPOWANIE',
-                content: '<p>Współtworzenie funkcjonalnego prototypu fizycznego urządzenia (projekt MemoryCage).</p><p>Projekt wymagał inżynieryjnego podejścia do elektroniki, mikrokomponentów oraz połączenia warstwy sprzętowej z napisaną logiką sterowania (software).</p>'
-            },
-            'memorycage-pitching': {
-                title: 'PUBLIC PITCHING',
-                content: '<p>Urządzenie zostało oficjalnie zaprezentowane szerokiemu audytorium podczas targów naukowych (2025).</p><p>Zadanie polegało na skutecznym, prostym i atrakcyjnym przedstawieniu skomplikowanych technologii przed zróżnicowanym gronem jurorów oraz odwiedzających.</p>'
-            },
-            'memorycage-success': {
-                title: 'NAGRODA PUBLICZNOŚCI',
-                content: '<p>Połączenie twardych umiejętności inżynieryjnych z dynamiczną, profesjonalną prezentacją sceniczną zaowocowało zdobyciem głównej <strong>Nagrody Publiczności</strong>.</p><p>To wyróżnienie udowadnia moją zdolność do skutecznej komunikacji wartości technicznej (pitchingu).</p>'
+            en: {
+                'lebwweb-about': {
+                    title: 'ABOUT CAMPAIGN',
+                    content: '<p>An educational initiative created as part of the Zwolnieni z Teorii competition, focused on cybersecurity.</p><p>As the <strong>Project Leader</strong>, I managed the team structure, operational schedule, and a budget of 4500 PLN.</p>'
+                },
+                'lebwweb-scale': {
+                    title: 'SCALE OF ACTION',
+                    content: '<p>The project reached <strong>over 2300 direct beneficiaries</strong>.</p><p>We conducted over 30 original workshops in schools, educating youth about online threats, phishing attacks, and digital hygiene.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @lebwweb</p>'
+                },
+                'lebwweb-law': {
+                    title: 'LEGISLATION & NASK',
+                    content: '<p>The success of the initiative resulted in an invitation to the <strong>Chancellery of the Marshal of the Sejm of the Republic of Poland</strong>, where I took part in official legislative consultations.</p><p>The project was conducted and verified under the supervision of experts from the NASK research institute.</p>'
+                },
+                'zsemtv-media': {
+                    title: 'LIVE PRODUCTION',
+                    content: '<p>Leading the ZSEM TV school media team.</p><p>I was responsible for organizing technical backstages, configuring audio-video mixers, live graphics, and managing human resources in high-pressure environments requiring split-second decisions.</p><p><i class="fas fa-hashtag"></i> <strong>Social Media:</strong> @zsemtv</p>'
+                },
+                'zsemtv-events': {
+                    title: 'EVENT PRODUCTION',
+                    content: '<p>I produced multi-camera live broadcasts for key events, including:</p><ul><li><i class="fas fa-video"></i> Nowy Sącz GeoGuessr Championship 2025</li><li><i class="fas fa-microphone"></i> Official Oxford Debates</li></ul><p>The workflow relied extensively on advanced OBS Studio operations.</p>'
+                },
+                'zsemtv-skills': {
+                    title: 'SOFT SKILLS',
+                    content: '<p>Competences confirmed by official <strong>Event Organizer</strong> and <strong>Broadcast Producer</strong> certificates.</p><p>This experience honed my interpersonal skills: on-camera presentations, conducting interviews, and maintaining resilience under stress during critical production moments.</p>'
+                },
+                'memorycage-prototype': {
+                    title: 'PROTOTYPING',
+                    content: '<p>Co-developing a functional prototype of a physical IoT device (MemoryCage project).</p><p>The project required an engineering approach to electronics, microcomponents, and bridging the hardware layer with custom software control logic.</p>'
+                },
+                'memorycage-pitching': {
+                    title: 'PUBLIC PITCHING',
+                    content: '<p>The device was officially presented to a wide audience during a science fair (2025).</p><p>The goal was to effectively, simply, and engagingly communicate complex technology to a diverse panel of judges and visitors.</p>'
+                },
+                'memorycage-success': {
+                    title: 'AUDIENCE AWARD',
+                    content: '<p>Combining solid engineering skills with a dynamic, professional on-stage presentation resulted in winning the main <strong>Audience Award</strong>.</p><p>This distinction proves my ability to effectively communicate technical value and deliver successful pitches.</p>'
+                }
             }
         };
+
+        let currentOpenSectionId = null;
+
+        window.addEventListener('apertureLangChanged', function(e) {
+            const newLang = e.detail;
+            if (currentOpenSectionId && sectionData[newLang] && sectionData[newLang][currentOpenSectionId]) {
+                const data = sectionData[newLang][currentOpenSectionId];
+                const sectionContent = document.getElementById('section-content');
+                if (sectionContent) {
+                    sectionContent.innerHTML = `<h2>${data.title}</h2>${data.content}`;
+                }
+            }
+        });
         
         // Show section with GSAP animation
         function showSection(sectionId) {
@@ -162,9 +211,13 @@
             const sectionView = document.getElementById('section-view');
             const sectionContent = document.getElementById('section-content');
             
-            const data = sectionData[sectionId];
+            const lang = (window.apertureI18n && window.apertureI18n.lang) || localStorage.getItem('aperture_lang') || 'pl';
+            const dataGroup = sectionData[lang] || sectionData.pl;
+            const data = dataGroup[sectionId];
             if (!data) return;
             
+            currentOpenSectionId = sectionId;
+
             sectionContent.innerHTML = `<h2>${data.title}</h2>${data.content}`;
             
             if (data.githubUrl) {
