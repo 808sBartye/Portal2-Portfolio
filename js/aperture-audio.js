@@ -199,8 +199,8 @@
                     <div class="panel-section">
                         <span class="section-title" data-i18n="panel_lang">&gt; JĘZYK</span>
                         <div id="lang-selectors" class="btn-group">
-                            <button id="lang-pl-btn" class="aperture-btn active">PL</button>
-                            <button id="lang-en-btn" class="aperture-btn">ENG</button>
+                            <button id="lang-pl-btn" class="aperture-btn active">🇵🇱 PL</button>
+                            <button id="lang-en-btn" class="aperture-btn">🇬🇧 ENG</button>
                         </div>
                     </div>
                     <div class="panel-section">
