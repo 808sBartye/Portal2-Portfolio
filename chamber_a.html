@@ -193,14 +193,14 @@
                     },
                     'contact': {
                         title: 'OPERATIONAL STATUS',
-                        content: '<p><strong>Current Location:</strong> Nowy Sącz, Poland</p><p>Fully ready to undertake a Junior Developer role or an instructive internship. Actively considering remote work, hybrid models, and <strong>full relocation</strong> (logistically prepared to relocate to Warsaw immediately).</p>'
+                        content: '<p><strong>Current Location:</strong> Nowy Sącz, Poland</p><p>Fully ready to undertake a Junior Developer role or an instructive internship. Actively considering remote work, hybrid models, and <strong>full relocation</strong>.</p>'
                     }
                 }
             };
 
             let currentOpenSectionId = null;
 
-            window.addEventListener('apertureLangChanged', function(e) {
+            window.addEventListener('apertureLangChanged', function (e) {
                 const newLang = e.detail;
                 if (currentOpenSectionId && sectionData[newLang] && sectionData[newLang][currentOpenSectionId]) {
                     const data = sectionData[newLang][currentOpenSectionId];
