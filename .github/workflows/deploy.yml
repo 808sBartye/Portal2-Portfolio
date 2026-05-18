@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: production
+  cancel-in-progress: true
+
 jobs:
   ftp-deploy:
     name: Deploy to Cohost FTP
@@ -12,6 +16,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
